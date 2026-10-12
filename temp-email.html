@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{color-scheme:dark;--bg:#090e16;--surface:#101824;--surface2:#151f2e;--line:#253245;--muted:#91a1b3;--text:#e9f0f8;--cyan:#7bdcda;--mint:#b0e3b4;--red:#ed9c9e}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 'DM Sans',sans-serif}body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(#7bdcda06 1px,transparent 1px),linear-gradient(90deg,#7bdcda06 1px,transparent 1px);background-size:64px 64px;z-index:-1}a{text-decoration:none;color:inherit}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.48}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}.top{border-bottom:1px solid var(--line);background:#090e16e8;backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font:600 21px 'JetBrains Mono',monospace;letter-spacing:.12em}.brand i{font-style:normal;color:var(--cyan)}.navright{display:flex;gap:24px;align-items:center;font-size:13px;color:#b4c2d0}.navright a:hover{color:var(--cyan)}.back{border:1px solid #3b5660;border-radius:8px;padding:9px 13px;color:var(--cyan)}.intro{padding:68px 0 34px}.eyebrow,.mono{font:12px 'JetBrains Mono',monospace;letter-spacing:.1em;color:var(--cyan)}.intro h1{font-size:clamp(37px,5.5vw,60px);letter-spacing:-.055em;line-height:1.1;margin:15px 0}.intro h1 span{color:var(--cyan)}.intro p{color:#a3b4c5;max-width:640px;font-size:17px;margin:0}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;padding-bottom:70px}.maincol{min-width:0;display:grid;gap:20px;align-content:start}.panel{border:1px solid var(--line);background:linear-gradient(155deg,#131d2a,#0e1520);border-radius:14px;padding:27px;min-width:0}.panelhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}.panelhead h2{font-size:17px;margin:0;letter-spacing:-.02em}.label{font:11px 'JetBrains Mono',monospace;letter-spacing:.09em;color:#90a4b8}.status{display:inline-flex;align-items:center;gap:8px;border:1px solid #36514f;border-radius:30px;padding:5px 10px;font:10px 'JetBrains Mono',monospace;color:var(--mint)}.dot{width:7px;height:7px;background:var(--mint);border-radius:50%;box-shadow:0 0 12px #b0e3b466}.address{display:flex;gap:9px;margin-top:10px}.address input{flex:1;min-width:0;border:1px solid #33475a;background:#0b131d;border-radius:9px;color:var(--text);padding:16px;font:14px 'JetBrains Mono',monospace;outline:none}.address input:focus{border-color:var(--cyan)}.iconbtn{width:54px;flex-shrink:0;border:1px solid #3a5963;background:#152932;color:var(--cyan);border-radius:9px;font-size:21px}.buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{border-radius:9px;padding:12px 17px;border:1px solid #37495b;background:#15202e;color:#e4edf5;font-size:13px;font-weight:700;transition:transform .2s,border-color .2s}.btn:hover:not(:disabled),.iconbtn:hover:not(:disabled){transform:translateY(-2px);border-color:var(--cyan)}.btn.primary{background:var(--cyan);border-color:var(--cyan);color:#07141a}.btn.danger{border-color:#69444b;color:#f1b0b4;background:#2a1c25}.helper{color:var(--muted);font-size:12px;margin:15px 0 0}.inboxhead{display:flex;align-items:center;gap:12px}.badge{font:11px 'JetBrains Mono',monospace;background:#1d3340;color:var(--cyan);border:1px solid #365261;border-radius:6px;padding:3px 8px}.auto-refresh{margin-left:auto;font:11px 'JetBrains Mono',monospace;color:#9db2c3;display:flex;align-items:center;gap:7px}.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--mint)}.messages{min-height:230px}.empty-state{text-align:center;padding:45px 12px 30px;color:#b8c7d5}.empty-glyph{font:32px 'JetBrains Mono',monospace;color:var(--cyan);margin-bottom:12px}.empty-state p{margin:5px 0}.empty-hint{font-size:13px;color:var(--muted)}.side{display:grid;gap:20px;align-content:start}.side h3{font-size:16px;margin:0 0 15px}.side p,.side li{font-size:13px;color:#a5b5c5}.side ol{padding-left:20px;margin:0}.side li{margin-bottom:12px}.infobox{display:flex;gap:10px;align-items:start}.infobox strong{font-size:13px}.infobox p{margin:4px 0 0}.shield{color:var(--mint);font:22px 'JetBrains Mono',monospace}.small-note{border-top:1px solid var(--line);margin-top:18px;padding-top:15px;font-size:12px;color:#94a6b7}.footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#8798a9;font:11px 'JetBrains Mono',monospace;display:flex;justify-content:space-between;gap:20px}.footer a{color:var(--cyan)}.toast{position:fixed;bottom:25px;right:25px;z-index:30;max-width:min(400px,calc(100vw - 40px));padding:13px 17px;background:#18313b;border:1px solid #54848a;border-radius:9px;color:#eaf9f9;box-shadow:0 12px 40px #0008;opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s}.toast.show,.toast.visible{opacity:1;transform:none}.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.active,.modal.open,.modal.show{display:flex}.modal-content{width:min(680px,100%);max-height:85vh;overflow:auto;background:#101a27;border:1px solid #3a5161;border-radius:14px}.modal-header{padding:22px 25px;border-bottom:1px solid var(--line);display:flex;align-items:start;justify-content:space-between;gap:15px}.modal-header h3{margin:10px 0 0}.close-btn{font-size:29px;color:#b7c8d7;border:0;background:none}.modal-body{padding:25px}.message-meta{border-bottom:1px solid var(--line);padding-bottom:15px;margin-bottom:18px}.message-meta p{margin:5px 0;overflow-wrap:anywhere}.meta-key{display:inline-block;width:58px;color:var(--cyan);font:11px 'JetBrains Mono',monospace}.message-content{white-space:pre-wrap;overflow-wrap:anywhere}.panel a{color:var(--cyan)}@media(max-width:850px){.layout{grid-template-columns:1fr}.side{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.nav{height:67px}.brand{font-size:18px}.navright>a:first-child{display:none}.intro{padding:47px 0 28px}.panel{padding:20px}.side{grid-template-columns:1fr}.buttons .btn{flex:1}.address input{font-size:12px}.footer{flex-direction:column}.auto-refresh{font-size:9px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
-.limits-panel{border-color:#4d5260;background:linear-gradient(155deg,#19232e,#111923)}.limits-title{display:flex;gap:10px;align-items:center;margin:10px 0 15px}.limits-title h3{margin:0}.limits-icon{color:#f1ca88;font-size:20px}.limits-list{list-style:none;margin:0;padding:0}.limits-list li{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--line);margin:0}.limits-list strong{color:#e9f0f8;font-size:12px;text-align:right}.limits-note{font-size:12px;color:#c8b5a1;margin:16px 0 0}.limit-alert{border:1px solid #6c5540;background:#2a241f;border-radius:9px;padding:12px 14px;margin-top:15px;color:#f2d2a5;font-size:12px}.limit-alert[hidden]{display:none}
+.limits-panel{border-color:#4d5260;background:linear-gradient(155deg,#19232e,#111923)}.limits-title{display:flex;gap:10px;align-items:center;margin:10px 0 15px}.limits-title h3{margin:0}.limits-icon{color:#f1ca88;font-size:20px}.limits-list{list-style:none;margin:0;padding:0}.limits-list li{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--line);margin:0}.limits-list strong{color:#e9f0f8;font-size:12px;text-align:right}.limits-note{font-size:12px;color:#c8b5a1;margin:16px 0 0}.limit-alert{border:1px solid #6c5540;background:#2a241f;border-radius:9px;padding:12px 14px;margin-top:15px;color:#f2d2a5;font-size:12px}.limit-alert[hidden]{display:none}.countdown{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border:1px solid #365261;border-radius:9px;background:#10212c}.countdown[hidden]{display:none}.countdown-label{color:#a3b4c5;font-size:12px}.countdown-time{font:600 19px 'JetBrains Mono',monospace;color:var(--cyan);font-variant-numeric:tabular-nums}.countdown-time.urgent{color:var(--red)}.cooldown-note{font-size:12px;color:#f2d2a5;margin:10px 0 0}.cooldown-note[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -17,7 +17,7 @@
 <main class="wrap">
 <section class="intro"><div class="eyebrow">01 / PHRYGIX TOOLKIT / MAIL</div><h1>Temporary <span>Email.</span></h1><p>A disposable address for the moments you don't want to share your primary inbox. Generate, copy, and check messages in one place.</p></section>
 <div class="layout"><div class="maincol">
-<section class="panel email-box" aria-labelledby="address-heading"><div class="panelhead"><h2 id="address-heading">Your disposable address</h2><span class="status"><span class="dot"></span> MAIL TOOL</span></div><label class="label" for="emailAddress">GENERATED ADDRESS</label><div class="address email-display"><input type="text" id="emailAddress" readonly placeholder="Awaiting generation…" autocomplete="off" spellcheck="false"><button id="copyBtn" class="iconbtn" aria-label="Copy email address" title="Copy email address" disabled>⧉</button></div><div class="buttons actions"><button id="generateBtn" class="btn primary"><span class="btn-glitch-text">Generate address ↗</span></button><button id="refreshBtn" class="btn secondary" disabled>↻ Refresh inbox</button><button id="deleteBtn" class="btn danger" disabled>× Terminate</button></div><p class="helper" id="serviceHint">Generate an address to receive temporary email for 60 minutes.</p><div id="limitAlert" class="limit-alert" role="alert" hidden></div></section>
+<section class="panel email-box" aria-labelledby="address-heading"><div class="panelhead"><h2 id="address-heading">Your disposable address</h2><span class="status"><span class="dot"></span> MAIL TOOL</span></div><label class="label" for="emailAddress">GENERATED ADDRESS</label><div class="address email-display"><input type="text" id="emailAddress" readonly placeholder="Awaiting generation…" autocomplete="off" spellcheck="false"><button id="copyBtn" class="iconbtn" aria-label="Copy email address" title="Copy email address" disabled>⧉</button></div><div class="buttons actions"><button id="generateBtn" class="btn primary"><span class="btn-glitch-text">Generate address ↗</span></button><button id="refreshBtn" class="btn secondary" disabled>↻ Refresh inbox</button><button id="deleteBtn" class="btn danger" disabled>× Terminate</button></div><p class="helper" id="serviceHint">Your temporary email address will remain active for 60 minutes. All messages will expire with your inbox.</p><div id="inboxCountdown" class="countdown" role="timer" aria-label="Time remaining for temporary inbox" hidden><span class="countdown-label">INBOX TIME REMAINING</span><strong id="inboxTime" class="countdown-time">60:00</strong></div><p id="cooldownNote" class="cooldown-note" hidden></p><div id="limitAlert" class="limit-alert" role="alert" hidden></div></section>
 <section class="panel inbox" aria-labelledby="inbox-heading"><div class="panelhead inbox-header"><div class="inboxhead"><h2 id="inbox-heading">Inbox</h2><span id="messageCount" class="badge">0</span></div><span id="autoRefresh" class="auto-refresh"><span class="pulse-dot"></span> LIVE FEED</span></div><div id="messages" class="messages" aria-live="polite"><div class="empty-state"><div class="empty-glyph">>_</div><p>No messages yet.</p><p class="empty-hint">Generate an address to begin checking your inbox.</p></div></div></section>
 </div><aside class="side"><section class="panel"><div class="mono">HOW IT WORKS</div><h3>Disposable by design.</h3><ol><li>Generate a temporary address.</li><li>Copy it into a site or form where temporary email is accepted.</li><li>Return here to check incoming messages.</li><li>Terminate the inbox when you're finished.</li></ol></section><section class="panel limits-panel" aria-labelledby="limits-heading"><div class="mono">USAGE POLICY</div><div class="limits-title"><span class="limits-icon" aria-hidden="true">⚠</span><h3 id="limits-heading">Limits &amp; safety</h3></div><ul class="limits-list"><li><span>Inbox lifetime</span><strong>60 minutes</strong></li><li><span>New addresses</span><strong>5 per minute*</strong></li><li><span>Received messages</span><strong>100 per inbox</strong></li><li><span>Email size</span><strong>512 KB maximum</strong></li><li><span>Expired mail</span><strong>Deleted automatically</strong></li></ul><p class="limits-note">*Generation limits are approximate and may be shared by visitors using the same network. Excessive requests may be temporarily blocked.</p><div class="small-note">Do not use temporary addresses for banking, password recovery, sensitive information, or accounts you need long-term. Messages and addresses expire; delivery is not guaranteed. Do not use this service for spam, harassment, fraud, or other unlawful activity.</div></section><section class="panel"><div class="infobox"><div class="shield">◇</div><div><strong>Keep your primary inbox private</strong><p>Temporary email is for low-risk uses, not financial accounts, password recovery, or sensitive communications.</p></div></div><div class="small-note">PHRYGIX receives messages through its active mail service. Temporary inboxes are not permanent storage; save anything important before expiration.</div></section></aside></div>
 </main><footer class="wrap footer"><span>© <span id="year"></span> PHRYGIX · TEMPORARY EMAIL</span><span><a href="index.html">HOME</a> / PRIVACY TOOLS</span></footer>
@@ -30,8 +30,27 @@
   const API = 'https://api.phrygix.xyz';
   const STORE = 'phrygix_temp_inbox_v1';
   const $ = id => document.getElementById(id);
-  const els = Object.fromEntries(['emailAddress','copyBtn','generateBtn','refreshBtn','deleteBtn','serviceHint','limitAlert','messageCount','messages','toast','modal','modalSubject','modalFrom','modalDate','modalBody','closeModal'].map(id => [id, $(id)]));
+  const els = Object.fromEntries(['emailAddress','copyBtn','generateBtn','refreshBtn','deleteBtn','serviceHint','limitAlert','inboxCountdown','inboxTime','cooldownNote','messageCount','messages','toast','modal','modalSubject','modalFrom','modalDate','modalBody','closeModal'].map(id => [id, $(id)]));
   let inbox = null, busy = false, polling = false, toastTimer;
+  const RATE_STORE = 'phrygix_inbox_generation_attempts_v1';
+  const BLOCK_STORE = 'phrygix_inbox_generation_blocked_until_v1';
+  const RATE_WINDOW = 60000;
+  const MAX_GENERATIONS = 5;
+  const loadAttempts = () => {
+    try { return JSON.parse(sessionStorage.getItem(RATE_STORE) || '[]').filter(t => Number.isFinite(t) && Date.now() - t < RATE_WINDOW && t <= Date.now()); }
+    catch { return []; }
+  };
+  let attempts = loadAttempts();
+  let blockedUntil = Number(sessionStorage.getItem(BLOCK_STORE)) || 0;
+  const formatRemaining = seconds => {
+    const s = Math.max(0, Math.ceil(seconds));
+    return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  };
+  const generationWaitSeconds = () => {
+    attempts = loadAttempts();
+    const localWait = attempts.length >= MAX_GENERATIONS ? Math.ceil((attempts[0] + RATE_WINDOW - Date.now()) / 1000) : 0;
+    return Math.max(0, localWait, Math.ceil((blockedUntil - Date.now()) / 1000));
+  };
   const empty = (title, hint) => {
     els.messages.replaceChildren();
     const box = document.createElement('div'); box.className = 'empty-state';
@@ -42,13 +61,31 @@
   };
   const notify = msg => { els.toast.textContent = msg; els.toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => els.toast.classList.remove('show'), 3500); };
   const update = () => {
-    els.emailAddress.value = inbox?.address || '';
-    els.copyBtn.disabled = !inbox;
-    els.refreshBtn.disabled = !inbox || busy;
-    els.deleteBtn.disabled = !inbox || busy;
-    els.generateBtn.disabled = busy;
-    els.serviceHint.textContent = inbox ? `Address expires ${new Date(inbox.expires_at * 1000).toLocaleString()}. Inbox refreshes every 15 seconds.` : 'Generate an address to receive temporary email for 60 minutes.';
+    const remaining = inbox ? Math.max(0, Math.ceil(inbox.expires_at - Date.now() / 1000)) : 0;
+    const active = !!inbox && remaining > 0;
+    const wait = generationWaitSeconds();
+    els.emailAddress.value = active ? inbox.address : '';
+    els.copyBtn.disabled = !active;
+    els.refreshBtn.disabled = !active || busy;
+    els.deleteBtn.disabled = !active || busy;
+    els.generateBtn.disabled = busy || wait > 0;
+    els.generateBtn.querySelector('span').textContent = wait > 0 ? `Generate in ${formatRemaining(wait)}` : 'Generate address ↗';
+    els.inboxCountdown.hidden = !active;
+    els.inboxTime.textContent = formatRemaining(remaining);
+    els.inboxTime.classList.toggle('urgent', remaining <= 300);
+    els.cooldownNote.hidden = wait <= 0;
+    els.cooldownNote.textContent = wait > 0 ? `Address generation available in ${formatRemaining(wait)}. Limit: 5 requests per minute per visitor (approximately).` : '';
+    els.serviceHint.textContent = active
+      ? 'Your temporary email address will remain active for 60 minutes. All messages will expire with your inbox.'
+      : 'Your temporary email address will remain active for 60 minutes. All messages will expire with your inbox.';
   };
+  function tick() {
+    if (inbox && inbox.expires_at <= Date.now() / 1000) {
+      forget();
+      notify('Your 60-minute inbox has expired. Generate a new address.');
+    }
+    update();
+  }
   async function api(path, options = {}) {
     const headers = { ...(options.headers || {}) };
     if (inbox?.token) headers.Authorization = `Bearer ${inbox.token}`;
@@ -57,6 +94,7 @@
     if (!response.ok) {
       const error = new Error(data.error || `Request failed (${response.status})`);
       error.status = response.status;
+      error.retryAfter = Number(response.headers.get("Retry-After")) || 60;
       throw error;
     }
     return data;
@@ -69,6 +107,10 @@
   }
   async function create() {
     if (busy) return;
+    const wait = generationWaitSeconds();
+    if (wait > 0) { update(); notify(`Please wait ${formatRemaining(wait)} before generating another address.`); return; }
+    attempts.push(Date.now());
+    sessionStorage.setItem(RATE_STORE, JSON.stringify(attempts));
     els.limitAlert.hidden = true;
     busy = true; update();
     try {
@@ -81,7 +123,9 @@
       notify('Temporary address generated');
     } catch (e) {
       if (e.status === 429) {
-        els.limitAlert.textContent = 'Generation limit reached. Please wait about a minute before trying again. Maximum: 5 new addresses per minute.';
+        blockedUntil = Date.now() + Math.max(1, e.retryAfter) * 1000;
+        sessionStorage.setItem(BLOCK_STORE, String(blockedUntil));
+        els.limitAlert.textContent = 'Generation limit reached. Please wait for the countdown before trying again. Maximum: 5 new addresses per minute.';
         els.limitAlert.hidden = false;
         notify('Too many requests. Please try again shortly.');
       } else { notify(`Could not generate address: ${e.message}`); }
@@ -151,6 +195,7 @@
   } catch { sessionStorage.removeItem(STORE); }
   update();
   if (inbox) refresh(true);
+  setInterval(tick, 1000);
   setInterval(() => { if (!document.hidden) refresh(true); }, 15000);
 })();
 </script>
