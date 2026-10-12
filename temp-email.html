@@ -23,7 +23,128 @@
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalSubject"><div class="modal-content"><div class="modal-header"><div><div class="mono">MESSAGE VIEWER</div><h3 id="modalSubject">Message</h3></div><button id="closeModal" class="close-btn" aria-label="Close message">×</button></div><div class="modal-body"><div class="message-meta"><p><span class="meta-key">FROM</span><span id="modalFrom" class="meta-val"></span></p><p><span class="meta-key">DATE</span><span id="modalDate" class="meta-val"></span></p></div><div id="modalBody" class="message-content"></div></div></div></div>
 <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
-<!-- Keep this if your existing script.js implements the original temp-email element IDs. -->
-<script src="script.js" defer></script>
+<script>
+(() => {
+  'use strict';
+  const API = 'https://api.phrygix.xyz';
+  const STORE = 'phrygix_temp_inbox_v1';
+  const $ = id => document.getElementById(id);
+  const els = Object.fromEntries(['emailAddress','copyBtn','generateBtn','refreshBtn','deleteBtn','serviceHint','messageCount','messages','toast','modal','modalSubject','modalFrom','modalDate','modalBody','closeModal'].map(id => [id, $(id)]));
+  let inbox = null, busy = false, polling = false, toastTimer;
+  const empty = (title, hint) => {
+    els.messages.replaceChildren();
+    const box = document.createElement('div'); box.className = 'empty-state';
+    const glyph = document.createElement('div'); glyph.className = 'empty-glyph'; glyph.textContent = '>_';
+    const p = document.createElement('p'); p.textContent = title;
+    const sub = document.createElement('p'); sub.className = 'empty-hint'; sub.textContent = hint;
+    box.append(glyph, p, sub); els.messages.append(box);
+  };
+  const notify = msg => { els.toast.textContent = msg; els.toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => els.toast.classList.remove('show'), 3500); };
+  const update = () => {
+    els.emailAddress.value = inbox?.address || '';
+    els.copyBtn.disabled = !inbox;
+    els.refreshBtn.disabled = !inbox || busy;
+    els.deleteBtn.disabled = !inbox || busy;
+    els.generateBtn.disabled = busy;
+    els.serviceHint.textContent = inbox ? `Address expires ${new Date(inbox.expires_at * 1000).toLocaleString()}. Inbox refreshes every 15 seconds.` : 'Generate an address to receive temporary email for 60 minutes.';
+  };
+  async function api(path, options = {}) {
+    const headers = { ...(options.headers || {}) };
+    if (inbox?.token) headers.Authorization = `Bearer ${inbox.token}`;
+    const response = await fetch(API + path, { ...options, headers, cache: 'no-store' });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const error = new Error(data.error || `Request failed (${response.status})`);
+      error.status = response.status;
+      throw error;
+    }
+    return data;
+  }
+  function forget() {
+    inbox = null; sessionStorage.removeItem(STORE);
+    els.messageCount.textContent = '0';
+    empty('No messages yet.', 'Generate an address to begin checking your inbox.');
+    update();
+  }
+  async function create() {
+    if (busy) return;
+    busy = true; update();
+    try {
+      // The old address remains valid until it expires unless explicitly terminated.
+      const data = await api('/api/inboxes', { method: 'POST' });
+      inbox = { address: data.address, token: data.token, expires_at: data.expires_at };
+      sessionStorage.setItem(STORE, JSON.stringify(inbox));
+      els.messageCount.textContent = '0';
+      empty('No messages yet.', 'Send an email to the address above.');
+      notify('Temporary address generated');
+    } catch (e) { notify(`Could not generate address: ${e.message}`); }
+    finally { busy = false; update(); }
+  }
+  function render(messages) {
+    els.messageCount.textContent = String(messages.length);
+    if (!messages.length) { empty('No messages yet.', 'New emails will appear here automatically.'); return; }
+    els.messages.replaceChildren();
+    for (const m of messages) {
+      const btn = document.createElement('button'); btn.type = 'button';
+      btn.style.cssText = 'display:block;width:100%;text-align:left;padding:16px;margin:0 0 9px;border:1px solid #33475a;border-radius:9px;background:#111e2b;color:#e9f0f8;cursor:pointer';
+      const subject = document.createElement('strong'); subject.textContent = m.subject || '(No subject)';
+      const detail = document.createElement('div'); detail.style.cssText = 'font-size:12px;color:#91a1b3;overflow-wrap:anywhere;margin-top:5px';
+      detail.textContent = `${m.sender || 'Unknown sender'} · ${new Date(m.received_at * 1000).toLocaleString()}`;
+      btn.append(subject, detail); btn.addEventListener('click', () => openMessage(m.id)); els.messages.append(btn);
+    }
+  }
+  async function refresh(silent = false) {
+    if (!inbox || polling || busy) return;
+    polling = true;
+    try {
+      const data = await api('/api/messages');
+      render(data.messages || []);
+      if (!silent) notify('Inbox refreshed');
+    } catch (e) {
+      if (e.status === 401) { forget(); notify('Inbox expired or unavailable. Generate a new address.'); }
+      else if (!silent) notify(`Could not refresh: ${e.message}`);
+    } finally { polling = false; }
+  }
+  async function openMessage(id) {
+    try {
+      const data = await api('/api/messages/' + encodeURIComponent(id));
+      const m = data.message;
+      els.modalSubject.textContent = m.subject || '(No subject)';
+      els.modalFrom.textContent = m.sender || 'Unknown sender';
+      els.modalDate.textContent = new Date(m.received_at * 1000).toLocaleString();
+      // Backend currently stores raw MIME. Show as plain text, never inject email HTML.
+      els.modalBody.textContent = m.body_text || '(Empty message)';
+      els.modal.classList.add('active');
+    } catch (e) { notify(`Could not open message: ${e.message}`); }
+  }
+  async function terminate() {
+    if (!inbox || busy || !confirm('Permanently terminate this temporary inbox?')) return;
+    busy = true; update();
+    try { await api('/api/inboxes', { method: 'DELETE' }); forget(); notify('Inbox terminated'); }
+    catch (e) { notify(`Could not terminate inbox: ${e.message}`); }
+    finally { busy = false; update(); }
+  }
+  els.generateBtn.addEventListener('click', create);
+  els.refreshBtn.addEventListener('click', () => refresh());
+  els.deleteBtn.addEventListener('click', terminate);
+  els.copyBtn.addEventListener('click', async () => {
+    if (!inbox) return;
+    try { await navigator.clipboard.writeText(inbox.address); notify('Address copied'); }
+    catch { els.emailAddress.select(); notify('Select and copy the address'); }
+  });
+  const close = () => els.modal.classList.remove('active');
+  els.closeModal.addEventListener('click', close);
+  els.modal.addEventListener('click', e => { if (e.target === els.modal) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(STORE) || 'null');
+    if (saved?.token && saved?.address && saved.expires_at > Date.now() / 1000) inbox = saved;
+    else sessionStorage.removeItem(STORE);
+  } catch { sessionStorage.removeItem(STORE); }
+  update();
+  if (inbox) refresh(true);
+  setInterval(() => { if (!document.hidden) refresh(true); }, 15000);
+})();
+</script>
 </body>
 </html>
