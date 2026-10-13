@@ -18,7 +18,7 @@
 <div class="layout">
 <div>
 <section class="panel" aria-labelledby="form-title"><h2 id="form-title">Inspect a URL</h2><p class="sub">Paste a full link beginning with https:// or http://.</p><label class="label" for="inputUrl">URL to inspect</label><textarea id="inputUrl" class="field" spellcheck="false" placeholder="https://example.com/redirect?url=https%3A%2F%2Fexample.org%2Fpage%3Futm_source%3Dnewsletter" maxlength="12000"></textarea><label class="toggle"><input id="stripTracking" type="checkbox" checked> Remove known tracking parameters from the resulting URL</label><div class="buttons"><button class="btn primary" id="inspect">Inspect link ↗</button><button class="btn" id="example">Try example</button><button class="btn" id="clear">Clear</button></div><div id="notice" role="status" aria-live="polite"></div></section>
-<section id="result" class="panel result" hidden aria-labelledby="result-title"><div class="resulthead"><h2 id="result-title">Inspection results</h2><span class="badge">LOCAL ANALYSIS</span></div><div class="label">Cleaned / decoded URL</div><div id="finalUrl" class="urlbox"></div><div class="buttons"><button id="copy" class="btn primary">Copy result</button><button id="copyChain" class="btn">Copy analysis</button></div><dl class="meta"><dt>Hostname</dt><dd id="host"></dd><dt>Protocol</dt><dd id="protocol"></dd><dt>Tracking removed</dt><dd id="removed"></dd><dt>Unwrap steps</dt><dd id="stepsCount"></dd></dl><div class="label">Local decoding chain</div><div id="chain"></div><div class="warn">This is <strong>not</strong> a malware or phishing safety scan. A decoded URL can still be dangerous. The tool does not visit destinations or follow live HTTP redirects.</div></section>
+<section id="result" class="panel result" hidden aria-labelledby="result-title"><div class="resulthead"><h2 id="result-title">Inspection results</h2><span class="badge">LOCAL ANALYSIS</span></div><div class="label">Cleaned / decoded URL</div><div id="finalUrl" class="urlbox"></div><div class="buttons"><button id="copy" class="btn primary">Copy result</button><button id="copyChain" class="btn">Copy analysis</button><button id="openDestination" class="btn">Open destination ↗</button></div><dl class="meta"><dt>Original hostname</dt><dd id="originalHost"></dd><dt>Hostname</dt><dd id="host"></dd><dt>Protocol</dt><dd id="protocol"></dd><dt>Tracking removed</dt><dd id="removed"></dd><dt>Unwrap steps</dt><dd id="stepsCount"></dd><dt>HTTPS</dt><dd id="httpsState"></dd></dl><div class="label">Local decoding chain</div><div id="chain"></div><div class="warn">Opening the destination navigates to an external website. Check the hostname carefully first. This is <strong>not</strong> a malware or phishing safety scan. A decoded URL can still be dangerous. The tool does not visit destinations or follow live HTTP redirects.</div></section>
 </div>
 <aside class="panel"><h2>How it works</h2><p class="sub">Private by design. No URL submission or external lookup.</p><div class="feature"><b><span class="bullet">01</span> URL decoding</b><p>Extracts embedded destinations from recognized query parameters, such as <code>url</code>, <code>target</code> and <code>redirect_uri</code>.</p></div><div class="feature"><b><span class="bullet">02</span> Tracking cleanup</b><p>Removes common marketing parameters such as <code>utm_*</code>, <code>fbclid</code> and <code>gclid</code>.</p></div><div class="feature"><b><span class="bullet">03</span> Transparent output</b><p>Shows the steps taken and lets you copy the resulting URL.</p></div><div class="feature"><b><span class="bullet">04</span> Honest limitations</b><p>Cannot resolve shortened URLs such as bit.ly, inspect server redirects or determine whether a link is safe.</p></div><p class="note">Some sites use tracking-like parameters for functionality. Review the cleaned link before using it.</p></aside>
 </div>
@@ -32,10 +32,61 @@ const trackingExact=new Set(['fbclid','gclid','dclid','gbraid','wbraid','msclkid
 let last=null;
 function parsed(value){try{const u=new URL(value.trim());if(!['https:','http:'].includes(u.protocol)||!u.hostname||u.username||u.password)return null;return u}catch{return null}}
 function candidate(value){let s=value.trim();for(let i=0;i<3;i++){const u=parsed(s);if(u)return u;try{const decoded=decodeURIComponent(s);if(decoded===s)break;s=decoded}catch{break}}return null}
-function unwrap(url){const trace=[{label:'Input URL',value:url.href}];const seen=new Set([url.href]);let current=url;for(let depth=0;depth<5;depth++){let found=null;for(const [key,val] of current.searchParams){if(!destinationKeys.includes(key.toLowerCase()))continue;const dest=candidate(val);if(dest&&dest.href!==current.href){found=dest;break}}if(!found||seen.has(found.href))break;seen.add(found.href);current=found;trace.push({label:'Embedded destination decoded',value:current.href})}return{current,trace}}
+// Generic redirect parameters are only followed when the URL looks like a wrapper.
+// This reduces false positives on ordinary application URLs.
+const wrapperHints = /(?:redirect|out|away|go|link|click|track|forward|external|leave|url)/i;
+const knownWrappers = new Set(['l.facebook.com','lm.facebook.com','www.google.com','google.com','www.google.co.uk','www.google.co.za','out.reddit.com','www.youtube.com','youtube.com','t.co','www.linkedin.com','linkedin.com','safelinks.protection.outlook.com']);
+const highConfidenceKeys = new Set(['url','redirect_url','redirect_uri','destination','dest','target']);
+function unwrap(url){
+  const trace=[{label:'Input URL',value:url.href}];
+  const seen=new Set([url.href]);
+  let current=url;
+  for(let depth=0;depth<5;depth++){
+    let found=null, foundKey='';
+    const wrapper=knownWrappers.has(current.hostname.toLowerCase()) || wrapperHints.test(current.pathname);
+    for(const [key,val] of current.searchParams){
+      const lower=key.toLowerCase();
+      if(!destinationKeys.includes(lower))continue;
+      if(!wrapper && !highConfidenceKeys.has(lower))continue;
+      const dest=candidate(val);
+      if(dest && dest.href!==current.href){found=dest;foundKey=key;break;}
+    }
+    if(!found || seen.has(found.href))break;
+    seen.add(found.href);
+    current=found;
+    trace.push({label:'Decoded destination from parameter: '+foundKey,value:current.href});
+  }
+  return {current,trace};
+}
 function clean(url){const copy=new URL(url.href);let removed=[];for(const [key] of [...copy.searchParams]){const k=key.toLowerCase();if(k.startsWith('utm_')||trackingExact.has(k)){copy.searchParams.delete(key);removed.push(key)}}return{url:copy,removed}}
 function showNotice(text,ok=false){$('notice').textContent=text;$('notice').className=ok?'ok':''}
-function inspect(){showNotice('');$('result').hidden=true;const source=$('inputUrl').value.trim();if(!source){showNotice('Enter a URL first.');return}const original=parsed(source);if(!original){showNotice('Enter a valid http:// or https:// URL without embedded login credentials.');return}const {current,trace}=unwrap(original);const cleaned=$('stripTracking').checked?clean(current):{url:current,removed:[]};if(cleaned.url.href!==current.href)trace.push({label:'Tracking parameters removed',value:cleaned.url.href});last={url:cleaned.url.href,trace,removed:cleaned.removed};$('finalUrl').textContent=last.url;$('host').textContent=cleaned.url.hostname;$('protocol').textContent=cleaned.url.protocol.replace(':','').toUpperCase();$('removed').textContent=cleaned.removed.length?cleaned.removed.join(', '):'None';$('stepsCount').textContent=String(trace.length-1);$('chain').replaceChildren();for(const item of trace){const step=document.createElement('div');step.className='step';const label=document.createElement('strong');label.textContent=item.label;const value=document.createElement('span');value.textContent=item.value;step.append(label,value);$('chain').append(step)}$('result').hidden=false;showNotice('Local inspection complete.',true)}
+function inspect(){
+  showNotice('');$('result').hidden=true;last=null;
+  const source=$('inputUrl').value.trim();
+  if(!source){showNotice('Enter a URL first.');return;}
+  const original=parsed(source);
+  if(!original){showNotice('Enter a valid http:// or https:// URL without embedded login credentials.');return;}
+  const {current,trace}=unwrap(original);
+  const cleaned=$('stripTracking').checked?clean(current):{url:current,removed:[]};
+  if(cleaned.url.href!==current.href)trace.push({label:'Tracking parameters removed',value:cleaned.url.href});
+  last={url:cleaned.url.href,trace,removed:cleaned.removed};
+  $('finalUrl').textContent=last.url;
+  $('originalHost').textContent=original.hostname;
+  $('host').textContent=cleaned.url.hostname;
+  $('protocol').textContent=cleaned.url.protocol.replace(':','').toUpperCase();
+  $('httpsState').textContent=cleaned.url.protocol==='https:'?'Yes (encrypted connection)':'No (HTTP connection)';
+  $('removed').textContent=cleaned.removed.length?cleaned.removed.join(', '):'None';
+  $('stepsCount').textContent=String(trace.filter(x=>x.label.startsWith('Decoded destination')).length);
+  $('chain').replaceChildren();
+  for(const item of trace){
+    const step=document.createElement('div');step.className='step';
+    const label=document.createElement('strong');label.textContent=item.label;
+    const value=document.createElement('span');value.textContent=item.value;
+    step.append(label,value);$('chain').append(step);
+  }
+  $('result').hidden=false;
+  showNotice('Local inspection complete. This does not verify that the destination is safe.',true);
+}
 async function copyText(text){try{await navigator.clipboard.writeText(text);showNotice('Copied to clipboard.',true)}catch{showNotice('Clipboard access unavailable. Select and copy the result manually.')}}
 $('inspect').addEventListener('click',inspect);
 $('inputUrl').addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')inspect()});
@@ -43,5 +94,6 @@ $('example').addEventListener('click',()=>{$('inputUrl').value='https://redirect
 $('clear').addEventListener('click',()=>{$('inputUrl').value='';$('result').hidden=true;last=null;showNotice('')});
 $('copy').addEventListener('click',()=>{if(last)copyText(last.url)});
 $('copyChain').addEventListener('click',()=>{if(last)copyText(last.trace.map(x=>x.label+'\n'+x.value).join('\n\n'))});
+$('openDestination').addEventListener('click',()=>{if(!last)return;const u=parsed(last.url);if(!u)return; if(confirm('Open external destination?\n\n'+u.hostname+'\n\nPHRYGIX has not checked this website for malware or phishing.')){window.open(u.href,'_blank','noopener,noreferrer')}});
 </script>
 </body></html>
