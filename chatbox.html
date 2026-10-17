@@ -2,13 +2,13 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PHRYGIX Chatbox — Private temporary chat</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,Segoe UI,Arial,sans-serif;background:#080f19;color:#e9f5fa}*{box-sizing:border-box}body{margin:0}header{padding:18px 5%;border-bottom:1px solid #23384b;font-weight:800;letter-spacing:.22em}main{max-width:900px;margin:35px auto;padding:0 16px}.panel{border:1px solid #294257;background:#101e2d;border-radius:16px;padding:22px;margin-bottom:18px}h1{font-size:1.5rem}h2{font-size:1.05rem}p,.hint{color:#b3c5d2;line-height:1.5}input,select,button{font:inherit;border-radius:9px;padding:12px}input,select{background:#071320;color:#fff;border:1px solid #3b5b70;width:100%}button{border:0;background:#78d7d5;color:#061b24;font-weight:700;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}.notice{padding:12px;border-radius:9px;background:#203448;overflow-wrap:anywhere}.error{background:#4c2430;color:#ffdfe5}.messages{height:350px;overflow:auto;background:#07131e;border:1px solid #294257;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}.bubble{padding:12px 14px;border-radius:13px;max-width:78%;background:#21364b;align-self:flex-start;overflow-wrap:anywhere}.bubble.mine{background:#205457;align-self:flex-end}.bubble small{display:block;color:#c1d1d9;margin-top:5px}.field{margin:12px 0}.field label{display:block;margin-bottom:6px}.subtle{font-size:.85rem;color:#9db3c4}a{color:#7ee0de}.danger{background:#d87d88}#inviteOutput,#recoveryOutput{font-family:monospace;font-size:.85rem}#chatStatus{font-weight:600}</style></head>
-<body><header>₱HRYGIX</header><main><h1>Chatbox <span class="subtle">v3</span></h1><p>Temporary two-person chat. Rooms expire after 24 hours. Messages are stored on the server and are <strong>not end-to-end encrypted</strong>.</p>
+<body><header>₱HRYGIX</header><main><h1>Chatbox <span class="subtle">v3.1</span></h1><p>Temporary two-person chat. Rooms expire after 24 hours. Messages are stored on the server and are <strong>not end-to-end encrypted</strong>.</p>
 <div id="alert" class="notice hidden" role="status"></div>
 <section id="startPanel" class="panel"><h2>Create a private room</h2><p>The creator becomes Owner. Share only the Guest invitation link.</p><button id="createBtn">Create room</button></section>
 <section id="claimPanel" class="panel hidden"><h2>Join as Guest</h2><p>Claiming this invitation permanently uses it. This browser receives the Guest session.</p><button id="claimBtn">Claim invitation</button></section>
 <section id="recoverPanel" class="panel"><h2>Transfer an existing session</h2><p>Use the recovery credential saved when you joined. This invalidates the old device and rotates the recovery credential.</p><div class="row"><select id="recoverRole"><option value="guest">Guest</option><option value="owner">Owner</option></select><input id="recoverRoom" placeholder="Room ID" aria-label="Room ID"></div><div class="field"><input id="recoverSecret" placeholder="64-character recovery credential" aria-label="Recovery credential" autocomplete="off"></div><button id="recoverBtn">Transfer session to this browser</button></section>
 <section id="secretPanel" class="panel hidden"><h2>Save your recovery credential now</h2><p>This credential is shown only when your session is issued or transferred. Store it somewhere private. It will not be saved in this browser.</p><div id="recoveryOutput" class="notice"></div><div class="row" style="margin-top:12px"><button id="copyRecovery">Copy recovery credential</button><button id="dismissRecovery">I saved it</button></div></section>
-<section id="chatPanel" class="panel hidden"><div class="row"><h2>Live chat — <span id="roleText"></span></h2><span id="chatStatus">Connecting…</span></div><p class="subtle">Room: <span id="roomText"></span> · <span id="countText">0 / 500</span> messages</p><div id="ownerInvite" class="hidden"><p>Guest invitation (share privately; valid once):</p><div id="inviteOutput" class="notice"></div><button id="copyInvite" style="margin:10px 0">Copy Guest invitation</button></div><div id="messages" class="messages" aria-live="polite"></div><form id="sendForm" class="row" style="margin-top:12px"><input id="messageInput" maxlength="2000" placeholder="Connect to send messages" disabled required><button id="sendBtn" disabled>Send</button></form><p class="subtle">If your session is revoked, transfer it with the current recovery credential.</p></section>
+<section id="chatPanel" class="panel hidden"><div class="row"><h2>Live chat — <span id="roleText"></span></h2><span id="chatStatus">Connecting…</span></div><p class="subtle">Room: <span id="roomText"></span> · <span id="countText">0 / 500</span> messages</p><div id="ownerInvite" class="hidden"><p>Guest invitation (share privately; valid once):</p><div id="inviteOutput" class="notice"></div><button id="copyInvite" style="margin:10px 0">Copy Guest invitation</button></div><div id="messages" class="messages" aria-live="polite"></div><form id="sendForm" class="row" style="margin-top:12px"><input id="messageInput" maxlength="2000" placeholder="Connect to send messages" disabled required><button id="sendBtn" disabled>Send</button></form><p class="subtle">If your session is revoked, transfer it with the current recovery credential.</p><div id="ownerDelete" class="hidden" style="margin-top:20px;border-top:1px solid #294257;padding-top:18px"><h2>Delete room for everyone</h2><p>Immediately revoke both sessions and permanently delete all stored messages. This cannot be undone.</p><button id="deleteRoomBtn" class="danger" type="button">Delete room for everyone</button></div></section>
 </main><script>
 'use strict';
 const API = 'https://phrygix-chatbox.phrygix.workers.dev';
@@ -36,9 +36,19 @@ function openRoom(id,sessionToken,asRole,recoveryToken=null){
   roomId=id;role=asRole;session=sessionToken;storeSession();
   history.replaceState(null,'',`/chatbox.html?room=${encodeURIComponent(id)}`);
   show('startPanel',false);show('claimPanel',false);show('recoverPanel',false);show('chatPanel');
-  $('roomText').textContent=id;$('roleText').textContent=role;
+  $('roomText').textContent=id;$('roleText').textContent=role;show('ownerDelete',role==='owner');
   if(recoveryToken)showRecovery(recoveryToken);
   connect();
+}
+function handleRoomDeleted(){
+  if(socket){const old=socket;socket=null;old.onclose=null;try{old.close()}catch{}}
+  setConnected(false);updateStatus('Room deleted');
+  if(roomId)sessionStorage.removeItem(storageKey(roomId));
+  session=null;inviteToken=null;inviteUrl=null;recoveryValue=null;
+  $('messages').replaceChildren();$('recoveryOutput').textContent='';$('recoverSecret').value='';
+  show('secretPanel',false);show('chatPanel',false);show('recoverPanel',false);show('claimPanel',false);show('startPanel');
+  history.replaceState(null,'','/chatbox.html');
+  alertText('This room has been permanently deleted. Stored messages and active sessions have been removed.');
 }
 function renderMessage(msg){
   if(document.getElementById(`m-${msg.id}`))return;
@@ -61,14 +71,25 @@ async function connect(){
   ws.onmessage=event=>{let data;try{data=JSON.parse(event.data)}catch{return}
     if(data.type==='ready')$('countText').textContent=`${data.message_count} / 500`;
     if(data.type==='message'){renderMessage(data.message);$('countText').textContent=`${data.message_count} / 500`;}
+    if(data.type==='room_deleted'){handleRoomDeleted();return;}
     if(data.type==='error')alertText(data.error,true);
   };
   ws.onclose=event=>{if(socket!==ws)return;setConnected(false);updateStatus('Disconnected');
+    if(event.code===4002){handleRoomDeleted();return;}
     if(event.code===4001){alertText('This session was transferred or expired. Use your current recovery credential.',true);show('recoverPanel');}
     else alertText('Disconnected. If another browser is already connected with this role, close that connection before refreshing.',true);
   };
   ws.onerror=()=>{updateStatus('Connection error');};
 }
+$('deleteRoomBtn').onclick=async()=>{
+  if(role!=='owner'||!session||!roomId)return;
+  if(!confirm('Delete this room for everyone? All messages will be permanently removed and neither participant can recover the room.'))return;
+  try{
+    $('deleteRoomBtn').disabled=true;
+    await api(`/api/rooms/${encodeURIComponent(roomId)}/delete`,{method:'POST',headers:{Authorization:`Bearer ${session}`}});
+    handleRoomDeleted();
+  }catch(e){alertText(e.message,true)}finally{$('deleteRoomBtn').disabled=false}
+};
 $('createBtn').onclick=async()=>{try{$('createBtn').disabled=true;const data=await api('/api/rooms',{method:'POST'});
   inviteUrl=data.invite_url;openRoom(data.room_id,data.session_token,'owner',data.recovery_token);
   $('inviteOutput').textContent=inviteUrl;show('ownerInvite');
