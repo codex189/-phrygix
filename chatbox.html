@@ -1,58 +1,94 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090e16"><title>Chatbox — PHRYGIX</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"><style>
-:root{color-scheme:dark;--bg:#090e16;--surface:#101824;--surface2:#151f2e;--line:#253245;--muted:#91a1b3;--text:#e9f0f8;--cyan:#7bdcda;--mint:#b0e3b4}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 'DM Sans',sans-serif}body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(#7bdcda06 1px,transparent 1px),linear-gradient(90deg,#7bdcda06 1px,transparent 1px);background-size:64px 64px}a{color:inherit;text-decoration:none}.wrap{width:min(1160px,calc(100% - 36px));margin:auto}.top{border-bottom:1px solid var(--line);background:#090e16eb;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}.nav{height:76px;display:flex;align-items:center;justify-content:space-between}.brand{font:600 21px 'JetBrains Mono',monospace;letter-spacing:.12em}.brand i{color:var(--cyan);font-style:normal}.back{border:1px solid #3b5660;border-radius:8px;padding:9px 13px;color:var(--cyan);font-size:13px}.intro{padding:54px 0 30px}.eyebrow,.label{font:11px 'JetBrains Mono',monospace;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase}.intro h1{font-size:clamp(37px,5vw,59px);letter-spacing:-.055em;line-height:1.1;margin:14px 0}.intro h1 span{color:var(--cyan)}.intro p{color:#a3b4c5;max-width:690px;font-size:17px}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:20px;padding-bottom:65px}.panel{border:1px solid var(--line);background:linear-gradient(155deg,#131d2a,#0e1520);border-radius:14px;padding:26px;min-width:0}.panel h2{font-size:18px;margin:0 0 6px}.sub{color:var(--muted);font-size:13px;margin:0 0 22px}.section{margin-top:24px}.section>.label{display:block;margin-bottom:12px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}.choice{cursor:pointer;text-align:left;background:#101b28;color:var(--text);border:1px solid #314153;border-radius:11px;padding:17px;font:inherit;min-height:120px}.choice.active{border-color:var(--cyan);background:#112832;box-shadow:inset 0 0 0 1px #7bdcda33}.choice strong{display:block;margin-bottom:7px}.choice small{display:block;color:var(--muted);line-height:1.5}.choice .symbol{color:var(--cyan);font-size:22px;display:block;margin-bottom:7px}.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}label.field{display:grid;gap:7px;color:#b7c4d1;font-size:12px}select,input{width:100%;min-width:0;background:#0b131d;color:var(--text);border:1px solid #33475a;border-radius:9px;padding:13px;font:13px 'DM Sans',sans-serif}input:focus,select:focus{outline:1px solid var(--cyan);border-color:var(--cyan)}button{font-family:inherit}.primary{width:100%;border:1px solid var(--cyan);border-radius:9px;background:var(--cyan);color:#07141a;padding:16px;font-weight:700;font-size:14px;cursor:pointer;margin-top:24px}.primary:hover{filter:brightness(1.08)}button:disabled{opacity:.55;cursor:not-allowed}.note{font-size:12px;color:var(--muted);margin-top:12px}.hidden{display:none!important}.phone{border:1px solid #33475a;border-radius:16px;overflow:hidden;background:#0b131d}.phonehead{padding:15px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}.avatar{width:38px;height:38px;border-radius:50%;background:#224450;color:var(--cyan);display:grid;place-items:center;font-weight:700}.online{font-size:11px;color:var(--mint)}.chat{min-height:265px;max-height:390px;overflow:auto;padding:22px 15px;display:flex;flex-direction:column;gap:12px}.bubble{padding:10px 13px;border-radius:12px;max-width:82%;font-size:13px;background:#1b2a3a;align-self:flex-start;overflow-wrap:anywhere}.bubble.sent{align-self:flex-end;background:#1b4546}.composer{padding:12px;border-top:1px solid var(--line);display:flex;gap:8px}.composer input{flex:1}.composer button{border:0;border-radius:8px;background:var(--cyan);padding:0 15px;color:#08131a}.previewcaption{font:11px 'JetBrains Mono',monospace;color:var(--muted);margin-top:14px}.summary{margin-top:16px;border:1px solid var(--line);padding:16px;border-radius:10px;color:#b7c4d1;font-size:13px;overflow-wrap:anywhere}.summary strong{color:var(--text)}.foot{padding:20px 0 35px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.smallbtn{border:1px solid #3b5660;background:#122633;color:var(--cyan);border-radius:8px;padding:9px 12px;cursor:pointer;margin-top:10px}.linkout{color:var(--cyan);text-decoration:underline;overflow-wrap:anywhere}.status{color:var(--mint)}.warning{color:#ffca91}@media(max-width:780px){.layout{grid-template-columns:1fr}.intro{padding-top:35px}.fields{grid-template-columns:1fr}.panel{padding:20px}.choices{grid-template-columns:1fr}.nav{height:65px}}
-
-.chat{min-height:330px;max-height:480px}.roomtools{display:flex;gap:8px;flex-wrap:wrap}.roomtools button{flex:1}.composer button{cursor:pointer}.msgmeta{display:block;font-size:10px;color:#a9c2ca;margin-top:4px}.statusline{margin:12px 0;font-size:13px;color:var(--muted)}
-</style></head><body><div class="top"><div class="wrap nav"><a class="brand" href="index.html"><i>₱</i>HRYGIX</a><a class="back" href="index.html">← All tools</a></div></div><main class="wrap"><section class="intro"><div class="eyebrow">PRIVATE COMMUNICATION / CHATBOX</div><h1>Private <span>Chatbox.</span></h1><p>Create a temporary room, invite one other person, and exchange messages in real time. No account required.</p></section><div class="layout"><section class="panel"><h2 id="panelTitle">New Chatbox</h2><p class="sub" id="panelSub">Two-person temporary text chat</p><div id="setup"><div class="section"><span class="label">FREE ROOM LIMITS</span><div class="summary">24 hours · 500 messages · 2,000 characters per message · Text only</div></div><button class="primary" id="create">Create temporary room →</button><p class="note">Development preview. No end-to-end encryption, photos, or abuse protection yet. Do not use for sensitive conversations.</p></div><div id="roomInfo" class="hidden"><div class="summary" id="details" role="status"></div><div class="section"><span class="label">Guest invitation — share only with your guest</span><input id="invite" readonly aria-label="Guest invitation URL"><div class="roomtools"><button class="smallbtn" id="copy">Copy guest invitation</button><button class="smallbtn" id="newRoom">Create another room</button></div><p class="note">Anyone with the guest link can act as the guest. Keep your own owner link private. Refreshing this browser keeps your current role only while its URL contains the token.</p></div></div><div id="notice" class="summary hidden" role="status" aria-live="polite"></div></section><aside><section class="panel"><div class="label" style="margin-bottom:12px">LIVE CHAT</div><div class="phone"><div class="phonehead"><div class="avatar">₱</div><div><strong>PHRYGIX Chatbox</strong><div class="online" id="connection">● Not connected</div></div></div><div class="chat" id="chat"><div class="bubble">Create a room or open an invitation to begin.</div></div><form class="composer" id="messageForm"><input id="messageText" maxlength="2000" placeholder="Connect to send messages…" disabled autocomplete="off" aria-label="Message"><button id="send" type="submit" disabled aria-label="Send message">➤</button></form></div><p class="previewcaption" id="counter">TEMPORARY TEXT CHAT · 0 / 500 MESSAGES</p><div class="summary"><strong>Privacy status</strong><br>Temporary rooms and credential-based access. Messages are stored on the server until room expiry; they are <strong>not end-to-end encrypted</strong>. Anyone with a valid role link can read the conversation.</div></section></aside></div></main><footer class="wrap foot">© PHRYGIX · Cloudflare-powered temporary chat</footer><script>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PHRYGIX Chatbox — Private temporary chat</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,Segoe UI,Arial,sans-serif;background:#080f19;color:#e9f5fa}*{box-sizing:border-box}body{margin:0}header{padding:18px 5%;border-bottom:1px solid #23384b;font-weight:800;letter-spacing:.22em}main{max-width:900px;margin:35px auto;padding:0 16px}.panel{border:1px solid #294257;background:#101e2d;border-radius:16px;padding:22px;margin-bottom:18px}h1{font-size:1.5rem}h2{font-size:1.05rem}p,.hint{color:#b3c5d2;line-height:1.5}input,select,button{font:inherit;border-radius:9px;padding:12px}input,select{background:#071320;color:#fff;border:1px solid #3b5b70;width:100%}button{border:0;background:#78d7d5;color:#061b24;font-weight:700;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}.notice{padding:12px;border-radius:9px;background:#203448;overflow-wrap:anywhere}.error{background:#4c2430;color:#ffdfe5}.messages{height:350px;overflow:auto;background:#07131e;border:1px solid #294257;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}.bubble{padding:12px 14px;border-radius:13px;max-width:78%;background:#21364b;align-self:flex-start;overflow-wrap:anywhere}.bubble.mine{background:#205457;align-self:flex-end}.bubble small{display:block;color:#c1d1d9;margin-top:5px}.field{margin:12px 0}.field label{display:block;margin-bottom:6px}.subtle{font-size:.85rem;color:#9db3c4}a{color:#7ee0de}.danger{background:#d87d88}#inviteOutput,#recoveryOutput{font-family:monospace;font-size:.85rem}#chatStatus{font-weight:600}</style></head>
+<body><header>₱HRYGIX</header><main><h1>Chatbox <span class="subtle">v3</span></h1><p>Temporary two-person chat. Rooms expire after 24 hours. Messages are stored on the server and are <strong>not end-to-end encrypted</strong>.</p>
+<div id="alert" class="notice hidden" role="status"></div>
+<section id="startPanel" class="panel"><h2>Create a private room</h2><p>The creator becomes Owner. Share only the Guest invitation link.</p><button id="createBtn">Create room</button></section>
+<section id="claimPanel" class="panel hidden"><h2>Join as Guest</h2><p>Claiming this invitation permanently uses it. This browser receives the Guest session.</p><button id="claimBtn">Claim invitation</button></section>
+<section id="recoverPanel" class="panel"><h2>Transfer an existing session</h2><p>Use the recovery credential saved when you joined. This invalidates the old device and rotates the recovery credential.</p><div class="row"><select id="recoverRole"><option value="guest">Guest</option><option value="owner">Owner</option></select><input id="recoverRoom" placeholder="Room ID" aria-label="Room ID"></div><div class="field"><input id="recoverSecret" placeholder="64-character recovery credential" aria-label="Recovery credential" autocomplete="off"></div><button id="recoverBtn">Transfer session to this browser</button></section>
+<section id="secretPanel" class="panel hidden"><h2>Save your recovery credential now</h2><p>This credential is shown only when your session is issued or transferred. Store it somewhere private. It will not be saved in this browser.</p><div id="recoveryOutput" class="notice"></div><div class="row" style="margin-top:12px"><button id="copyRecovery">Copy recovery credential</button><button id="dismissRecovery">I saved it</button></div></section>
+<section id="chatPanel" class="panel hidden"><div class="row"><h2>Live chat — <span id="roleText"></span></h2><span id="chatStatus">Connecting…</span></div><p class="subtle">Room: <span id="roomText"></span> · <span id="countText">0 / 500</span> messages</p><div id="ownerInvite" class="hidden"><p>Guest invitation (share privately; valid once):</p><div id="inviteOutput" class="notice"></div><button id="copyInvite" style="margin:10px 0">Copy Guest invitation</button></div><div id="messages" class="messages" aria-live="polite"></div><form id="sendForm" class="row" style="margin-top:12px"><input id="messageInput" maxlength="2000" placeholder="Connect to send messages" disabled required><button id="sendBtn" disabled>Send</button></form><p class="subtle">If your session is revoked, transfer it with the current recovery credential.</p></section>
+</main><script>
 'use strict';
-const API='https://phrygix-chatbox.phrygix.workers.dev';
-const $=id=>document.getElementById(id);
-let socket=null, roomId=null, token=null, role=null, count=0, reconnectTimer=null, reconnectAttempts=0, expiry=0;
-function notify(text,bad=false){$('notice').classList.remove('hidden');$('notice').textContent=text;$('notice').style.color=bad?'#ffca91':'#b0e3b4'}
-function status(text){$('connection').textContent='● '+text}
-function updateCount(){ $('counter').textContent='TEMPORARY TEXT CHAT · '+count+' / 500 MESSAGES'; }
-function clearChat(){ $('chat').replaceChildren(); }
-function addMessage(item){
- if($('chat').querySelector('[data-id="'+item.id+'"]'))return;
- const bubble=document.createElement('div');bubble.className='bubble'+(item.role===role?' sent':'');bubble.dataset.id=item.id;
- const content=document.createElement('span');content.textContent=item.text;
- const meta=document.createElement('span');meta.className='msgmeta';meta.textContent=(item.role===role?'You':'Other participant')+' · '+new Date(item.sent_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
- bubble.append(content,meta);$('chat').append(bubble);$('chat').scrollTop=$('chat').scrollHeight;
+const API = 'https://phrygix-chatbox.phrygix.workers.dev';
+const $ = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+let roomId = params.get('room') || '';
+let inviteToken = new URLSearchParams(location.hash.slice(1)).get('invite');
+let role = null, session = null, socket = null, inviteUrl = null, recoveryValue = null, connected = false;
+// Remove the one-time invitation from browser history immediately.
+if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+const storageKey = id => `phrygix-chat-v3:${id}`;
+function show(id, yes=true){$(id).classList.toggle('hidden',!yes)}
+function alertText(message, error=false){$('alert').textContent=message; $('alert').classList.toggle('error',error);show('alert',!!message)}
+function storeSession(){sessionStorage.setItem(storageKey(roomId), JSON.stringify({role,session}));}
+function showRecovery(value){recoveryValue=value;$('recoveryOutput').textContent=value;show('secretPanel');}
+function updateStatus(text){$('chatStatus').textContent=text;}
+function setConnected(value){connected=value;$('messageInput').disabled=!value;$('sendBtn').disabled=!value;$('messageInput').placeholder=value?'Type a message…':'Connect to send messages';}
+async function api(path,options={}){
+  const res=await fetch(API+path,{cache:'no-store',...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});
+  let data={};try{data=await res.json()}catch{}
+  if(!res.ok)throw new Error(data.error||`Request failed (${res.status})`);
+  return data;
 }
-function credentialsFromUrl(){const p=new URLSearchParams(location.search);const h=new URLSearchParams(location.hash.slice(1));return {id:p.get('room'),key:h.get('token')};}
-function showRoom(){ $('setup').classList.add('hidden');$('roomInfo').classList.remove('hidden');$('panelTitle').textContent='Your Chatbox';$('panelSub').textContent='Room ID: '+roomId; }
-async function connect(id,key){
- if(!/^[0-9a-f-]{36}$/i.test(id||'')||!/^[0-9a-f]{64}$/.test(key||'')){notify('Invalid or missing room invitation credentials.',true);return;}
- if(socket){socket.onclose=null;socket.close();}clearTimeout(reconnectTimer);
- roomId=id;token=key;showRoom();status('Loading history…');
- try{
-  const res=await fetch(API+'/api/rooms/'+encodeURIComponent(id)+'/history?token='+encodeURIComponent(key),{cache:'no-store'});
-  const data=await res.json();if(!res.ok)throw Error(data.error||'Unable to join room');
-  role=data.role;expiry=data.expires_at;count=data.message_count;updateCount();clearChat();
-  data.messages.forEach(addMessage);
-  $('details').textContent='Connected as '+role+' · Expires '+new Date(expiry).toLocaleString();
-  openSocket();
- }catch(e){status('Unable to connect');notify(e.message,true)}
+function openRoom(id,sessionToken,asRole,recoveryToken=null){
+  roomId=id;role=asRole;session=sessionToken;storeSession();
+  history.replaceState(null,'',`/chatbox.html?room=${encodeURIComponent(id)}`);
+  show('startPanel',false);show('claimPanel',false);show('recoverPanel',false);show('chatPanel');
+  $('roomText').textContent=id;$('roleText').textContent=role;
+  if(recoveryToken)showRecovery(recoveryToken);
+  connect();
 }
-function openSocket(){
- if(Date.now()>=expiry){status('Room expired');return;}
- const wsUrl=API.replace(/^http/,'ws')+'/api/rooms/'+encodeURIComponent(roomId)+'/ws?token='+encodeURIComponent(token);
- status('Connecting…');const ws=new WebSocket(wsUrl);socket=ws;
- ws.onopen=()=>{if(socket!==ws)return;reconnectAttempts=0;status('Connected · '+role);$('messageText').disabled=false;$('send').disabled=false;$('messageText').placeholder='Type a message…'};
- ws.onmessage=e=>{if(socket!==ws)return;let data;try{data=JSON.parse(e.data)}catch{return}
-  if(data.type==='ready'){count=data.message_count;updateCount()}
-  if(data.type==='message'){addMessage(data.message);count=data.message_count;updateCount()}
-  if(data.type==='error')notify(data.error,true);
- };
- ws.onclose=()=>{if(socket!==ws)return;$('messageText').disabled=true;$('send').disabled=true;status('Disconnected');if(Date.now()<expiry&&reconnectAttempts<6){reconnectAttempts++;reconnectTimer=setTimeout(()=>{if(socket===ws)connect(roomId,token)},Math.min(1000*2**reconnectAttempts,15000))}};
- ws.onerror=()=>status('Connection error');
+function renderMessage(msg){
+  if(document.getElementById(`m-${msg.id}`))return;
+  const bubble=document.createElement('div');bubble.className='bubble'+(msg.role===role?' mine':'');bubble.id=`m-${msg.id}`;
+  const body=document.createElement('div');body.textContent=msg.text;
+  const meta=document.createElement('small');meta.textContent=(msg.role===role?'You':'Other participant')+' · '+new Date(msg.sent_at).toLocaleTimeString();
+  bubble.append(body,meta);$('messages').appendChild(bubble);$('messages').scrollTop=$('messages').scrollHeight;
 }
-$('messageForm').addEventListener('submit',e=>{e.preventDefault();const input=$('messageText');const value=input.value.trim();if(!value||!socket||socket.readyState!==WebSocket.OPEN)return;socket.send(JSON.stringify({type:'message',text:value}));input.value=''});
-$('create').addEventListener('click',async()=>{const b=$('create');b.disabled=true;b.textContent='Creating…';try{
- const res=await fetch(API+'/api/rooms',{method:'POST',headers:{'Content-Type':'application/json'}});const data=await res.json();if(!res.ok)throw Error(data.error||'Creation failed');
- if(!data.owner_url||!data.invite_url)throw Error('Backend returned no invitation credentials. Confirm version 2.');
- $('invite').value=data.invite_url;history.replaceState(null,'',data.owner_url);await connect(data.room_id,data.owner_token);
- }catch(e){notify(e.message,true)}finally{b.disabled=false;b.textContent='Create temporary room →'}});
-$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('invite').value);$('copy').textContent='Copied!';setTimeout(()=>{$('copy').textContent='Copy guest invitation'},1800)}catch{ $('invite').focus();$('invite').select();notify('Copy the selected invitation URL manually.',true)}});
-$('newRoom').addEventListener('click',()=>{if(socket){socket.onclose=null;socket.close()}clearTimeout(reconnectTimer);history.replaceState(null,'',location.pathname);location.reload()});
-const incoming=credentialsFromUrl();if(incoming.id){$('invite').value='';$('roomInfo').classList.remove('hidden');$('setup').classList.add('hidden');$('copy').disabled=true;connect(incoming.id,incoming.key)}
+async function connect(){
+  if(socket){socket.onclose=null;socket.close();socket=null;}
+  setConnected(false);updateStatus('Connecting…');
+  try{
+    const historyData=await api(`/api/rooms/${encodeURIComponent(roomId)}/history`,{headers:{Authorization:`Bearer ${session}`}});
+    $('messages').replaceChildren();historyData.messages.forEach(renderMessage);
+    $('countText').textContent=`${historyData.message_count} / 500`;
+  }catch(error){updateStatus('Session unavailable');alertText(error.message+'. Use recovery to transfer access.',true);show('recoverPanel');return;}
+  const wsUrl=API.replace(/^http/,'ws')+`/api/rooms/${encodeURIComponent(roomId)}/ws?session=${encodeURIComponent(session)}`;
+  const ws=new WebSocket(wsUrl);socket=ws;
+  ws.onopen=()=>{setConnected(true);updateStatus('Connected · '+role);alertText('');};
+  ws.onmessage=event=>{let data;try{data=JSON.parse(event.data)}catch{return}
+    if(data.type==='ready')$('countText').textContent=`${data.message_count} / 500`;
+    if(data.type==='message'){renderMessage(data.message);$('countText').textContent=`${data.message_count} / 500`;}
+    if(data.type==='error')alertText(data.error,true);
+  };
+  ws.onclose=event=>{if(socket!==ws)return;setConnected(false);updateStatus('Disconnected');
+    if(event.code===4001){alertText('This session was transferred or expired. Use your current recovery credential.',true);show('recoverPanel');}
+    else alertText('Disconnected. If another browser is already connected with this role, close that connection before refreshing.',true);
+  };
+  ws.onerror=()=>{updateStatus('Connection error');};
+}
+$('createBtn').onclick=async()=>{try{$('createBtn').disabled=true;const data=await api('/api/rooms',{method:'POST'});
+  inviteUrl=data.invite_url;openRoom(data.room_id,data.session_token,'owner',data.recovery_token);
+  $('inviteOutput').textContent=inviteUrl;show('ownerInvite');
+}catch(e){alertText(e.message,true)}finally{$('createBtn').disabled=false}};
+$('claimBtn').onclick=async()=>{try{$('claimBtn').disabled=true;const data=await api(`/api/rooms/${encodeURIComponent(roomId)}/claim`,{method:'POST',body:JSON.stringify({invite_token:inviteToken})});
+  inviteToken=null;openRoom(roomId,data.session_token,'guest',data.recovery_token);
+}catch(e){alertText(e.message,true)}finally{$('claimBtn').disabled=false}};
+$('recoverBtn').onclick=async()=>{const id=$('recoverRoom').value.trim(),credential=$('recoverSecret').value.trim().toLowerCase();
+  if(!id||!/^[a-f0-9]{64}$/.test(credential)){alertText('Enter the room ID and a valid 64-character recovery credential.',true);return;}
+  try{$('recoverBtn').disabled=true;const data=await api(`/api/rooms/${encodeURIComponent(id)}/transfer`,{method:'POST',body:JSON.stringify({role:$('recoverRole').value,recovery_token:credential})});
+    $('recoverSecret').value='';inviteUrl=null;show('ownerInvite',false);openRoom(id,data.session_token,data.role,data.recovery_token);
+  }catch(e){alertText(e.message,true)}finally{$('recoverBtn').disabled=false}};
+$('sendForm').onsubmit=e=>{e.preventDefault();const value=$('messageInput').value.trim();if(!value||!connected||socket?.readyState!==WebSocket.OPEN)return;
+  socket.send(JSON.stringify({type:'message',text:value}));$('messageInput').value='';};
+$('copyInvite').onclick=async()=>{if(inviteUrl)await navigator.clipboard.writeText(inviteUrl)};
+$('copyRecovery').onclick=async()=>{if(recoveryValue)await navigator.clipboard.writeText(recoveryValue)};
+$('dismissRecovery').onclick=()=>{recoveryValue=null;$('recoveryOutput').textContent='';show('secretPanel',false)};
+if(roomId){$('recoverRoom').value=roomId;let saved=null;try{saved=JSON.parse(sessionStorage.getItem(storageKey(roomId))||'null')}catch{}
+  if(saved?.session&&saved?.role){openRoom(roomId,saved.session,saved.role)}
+  else if(inviteToken){show('startPanel',false);show('claimPanel')}
+  else {show('startPanel',false);alertText('No active session in this browser. Use your recovery credential to transfer access.',true)}
+}
 </script></body></html>
