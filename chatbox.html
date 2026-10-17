@@ -1,115 +1,175 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PHRYGIX Chatbox — Private temporary chat</title>
-<style>
-:root{color-scheme:dark;font-family:system-ui,Segoe UI,Arial,sans-serif;background:#080f19;color:#e9f5fa}*{box-sizing:border-box}body{margin:0}header{padding:18px 5%;border-bottom:1px solid #23384b;font-weight:800;letter-spacing:.22em}main{max-width:900px;margin:35px auto;padding:0 16px}.panel{border:1px solid #294257;background:#101e2d;border-radius:16px;padding:22px;margin-bottom:18px}h1{font-size:1.5rem}h2{font-size:1.05rem}p,.hint{color:#b3c5d2;line-height:1.5}input,select,button{font:inherit;border-radius:9px;padding:12px}input,select{background:#071320;color:#fff;border:1px solid #3b5b70;width:100%}button{border:0;background:#78d7d5;color:#061b24;font-weight:700;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}.notice{padding:12px;border-radius:9px;background:#203448;overflow-wrap:anywhere}.error{background:#4c2430;color:#ffdfe5}.messages{height:350px;overflow:auto;background:#07131e;border:1px solid #294257;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}.bubble{padding:12px 14px;border-radius:13px;max-width:78%;background:#21364b;align-self:flex-start;overflow-wrap:anywhere}.bubble.mine{background:#205457;align-self:flex-end}.bubble small{display:block;color:#c1d1d9;margin-top:5px}.field{margin:12px 0}.field label{display:block;margin-bottom:6px}.subtle{font-size:.85rem;color:#9db3c4}a{color:#7ee0de}.danger{background:#d87d88}#inviteOutput,#recoveryOutput{font-family:monospace;font-size:.85rem}#chatStatus{font-weight:600}</style></head>
-<body><header>₱HRYGIX</header><main><h1>Chatbox <span class="subtle">v3.1</span></h1><p>Temporary two-person chat. Rooms expire after 24 hours. Messages are stored on the server and are <strong>not end-to-end encrypted</strong>.</p>
-<div id="alert" class="notice hidden" role="status"></div>
-<section id="startPanel" class="panel"><h2>Create a private room</h2><p>The creator becomes Owner. Share only the Guest invitation link.</p><button id="createBtn">Create room</button></section>
-<section id="claimPanel" class="panel hidden"><h2>Join as Guest</h2><p>Claiming this invitation permanently uses it. This browser receives the Guest session.</p><button id="claimBtn">Claim invitation</button></section>
-<section id="recoverPanel" class="panel"><h2>Transfer an existing session</h2><p>Use the recovery credential saved when you joined. This invalidates the old device and rotates the recovery credential.</p><div class="row"><select id="recoverRole"><option value="guest">Guest</option><option value="owner">Owner</option></select><input id="recoverRoom" placeholder="Room ID" aria-label="Room ID"></div><div class="field"><input id="recoverSecret" placeholder="64-character recovery credential" aria-label="Recovery credential" autocomplete="off"></div><button id="recoverBtn">Transfer session to this browser</button></section>
-<section id="secretPanel" class="panel hidden"><h2>Save your recovery credential now</h2><p>This credential is shown only when your session is issued or transferred. Store it somewhere private. It will not be saved in this browser.</p><div id="recoveryOutput" class="notice"></div><div class="row" style="margin-top:12px"><button id="copyRecovery">Copy recovery credential</button><button id="dismissRecovery">I saved it</button></div></section>
-<section id="chatPanel" class="panel hidden"><div class="row"><h2>Live chat — <span id="roleText"></span></h2><span id="chatStatus">Connecting…</span></div><p class="subtle">Room: <span id="roomText"></span> · <span id="countText">0 / 500</span> messages</p><div id="ownerInvite" class="hidden"><p>Guest invitation (share privately; valid once):</p><div id="inviteOutput" class="notice"></div><button id="copyInvite" style="margin:10px 0">Copy Guest invitation</button></div><div id="messages" class="messages" aria-live="polite"></div><form id="sendForm" class="row" style="margin-top:12px"><input id="messageInput" maxlength="2000" placeholder="Connect to send messages" disabled required><button id="sendBtn" disabled>Send</button></form><p class="subtle">If your session is revoked, transfer it with the current recovery credential.</p><div id="ownerDelete" class="hidden" style="margin-top:20px;border-top:1px solid #294257;padding-top:18px"><h2>Delete room for everyone</h2><p>Immediately revoke both sessions and permanently delete all stored messages. This cannot be undone.</p><button id="deleteRoomBtn" class="danger" type="button">Delete room for everyone</button></div></section>
-</main><script>
-'use strict';
-const API = 'https://phrygix-chatbox.phrygix.workers.dev';
-const $ = id => document.getElementById(id);
-const params = new URLSearchParams(location.search);
-let roomId = params.get('room') || '';
-let inviteToken = new URLSearchParams(location.hash.slice(1)).get('invite');
-let role = null, session = null, socket = null, inviteUrl = null, recoveryValue = null, connected = false;
-// Remove the one-time invitation from browser history immediately.
-if (location.hash) history.replaceState(null, '', location.pathname + location.search);
-const storageKey = id => `phrygix-chat-v3:${id}`;
-function show(id, yes=true){$(id).classList.toggle('hidden',!yes)}
-function alertText(message, error=false){$('alert').textContent=message; $('alert').classList.toggle('error',error);show('alert',!!message)}
-function storeSession(){sessionStorage.setItem(storageKey(roomId), JSON.stringify({role,session}));}
-function showRecovery(value){recoveryValue=value;$('recoveryOutput').textContent=value;show('secretPanel');}
-function updateStatus(text){$('chatStatus').textContent=text;}
-function setConnected(value){connected=value;$('messageInput').disabled=!value;$('sendBtn').disabled=!value;$('messageInput').placeholder=value?'Type a message…':'Connect to send messages';}
-async function api(path,options={}){
-  const res=await fetch(API+path,{cache:'no-store',...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});
-  let data={};try{data=await res.json()}catch{}
-  if(!res.ok)throw new Error(data.error||`Request failed (${res.status})`);
-  return data;
+const ORIGIN = 'https://phrygix.xyz';
+const TTL = 24 * 60 * 60 * 1000;
+const MAX_MESSAGES = 500;
+const MAX_LENGTH = 2000;
+const enc = new TextEncoder();
+const hex64 = /^[a-f0-9]{64}$/;
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function headers() {
+  return { 'Access-Control-Allow-Origin': ORIGIN, 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Cache-Control': 'no-store', Vary: 'Origin' };
 }
-function openRoom(id,sessionToken,asRole,recoveryToken=null){
-  roomId=id;role=asRole;session=sessionToken;storeSession();
-  history.replaceState(null,'',`/chatbox.html?room=${encodeURIComponent(id)}`);
-  show('startPanel',false);show('claimPanel',false);show('recoverPanel',false);show('chatPanel');
-  $('roomText').textContent=id;$('roleText').textContent=role;show('ownerDelete',role==='owner');
-  if(recoveryToken)showRecovery(recoveryToken);
-  connect();
+function reply(value, status = 200) {
+  return new Response(JSON.stringify(value), { status, headers: { ...headers(), 'Content-Type': 'application/json' } });
 }
-function handleRoomDeleted(){
-  if(socket){const old=socket;socket=null;old.onclose=null;try{old.close()}catch{}}
-  setConnected(false);updateStatus('Room deleted');
-  if(roomId)sessionStorage.removeItem(storageKey(roomId));
-  session=null;inviteToken=null;inviteUrl=null;recoveryValue=null;
-  $('messages').replaceChildren();$('recoveryOutput').textContent='';$('recoverSecret').value='';
-  show('secretPanel',false);show('chatPanel',false);show('recoverPanel',false);show('claimPanel',false);show('startPanel');
-  history.replaceState(null,'','/chatbox.html');
-  alertText('This room has been permanently deleted. Stored messages and active sessions have been removed.');
-}
-function renderMessage(msg){
-  if(document.getElementById(`m-${msg.id}`))return;
-  const bubble=document.createElement('div');bubble.className='bubble'+(msg.role===role?' mine':'');bubble.id=`m-${msg.id}`;
-  const body=document.createElement('div');body.textContent=msg.text;
-  const meta=document.createElement('small');meta.textContent=(msg.role===role?'You':'Other participant')+' · '+new Date(msg.sent_at).toLocaleTimeString();
-  bubble.append(body,meta);$('messages').appendChild(bubble);$('messages').scrollTop=$('messages').scrollHeight;
-}
-async function connect(){
-  if(socket){socket.onclose=null;socket.close();socket=null;}
-  setConnected(false);updateStatus('Connecting…');
-  try{
-    const historyData=await api(`/api/rooms/${encodeURIComponent(roomId)}/history`,{headers:{Authorization:`Bearer ${session}`}});
-    $('messages').replaceChildren();historyData.messages.forEach(renderMessage);
-    $('countText').textContent=`${historyData.message_count} / 500`;
-  }catch(error){updateStatus('Session unavailable');alertText(error.message+'. Use recovery to transfer access.',true);show('recoverPanel');return;}
-  const wsUrl=API.replace(/^http/,'ws')+`/api/rooms/${encodeURIComponent(roomId)}/ws?session=${encodeURIComponent(session)}`;
-  const ws=new WebSocket(wsUrl);socket=ws;
-  ws.onopen=()=>{setConnected(true);updateStatus('Connected · '+role);alertText('');};
-  ws.onmessage=event=>{let data;try{data=JSON.parse(event.data)}catch{return}
-    if(data.type==='ready')$('countText').textContent=`${data.message_count} / 500`;
-    if(data.type==='message'){renderMessage(data.message);$('countText').textContent=`${data.message_count} / 500`;}
-    if(data.type==='room_deleted'){handleRoomDeleted();return;}
-    if(data.type==='error')alertText(data.error,true);
-  };
-  ws.onclose=event=>{if(socket!==ws)return;setConnected(false);updateStatus('Disconnected');
-    if(event.code===4002){handleRoomDeleted();return;}
-    if(event.code===4001){alertText('This session was transferred or expired. Use your current recovery credential.',true);show('recoverPanel');}
-    else alertText('Disconnected. If another browser is already connected with this role, close that connection before refreshing.',true);
-  };
-  ws.onerror=()=>{updateStatus('Connection error');};
-}
-$('deleteRoomBtn').onclick=async()=>{
-  if(role!=='owner'||!session||!roomId)return;
-  if(!confirm('Delete this room for everyone? All messages will be permanently removed and neither participant can recover the room.'))return;
-  try{
-    $('deleteRoomBtn').disabled=true;
-    await api(`/api/rooms/${encodeURIComponent(roomId)}/delete`,{method:'POST',headers:{Authorization:`Bearer ${session}`}});
-    handleRoomDeleted();
-  }catch(e){alertText(e.message,true)}finally{$('deleteRoomBtn').disabled=false}
+function secret() { return Array.from(crypto.getRandomValues(new Uint8Array(32)), b => b.toString(16).padStart(2, '0')).join(''); }
+async function digest(value) { return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', enc.encode(value))), b => b.toString(16).padStart(2, '0')).join(''); }
+function bearer(request) { const match = /^Bearer ([a-f0-9]{64})$/i.exec(request.headers.get('Authorization') || ''); return match?.[1]?.toLowerCase() || ''; }
+function validSecret(value) { return typeof value === 'string' && hex64.test(value); }
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: headers() });
+    if (url.pathname === '/api/health') return reply({ service: 'PHRYGIX Chatbox', status: 'online', version: '3.1' });
+    const origin = request.headers.get('Origin');
+    if (origin && origin !== ORIGIN) return reply({ error: 'Origin not allowed' }, 403);
+    if (url.pathname === '/api/rooms' && request.method === 'POST') {
+      const id = crypto.randomUUID();
+      const ownerSession = secret(), ownerRecovery = secret(), invite = secret();
+      const stub = env.CHAT_ROOMS.get(env.CHAT_ROOMS.idFromName(id));
+      const result = await stub.fetch('https://internal/init', { method: 'POST',
+        body: JSON.stringify({ ownerSessionHash: await digest(ownerSession), ownerRecoveryHash: await digest(ownerRecovery), inviteHash: await digest(invite) }) });
+      if (!result.ok) return reply({ error: 'Room creation failed' }, 503);
+      return reply({ room_id: id, role: 'owner', session_token: ownerSession, recovery_token: ownerRecovery,
+        invite_url: `${ORIGIN}/chatbox.html?room=${id}#invite=${invite}`, expires_in: TTL / 1000,
+        max_messages: MAX_MESSAGES, max_participants: 2 }, 201);
+    }
+    const match = /^\/api\/rooms\/([^/]+)\/(claim|transfer|history|ws|delete)$/.exec(url.pathname);
+    if (!match || !uuid.test(match[1])) return reply({ error: 'Not found' }, 404);
+    return env.CHAT_ROOMS.get(env.CHAT_ROOMS.idFromName(match[1])).fetch(request);
+  }
 };
-$('createBtn').onclick=async()=>{try{$('createBtn').disabled=true;const data=await api('/api/rooms',{method:'POST'});
-  inviteUrl=data.invite_url;openRoom(data.room_id,data.session_token,'owner',data.recovery_token);
-  $('inviteOutput').textContent=inviteUrl;show('ownerInvite');
-}catch(e){alertText(e.message,true)}finally{$('createBtn').disabled=false}};
-$('claimBtn').onclick=async()=>{try{$('claimBtn').disabled=true;const data=await api(`/api/rooms/${encodeURIComponent(roomId)}/claim`,{method:'POST',body:JSON.stringify({invite_token:inviteToken})});
-  inviteToken=null;openRoom(roomId,data.session_token,'guest',data.recovery_token);
-}catch(e){alertText(e.message,true)}finally{$('claimBtn').disabled=false}};
-$('recoverBtn').onclick=async()=>{const id=$('recoverRoom').value.trim(),credential=$('recoverSecret').value.trim().toLowerCase();
-  if(!id||!/^[a-f0-9]{64}$/.test(credential)){alertText('Enter the room ID and a valid 64-character recovery credential.',true);return;}
-  try{$('recoverBtn').disabled=true;const data=await api(`/api/rooms/${encodeURIComponent(id)}/transfer`,{method:'POST',body:JSON.stringify({role:$('recoverRole').value,recovery_token:credential})});
-    $('recoverSecret').value='';inviteUrl=null;show('ownerInvite',false);openRoom(id,data.session_token,data.role,data.recovery_token);
-  }catch(e){alertText(e.message,true)}finally{$('recoverBtn').disabled=false}};
-$('sendForm').onsubmit=e=>{e.preventDefault();const value=$('messageInput').value.trim();if(!value||!connected||socket?.readyState!==WebSocket.OPEN)return;
-  socket.send(JSON.stringify({type:'message',text:value}));$('messageInput').value='';};
-$('copyInvite').onclick=async()=>{if(inviteUrl)await navigator.clipboard.writeText(inviteUrl)};
-$('copyRecovery').onclick=async()=>{if(recoveryValue)await navigator.clipboard.writeText(recoveryValue)};
-$('dismissRecovery').onclick=()=>{recoveryValue=null;$('recoveryOutput').textContent='';show('secretPanel',false)};
-if(roomId){$('recoverRoom').value=roomId;let saved=null;try{saved=JSON.parse(sessionStorage.getItem(storageKey(roomId))||'null')}catch{}
-  if(saved?.session&&saved?.role){openRoom(roomId,saved.session,saved.role)}
-  else if(inviteToken){show('startPanel',false);show('claimPanel')}
-  else {show('startPanel',false);alertText('No active session in this browser. Use your recovery credential to transfer access.',true)}
+
+export class ChatRoom {
+  constructor(ctx, env) { this.ctx = ctx; this.env = env; this.ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair('ping', 'pong')); }
+  async fetch(request) {
+    const url = new URL(request.url);
+    if (url.pathname === '/init' && request.method === 'POST') {
+      if (await this.ctx.storage.get('room')) return reply({ error: 'Already initialized' }, 409);
+      const data = await request.json().catch(() => ({}));
+      if (![data.ownerSessionHash, data.ownerRecoveryHash, data.inviteHash].every(validSecret)) return reply({ error: 'Invalid initialization' }, 400);
+      const now = Date.now();
+      this.ctx.storage.sql.exec('CREATE TABLE IF NOT EXISTS messages (seq INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT NOT NULL, role TEXT NOT NULL, body TEXT NOT NULL, sent_at INTEGER NOT NULL)');
+      await this.ctx.storage.put('room', { createdAt: now, expiresAt: now + TTL,
+        inviteHash: data.inviteHash, owner: { sessionHash: data.ownerSessionHash, recoveryHash: data.ownerRecoveryHash }, guest: null });
+      await this.ctx.storage.setAlarm(now + TTL);
+      return reply({ created: true }, 201);
+    }
+    const action = url.pathname.split('/').pop();
+    const room = await this.ctx.storage.get('room');
+    if (!room || room.closed || Date.now() >= room.expiresAt) return reply({ error: 'Room closed, expired or not found', code: 'ROOM_UNAVAILABLE' }, 410);
+
+    if (action === 'claim' && request.method === 'POST') {
+      const body = await request.json().catch(() => ({}));
+      if (!validSecret(body.invite_token)) return reply({ error: 'Invalid invitation' }, 401);
+      const invitationHash = await digest(body.invite_token);
+      const session = secret(), recovery = secret();
+      const sessionHash = await digest(session), recoveryHash = await digest(recovery);
+      const result = await this.ctx.storage.transaction(async txn => {
+        const current = await txn.get('room');
+        if (!current || current.closed || Date.now() >= current.expiresAt) return 'ROOM_EXPIRED';
+        if (!current.inviteHash || current.guest) return 'INVITATION_CLAIMED';
+        if (current.inviteHash !== invitationHash) return 'INVALID_INVITATION';
+        current.guest = { sessionHash, recoveryHash };
+        current.inviteHash = null;
+        await txn.put('room', current);
+        return 'OK';
+      });
+      if (result !== 'OK') return reply({ error: result === 'INVITATION_CLAIMED' ? 'Invitation already claimed' : 'Invitation unavailable', code: result }, result === 'ROOM_EXPIRED' ? 410 : result === 'INVITATION_CLAIMED' ? 409 : 401);
+      return reply({ role: 'guest', session_token: session, recovery_token: recovery, expires_at: room.expiresAt }, 201);
+    }
+
+    if (action === 'transfer' && request.method === 'POST') {
+      const body = await request.json().catch(() => ({}));
+      if (!['owner', 'guest'].includes(body.role) || !validSecret(body.recovery_token)) return reply({ error: 'Invalid recovery credentials' }, 401);
+      const recoveryHash = await digest(body.recovery_token);
+      const session = secret(), recovery = secret();
+      const sessionHash = await digest(session), nextRecoveryHash = await digest(recovery);
+      const result = await this.ctx.storage.transaction(async txn => {
+        const current = await txn.get('room');
+        if (!current || current.closed || Date.now() >= current.expiresAt) return 'ROOM_EXPIRED';
+        if (!current[body.role] || current[body.role].recoveryHash !== recoveryHash) return 'INVALID_RECOVERY';
+        current[body.role] = { sessionHash, recoveryHash: nextRecoveryHash };
+        await txn.put('room', current);
+        return 'OK';
+      });
+      if (result !== 'OK') return reply({ error: 'Recovery failed', code: result }, result === 'ROOM_EXPIRED' ? 410 : 401);
+      for (const ws of this.ctx.getWebSockets(body.role)) { try { ws.close(4001, 'Session transferred'); } catch {} }
+      return reply({ role: body.role, session_token: session, recovery_token: recovery, expires_at: room.expiresAt });
+    }
+
+    const token = action === 'ws' ? url.searchParams.get('session') : bearer(request);
+    if (!validSecret(token)) return reply({ error: 'Session required', code: 'SESSION_REQUIRED' }, 401);
+    const sessionHash = await digest(token);
+    const role = room.owner?.sessionHash === sessionHash ? 'owner' : room.guest?.sessionHash === sessionHash ? 'guest' : null;
+    if (!role) return reply({ error: 'Session invalid or revoked', code: 'SESSION_INVALID' }, 401);
+
+    // Only the current Owner session can permanently close the room.
+    if (action === 'delete' && request.method === 'POST') {
+      if (role !== 'owner') return reply({ error: 'Only the owner can delete this room', code: 'OWNER_REQUIRED' }, 403);
+      // Mark closed before removing messages so later requests cannot access the room.
+      await this.ctx.storage.put('room', { closed: true, expiresAt: room.expiresAt });
+      this.ctx.storage.sql.exec('DELETE FROM messages');
+      for (const peer of this.ctx.getWebSockets()) {
+        try { peer.send(JSON.stringify({ type: 'room_deleted' })); } catch {}
+        try { peer.close(4002, 'Room deleted by owner'); } catch {}
+      }
+      // Keep a minimal tombstone until expiry; no messages or credentials remain.
+      return reply({ deleted: true });
+    }
+
+    if (action === 'history' && request.method === 'GET') {
+      const messages = Array.from(this.ctx.storage.sql.exec('SELECT id, role, body, sent_at FROM messages ORDER BY seq ASC')).map(row => ({ id: row.id, role: row.role, text: row.body, sent_at: row.sent_at }));
+      return reply({ role, messages, message_count: messages.length, expires_at: room.expiresAt });
+    }
+    if (action === 'ws' && request.method === 'GET') {
+      if (request.headers.get('Upgrade')?.toLowerCase() !== 'websocket') return reply({ error: 'WebSocket required' }, 426);
+      if (request.headers.get('Origin') !== ORIGIN) return reply({ error: 'Origin not allowed' }, 403);
+      // No awaits between this check and acceptWebSocket.
+      if (this.ctx.getWebSockets(role).length) return reply({ error: `${role} already connected`, code: 'ROLE_ALREADY_CONNECTED' }, 409);
+      const pair = new WebSocketPair();
+      const [client, server] = Object.values(pair);
+      this.ctx.acceptWebSocket(server, [role]);
+      server.serializeAttachment({ role, sessionHash });
+      const count = Array.from(this.ctx.storage.sql.exec('SELECT COUNT(*) AS n FROM messages'))[0].n;
+      server.send(JSON.stringify({ type: 'ready', role, expires_at: room.expiresAt, message_count: count }));
+      return new Response(null, { status: 101, webSocket: client });
+    }
+    return reply({ error: 'Not found' }, 404);
+  }
+
+  async webSocketMessage(ws, raw) {
+    if (typeof raw !== 'string') return;
+    let data;
+    try { data = JSON.parse(raw); } catch { ws.send(JSON.stringify({ type: 'error', error: 'Invalid JSON' })); return; }
+    if (data?.type !== 'message' || typeof data.text !== 'string') return;
+    const text = data.text.trim();
+    if (!text || text.length > MAX_LENGTH) { ws.send(JSON.stringify({ type: 'error', error: 'Message must be 1–2000 characters' })); return; }
+    try {
+      const attachment = ws.deserializeAttachment();
+      const role = attachment?.role;
+      const room = await this.ctx.storage.get('room');
+      if (!room || room.closed || Date.now() >= room.expiresAt || !['owner', 'guest'].includes(role) || room[role]?.sessionHash !== attachment.sessionHash) {
+        ws.close(4001, 'Session invalid or expired'); return;
+      }
+      const sql = this.ctx.storage.sql;
+      const count = Number(Array.from(sql.exec('SELECT COUNT(*) AS n FROM messages'))[0].n);
+      if (count >= MAX_MESSAGES) { ws.send(JSON.stringify({ type: 'error', error: 'Room message limit reached' })); return; }
+      const item = { id: crypto.randomUUID(), role, text, sent_at: Date.now() };
+      sql.exec('INSERT INTO messages (id, role, body, sent_at) VALUES (?, ?, ?, ?)', item.id, item.role, item.text, item.sent_at);
+      const payload = JSON.stringify({ type: 'message', message: item, message_count: count + 1 });
+      for (const peer of this.ctx.getWebSockets()) { try { peer.send(payload); } catch {} }
+    } catch (error) {
+      console.error('PHRYGIX message failure:', error);
+      try { ws.send(JSON.stringify({ type: 'error', error: 'Unable to process message' })); } catch {}
+    }
+  }
+  async webSocketClose(ws, code, reason) { try { ws.close(code, reason); } catch {} }
+  async webSocketError(ws) { try { ws.close(1011, 'Connection error'); } catch {} }
+  async alarm() {
+    for (const ws of this.ctx.getWebSockets()) { try { ws.close(1000, 'Room expired'); } catch {} }
+    await this.ctx.storage.deleteAll();
+  }
 }
-</script></body></html>
