@@ -138,17 +138,18 @@ body.cloak-active .chat-screen{display:none!important}
  </div>
  <div class="modal hidden" id="secretPanel" role="dialog" aria-modal="true" aria-labelledby="recoveryHeading"><div class="modal-card"><div class="modal-head"><h2 id="recoveryHeading">Save your recovery credential</h2><button class="icon-btn" id="closeRecovery" aria-label="Close">✕</button></div><p class="description">Keep this credential and your Room ID together. Every transfer invalidates the previous credential.</p><p class="muted">Room ID: <strong id="recoveryRoomId"></strong></p><div id="recoveryOutput" class="notice secret"></div><div class="modal-actions"><button id="copyRecovery" class="primary">Copy credential</button><button id="dismissRecovery" class="secondary">I saved it</button></div></div></div>
  <div class="modal hidden" id="roomDetailsModal" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Conversation details</h2><button class="icon-btn" id="closeDetails" aria-label="Close">✕</button></div><div class="info-row"><span>Room ID</span><span id="roomText" class="secret"></span></div><div class="info-row"><span>Messages</span><span id="countText">0 / 500</span></div><button id="copyRoom" class="secondary" style="width:100%;margin-top:15px">Copy room ID</button><button id="revealInvite" class="secondary" style="width:100%;margin-top:10px">Invitation details</button></div></div>
- <div class="modal hidden" id="inviteModal" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Invite someone</h2><button class="icon-btn" id="closeInvite" aria-label="Close">✕</button></div><div id="ownerInvite" class="hidden"><p class="description" id="inviteLabel">Share this invitation privately:</p><div id="inviteOutput" class="notice secret"></div><button id="copyInvite" class="primary" style="margin-top:14px">Copy invitation link</button></div><p class="muted">Only the room creator receives the invitation link at creation. Keep it somewhere safe.</p></div></div>
+ <div class="modal hidden" id="inviteModal" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Invite someone</h2><button class="icon-btn" id="closeInvite" aria-label="Close">✕</button></div><div id="ownerInvite" class="hidden"><p class="description" id="inviteLabel">Share this invitation privately:</p><div id="inviteOutput" class="notice secret"></div><button id="copyInvite" class="primary" style="margin-top:14px">Copy invitation link</button><button id="generateInvite" class="secondary" style="width:100%;margin-top:10px">Generate new invitation</button></div><p class="muted">Only the current owner of this room can generate or copy an invitation. Keep it private.</p></div></div>
  </div>
 <div class="modal hidden" id="temporaryModal" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Temporary conversation</h2><button class="icon-btn" id="closeTemporary">✕</button></div><p class="description">Rooms expire after 24 hours. Deleting a room ends access for everyone and removes its messages and attachments.</p><button id="temporaryDelete" class="danger" style="width:100%">Delete conversation for everyone</button><button id="temporaryLeave" class="secondary hidden" style="width:100%;margin-top:10px">Leave group</button><button id="temporaryCloak" class="secondary" style="width:100%;margin-top:10px">Activate Cloaking Mode</button></div></div><div class="modal photo-viewer hidden" id="photoViewer" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Photo</h2><button class="icon-btn" id="closePhotoViewer">✕</button></div><img id="photoLarge" alt="Conversation photo"><p id="photoLargeCaption" class="description"></p><div class="modal-actions"><button id="downloadPhoto" class="secondary">↓ Download</button></div></div></div>
  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script><script>'use strict';
 const API='https://phrygix-chatbox.phrygix.workers.dev';
 const SITE_KEY='0x4AAAAAAFZ5WwbVr7UMzi3m';
-const $=id=>document.getElementById(id),show=(id,on=true)=>$(id).classList.toggle('hidden',!on);
+const $=id=>document.getElementById(id);
+// Null-safe show() — replaces any prior version
+function show(id,on=true){const el=document.getElementById(id);if(!el)return;el.classList.toggle('hidden',!on);}
 const qs=new URLSearchParams(location.search);let roomId=qs.get('room')||'',inviteToken=new URLSearchParams(location.hash.slice(1)).get('invite');
 if(location.hash)history.replaceState(null,'',location.pathname+location.search);
 let selectedType='private',roomType='private',role=null,memberId=null,session=null,socket=null,inviteUrl=null,recoveryValue=null,connected=false,turnstileId=null,turnstileToken='',cooldownUntil=0,cooldownTimer=null,maxMessages=500,roomMembers=[],expiry=null,manualClose=false;
-// ===== Cloak state =====
 let cloakConfigured=false, cloakActive=false, cloakBusy=false;
 const storageKey=id=>`phrygix-chat-v3:${id}`;
 async function copyWithFeedback(id,value){if(!value)return;const button=$(id),original=button.dataset.original||button.textContent;button.dataset.original=original;try{await navigator.clipboard.writeText(value);button.textContent='✓ Copied!';button.style.boxShadow='0 0 0 3px rgba(64,220,193,.35)';notify('Copied to clipboard.');clearTimeout(button._copyTimer);button._copyTimer=setTimeout(()=>{button.textContent=original;button.style.boxShadow='';},2200);}catch(e){notify('Copy failed. Please select and copy manually.',true)}}
@@ -167,7 +168,6 @@ function setConnected(on){connected=on;$('messageInput').disabled=!on;$('message
 function closeSocket(){if(socket){const old=socket;socket=null;old.onclose=null;try{old.close()}catch{}}setConnected(false)}
 function resetRoom(message){document.body.classList.remove('room-open');document.body.classList.add('setup-open');closeSocket();if(roomId)sessionStorage.removeItem(storageKey(roomId));roomId='';session=null;role=null;memberId=null;inviteUrl=null;recoveryValue=null;inviteToken=null;roomMembers=[];show('chatPanel',false);show('secretPanel',false);show('claimPanel',false);show('recoverPanel');show('startPanel');$('messages').replaceChildren();$('recoverSecret').value='';history.replaceState(null,'','/chatbox.html');resetTurnstile();notify(message);screen('create')}
 function renderMessage(msg){
-  // system messages
   if(msg?.system){
     if(!msg.id||document.getElementById('m-'+msg.id))return;
     const el=document.createElement('div');
@@ -196,7 +196,7 @@ function renderMessage(msg){
 }
 function renderMembers(){show('memberSidebar',roomType==='group');$('memberCount').textContent=`${roomMembers.length}/10`;$('memberList').replaceChildren();for(const member of roomMembers){const item=document.createElement('div');item.className='member';const label=document.createElement('span');label.className='member-name';label.textContent=member.name+(member.admin?' ★':'')+(member.id===memberId?' (you)':'');item.append(label);if(role==='owner'&&!member.admin){const kick=document.createElement('button');kick.className='ghost';kick.textContent='Remove';kick.onclick=()=>removeMember(member.id,member.name);item.append(kick)}$('memberList').append(item)}}
 async function refreshMembers(){if(roomType!=='group'||!session)return;try{const data=await api(`/api/rooms/${encodeURIComponent(roomId)}/members`,{headers:auth()});roomMembers=data.members||[];renderMembers()}catch(e){notify(e.message,true)}}
-function openRoom(id,token,newRole,recovery=null,type='private',newMemberId=null){document.body.classList.add('room-open');document.body.classList.remove('setup-open');closeSocket();cooldownUntil=0;sendState();roomId=id;session=token;role=newRole;roomType=type;memberId=newMemberId;maxMessages=type==='group'?2000:500;storeSession();history.replaceState(null,'',`/chatbox.html?room=${encodeURIComponent(id)}`);show('startPanel',false);show('claimPanel',false);show('recoverPanel',false);show('chatPanel');$('roomText').textContent=id;$('roomHeading').textContent=type==='group'?'Group · '+(role==='owner'?'Admin':'Member'):'Private · '+role;$('chatTitle').textContent=type==='group'?'Group conversation':'Private conversation';show('deleteRoomBtn',type==='private'||role==='owner');show('leaveBtn',type==='group'&&role!=='owner');show('memberSidebar',type==='group');$('inviteLabel').textContent=type==='group'?'Reusable invitation (up to 10 registered members):':'Single-use Guest invitation:';if(recovery)showRecovery(recovery);connect()}
+function openRoom(id,token,newRole,recovery=null,type='private',newMemberId=null){document.body.classList.add('room-open');document.body.classList.remove('setup-open');closeSocket();cooldownUntil=0;sendState();roomId=id;session=token;role=newRole;roomType=type;memberId=newMemberId;maxMessages=type==='group'?2000:500;storeSession();history.replaceState(null,'',`/chatbox.html?room=${encodeURIComponent(id)}`);show('startPanel',false);show('claimPanel',false);show('recoverPanel',false);show('chatPanel');$('roomText').textContent=id;$('roomHeading').textContent=type==='group'?'Group · '+(role==='owner'?'Admin':'Member'):'Private · '+role;$('chatTitle').textContent=type==='group'?'Group conversation':'Private conversation';show('deleteRoomBtn',type==='private'||role==='owner');show('leaveBtn',type==='group'&&role!=='owner');show('memberSidebar',type==='group');$('inviteLabel').textContent=type==='group'?'Reusable invitation (up to 10 registered members):':'Single-use Guest invitation:';show('generateInvite', role==='owner');if(recovery)showRecovery(recovery);connect()}
 async function connect(){
   if(cloakActive)return;
   closeSocket();
@@ -232,7 +232,6 @@ async function connect(){
     else if(data.type==='role_changed'&&data.new_role==='owner'){
       role='owner';storeSession();
       notify('You are now the group admin.',false);
-      // Server will close with 4006; reconnect to pick up role
     }
     else if(data.type==='error'){
       if(data.code==='MESSAGE_RATE_LIMIT')cooldown(data.retry_after);
@@ -260,6 +259,21 @@ $('sendForm').onsubmit=e=>{e.preventDefault();const text=$('messageInput').value
 $('leaveBtn').onclick=async()=>{if(roomType!=='group'||role==='owner'||!confirm('Permanently leave this group and free your slot?'))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/leave`,{method:'POST',headers:auth()});resetRoom('You left the group.')}catch(e){notify(e.message,true)}};
 $('deleteRoomBtn').onclick=async()=>{if((roomType==='group'&&role!=='owner')||!confirm('Permanently delete this conversation and all attachments for EVERYONE? This cannot be undone.'))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/delete`,{method:'POST',headers:auth()});resetRoom('Room deleted.')}catch(e){notify(e.message,true)}};
 $('copyInvite').onclick=()=>copyWithFeedback('copyInvite',inviteUrl);
+$('generateInvite').onclick=async()=>{
+  if(!session||!roomId)return notify('Not in a room',true);
+  try{
+    $('generateInvite').disabled=true;
+    const data=await api(`/api/rooms/${encodeURIComponent(roomId)}/invitations`,{method:'POST',headers:auth(),body:JSON.stringify({})});
+    inviteUrl=data.invite_url;
+    $('inviteOutput').textContent=inviteUrl;
+    show('ownerInvite');
+    notify('New invitation generated.',false);
+  }catch(e){
+    if(e.code==='SLOT_OCCUPIED')notify('The guest slot is already occupied.',true);
+    else if(e.code==='OWNER_REQUIRED')notify('Only the current owner can generate invitations.',true);
+    else notify(e.message,true);
+  }finally{$('generateInvite').disabled=false;}
+};
 $('copyRecovery').onclick=()=>copyWithFeedback('copyRecovery',recoveryValue);
 $('dismissRecovery').onclick=()=>{recoveryValue=null;$('recoveryOutput').textContent='';show('secretPanel',false)};
 mountTurnstile();if(roomId){$('recoverRoom').value=roomId;let saved=null;try{saved=JSON.parse(sessionStorage.getItem(storageKey(roomId))||'null')}catch{}if(saved?.session&&saved?.role)openRoom(roomId,saved.session,saved.role,null,saved.roomType||'private',saved.memberId||null);else if(inviteToken){show('startPanel',false);show('claimPanel');show('joinNameField');$('joinDescription').textContent='Private invitations are single-use. Group invitations can be reused until the group reaches 10 members. For a group, enter a display name.'}else{show('startPanel',false);notify('No active session in this browser. Use your recovery credential.',true)}}
@@ -579,13 +593,10 @@ function enterCloakMode() {
   cloakShow('cloakOverlay', true);
   cloakShow('cloakUnlockBtn', true);
   document.body.classList.add('cloak-active');
-  // Clear real DOM to prevent accidental leakage
   const realMessages = document.getElementById('messages');
   if (realMessages) realMessages.replaceChildren();
-  // Hide real-session controls
   show('ownerInvite', false);
-  show('ownerDelete', false);
-  // Detach the socket (server closed it anyway)
+  show('deleteRoomBtn', false);
   closeSocket();
 }
 
@@ -624,23 +635,26 @@ async function cloakSubmitUnlock() {
     if (data.action === 'restore') { exitCloakMode(); return; }
 
     if (data.action === 'exit') {
-      // Personal permanent exit — clear this browser, leave server state for others
-      clearCloakMessages();
-      cloakShow('cloakOverlay', false);
-      cloakShow('cloakUnlockBtn', false);
+      // Personal permanent exit — keep the decoy visible, do NOT announce revocation.
+      // Clear real session state silently so refreshing can't resurrect it.
       sessionStorage.removeItem(storageKey(roomId));
+      const realMessages = document.getElementById('messages');
+      if (realMessages) realMessages.replaceChildren();
+
+      // Wipe the real-session identifiers from memory; keep cloakActive so the
+      // decoy remains the only visible surface.
       roomId = '';
       session = null;
       role = null;
       memberId = null;
-      const realMessages = document.getElementById('messages');
-      if (realMessages) realMessages.replaceChildren();
-      show('chatPanel', false);
-      show('startPanel', true);
-      document.body.classList.remove('room-open');
-      document.body.classList.add('setup-open');
-      document.body.classList.remove('cloak-active');
-      notify('You have permanently left this conversation. Other participants still have access to their own history.');
+
+      // Re-seed the assistant greeting so nothing hints at what just happened.
+      clearCloakMessages();
+      renderCloakBubble(CLOAK_BOT.greeting(), false);
+
+      // Close the unlock modal without a message.
+      cloakShow('cloakUnlockModal', false);
+      return;
     }
   } catch (e) {
     if (e.code === 'CONFIRM_REQUIRED') alertEl.textContent = 'Tick the confirmation box to use your permanent exit password.';
@@ -671,6 +685,16 @@ function wireCloakUI() {
       await api(`/api/rooms/${encodeURIComponent(roomId)}/cloak/activate`, { method: 'POST', headers: auth(), body: JSON.stringify({}) });
       enterCloakMode();
     } catch (e) {
+      if (e.code === 'ALREADY_CONFIGURED') {
+        // Server already has verifiers; just activate.
+        cloakConfigured = true;
+        cloakShow('cloakSetupModal', false);
+        try {
+          await api(`/api/rooms/${encodeURIComponent(roomId)}/cloak/activate`, { method: 'POST', headers: auth(), body: JSON.stringify({}) });
+          enterCloakMode();
+        } catch (e2) { cloakNotice(e2.message, true); }
+        return;
+      }
       cloakNotice(e.message, true);
     }
   };
