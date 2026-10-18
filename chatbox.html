@@ -47,6 +47,44 @@ h1{font-size:25px;margin:0 0 7px;letter-spacing:-.03em}h2{font-size:21px;margin:
 
 /* Photo composer and viewer */
 .composer .attach-btn{flex:none;background:#173c48;color:var(--mint);border:1px solid #30636a;font-size:25px}.photo-preview{display:flex;gap:12px;align-items:center;padding:12px;background:#082630;border:1px solid #25535c;border-radius:12px;margin-bottom:10px}.photo-preview img{width:94px;height:82px;object-fit:cover;border-radius:9px}.photo-preview .preview-details{flex:1;min-width:0}.photo-preview input{width:100%;padding:10px;background:#031a25;color:#fff;border:1px solid #345762;border-radius:8px}.photo-preview button{background:#1a414a;border:0;color:#fff;padding:9px;border-radius:7px}.bubble img.photo-thumb{display:block;max-width:min(320px,65vw);max-height:320px;width:auto;height:auto;border-radius:9px;cursor:zoom-in}.photo-actions{display:flex;gap:9px;margin-top:8px}.photo-actions button{border:0;border-radius:6px;background:#16454b;color:#e9ffff;padding:6px 10px;font-size:12px}.photo-viewer img{display:block;max-width:90vw;max-height:72dvh;object-fit:contain;margin:auto}.photo-viewer .modal-card{width:min(95vw,1000px);text-align:center}.photo-viewer .modal-actions{justify-content:center}.photo-viewer .modal-actions button{flex:none}.upload-status{font-size:12px;color:#9fe7e2;margin:7px 0 0}
+
+/* Auto-expanding WhatsApp-style message composer */
+
+.composer form {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.composer textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 46px;
+  max-height: 160px;
+  padding: 13px 16px;
+
+  background: #071b27;
+  color: #e9f7fb;
+  border: 1px solid #2b4856;
+  border-radius: 23px;
+
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+
+  resize: none;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  outline: none;
+}
+
+.composer textarea:focus {
+  border-color: #2ce5d8;
+}
+
+.composer textarea::placeholder {
+  color: #86a5b5;
+}
 </style></head><body class="setup-open"><div class="app">
 <div class="setup-screen">
  <div class="intro"><div class="identity"><div class="brand-symbol"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M40 7V73" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 25H29a16 16 0 0 0 0 32h5M46 25h5a16 16 0 0 1 0 32h-5" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg></div><div class="brand-name">PHRYGIX</div><div class="brand-tag">TEMPORARY MESSAGING</div></div>
@@ -78,7 +116,15 @@ h1{font-size:25px;margin:0 0 7px;letter-spacing:-.03em}h2{font-size:21px;margin:
   </aside>
   <main class="chat-main"><div class="chat-header"><div class="avatar" id="chatAvatar">✦</div><div style="min-width:0"><strong id="chatTitle">Conversation</strong><small><span id="status">Connecting…</span> · Expires <span id="expiryText">in 24h</span></small></div><div class="chat-header-actions"><button type="button" class="expiry-pill" id="temporaryMenuBtn" title="Manage temporary room">TEMPORARY ▾</button><button class="icon-btn" onclick="document.getElementById('roomDetailsModal').classList.remove('hidden')" title="Room information" aria-label="Room information"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v2"/></svg></button></div></div>
   <div id="messages" class="messages" aria-live="polite"></div>
-  <div class="composer"><div id="photoPreview" class="photo-preview hidden"><img id="photoPreviewImage" alt="Photo preview"><div class="preview-details"><p class="muted" id="photoFilename">Selected photo</p><input id="photoCaption" maxlength="500" placeholder="Add a caption (optional)"></div><button id="cancelPhoto" type="button">✕</button><button id="sendPhoto" type="button" class="primary" style="width:auto">Send</button></div><input type="file" id="documentFile" accept=".pdf,.docx,.xlsx,.pptx,.txt,.csv" hidden><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" multiple hidden><form id="sendForm"><button type="button" id="attachPhoto" class="attach-btn" title="Attach photos" aria-label="Attach photos">+</button><button type="button" id="attachDocument" class="attach-btn" title="Attach document (5 MB)" aria-label="Attach document" style="font-size:19px">📄</button><button type="button" id="emojiToggle" class="attach-btn" title="Emojis and stickers" style="font-size:19px">☺</button><input id="messageInput" maxlength="2000" placeholder="Type a message…" disabled required aria-label="Message"><button id="sendBtn" disabled aria-label="Send message">➤</button></form><div id="emojiPicker" class="hidden" style="padding:12px;background:#092d37;border:1px solid #28535d;border-radius:12px;margin-top:9px"></div><p id="rateNotice" class="notice error hidden" role="status"></p><p id="photoStatus" class="upload-status hidden" role="status"></p></div></main>
+  <div class="composer"><div id="photoPreview" class="photo-preview hidden"><img id="photoPreviewImage" alt="Photo preview"><div class="preview-details"><p class="muted" id="photoFilename">Selected photo</p><input id="photoCaption" maxlength="500" placeholder="Add a caption (optional)"></div><button id="cancelPhoto" type="button">✕</button><button id="sendPhoto" type="button" class="primary" style="width:auto">Send</button></div><input type="file" id="documentFile" accept=".pdf,.docx,.xlsx,.pptx,.txt,.csv" hidden><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" multiple hidden><form id="sendForm"><button type="button" id="attachPhoto" class="attach-btn" title="Attach photos" aria-label="Attach photos">+</button><button type="button" id="attachDocument" class="attach-btn" title="Attach document (5 MB)" aria-label="Attach document" style="font-size:19px">📄</button><button type="button" id="emojiToggle" class="attach-btn" title="Emojis and stickers" style="font-size:19px">☺</button><textarea
+  id="messageInput"
+  maxlength="2000"
+  placeholder="Type a message…"
+  rows="1"
+  disabled
+  required
+  aria-label="Message"
+></textarea><button id="sendBtn" disabled aria-label="Send message">➤</button></form><div id="emojiPicker" class="hidden" style="padding:12px;background:#092d37;border:1px solid #28535d;border-radius:12px;margin-top:9px"></div><p id="rateNotice" class="notice error hidden" role="status"></p><p id="photoStatus" class="upload-status hidden" role="status"></p></div></main>
   <aside class="members-panel"><div class="members-head"><h2>Members</h2><p class="muted">Group limit: 10 registered members</p></div><div id="memberSidebar" class="member-sidebar hidden"><div id="memberCount" class="muted" style="padding:15px"></div><div id="memberList"></div><p class="subtle muted">Leaving frees your slot; disconnecting doesn't.</p></div><div style="padding:15px"><button id="leaveBtn" class="danger hidden" style="width:100%">Leave group</button><button id="deleteRoomBtn" class="danger hidden" style="width:100%;margin-top:10px">Delete room</button></div></aside>
  </div>
  <div class="modal hidden" id="secretPanel" role="dialog" aria-modal="true" aria-labelledby="recoveryHeading"><div class="modal-card"><div class="modal-head"><h2 id="recoveryHeading">Save your recovery credential</h2><button class="icon-btn" id="closeRecovery" aria-label="Close">✕</button></div><p class="description">Keep this credential and your Room ID together. Every transfer invalidates the previous credential.</p><p class="muted">Room ID: <strong id="recoveryRoomId"></strong></p><div id="recoveryOutput" class="notice secret"></div><div class="modal-actions"><button id="copyRecovery" class="primary">Copy credential</button><button id="dismissRecovery" class="secondary">I saved it</button></div></div></div>
@@ -119,7 +165,7 @@ async function removeMember(id,name){if(!confirm(`Remove ${name} from the group?
 $('createBtn').onclick=async()=>{if(!turnstileToken)return notify('Complete security verification first.',true);const name=$('displayName').value.trim();if(selectedType==='group'&&(!name||name.length>32))return notify('Enter a display name (1–32 characters).',true);try{$('createBtn').disabled=true;const body={turnstile_token:turnstileToken};if(selectedType==='group'){body.room_type='group';body.display_name=name}const data=await api('/api/rooms',{method:'POST',body:JSON.stringify(body)});inviteUrl=data.invite_url;openRoom(data.room_id,data.session_token,'owner',data.recovery_token,data.room_type||selectedType,'owner');$('inviteOutput').textContent=inviteUrl;show('ownerInvite')}catch(e){notify(e.message,true)}finally{resetTurnstile()}};
 $('claimBtn').onclick=async()=>{const name=$('joinName').value.trim();try{$('claimBtn').disabled=true;let body={invite_token:inviteToken};if(name)body.display_name=name;let data;try{data=await api(`/api/rooms/${encodeURIComponent(roomId)}/claim`,{method:'POST',body:JSON.stringify(body)})}catch(e){if(e.code==='INVALID_INVITE'&&!name){show('joinNameField');throw new Error('This may be a group invitation. Enter a display name to join.')}throw e}inviteToken=null;openRoom(roomId,data.session_token,data.role||'guest',data.recovery_token,data.room_type||'private',data.member_id||null);show('ownerInvite',false)}catch(e){notify(e.message,true)}finally{$('claimBtn').disabled=false}};
 $('recoverBtn').onclick=async()=>{const id=$('recoverRoom').value.trim(),credential=$('recoverSecret').value.trim().toLowerCase();if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)||!/^[a-f0-9]{64}$/.test(credential))return notify('Enter a valid Room ID and 64-character recovery credential.',true);try{$('recoverBtn').disabled=true;let data;try{data=await api(`/api/rooms/${encodeURIComponent(id)}/transfer`,{method:'POST',body:JSON.stringify({role:$('recoverRole').value,recovery_token:credential})})}catch(e){if(e.code==='INVALID_RECOVERY' || e.message==='Recovery failed'){throw e}throw e}$('recoverSecret').value='';inviteUrl=null;show('ownerInvite',false);openRoom(id,data.session_token,data.role,data.recovery_token,data.room_type||'private',data.member_id||null)}catch(e){notify(e.message,true)}finally{$('recoverBtn').disabled=false}};
-$('sendForm').onsubmit=e=>{e.preventDefault();const text=$('messageInput').value.trim();if(!text||!connected||socket?.readyState!==WebSocket.OPEN||Date.now()<cooldownUntil)return;socket.send(JSON.stringify({type:'message',text}));$('messageInput').value=''};
+$('sendForm').onsubmit=e=>{e.preventDefault();const text=$('messageInput').value.trim();if(!text||!connected||socket?.readyState!==WebSocket.OPEN||Date.now()<cooldownUntil)return;socket.send(JSON.stringify({type:'message',text}));$('messageInput').value='';resizeMessageBox();};
 $('leaveBtn').onclick=async()=>{if(roomType!=='group'||role==='owner'||!confirm('Permanently leave this group and free your slot?'))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/leave`,{method:'POST',headers:auth()});resetRoom('You left the group.')}catch(e){notify(e.message,true)}};
 $('deleteRoomBtn').onclick=async()=>{if((roomType==='group'&&role!=='owner')||!confirm('Permanently delete this conversation and all attachments for EVERYONE? This cannot be undone.'))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/delete`,{method:'POST',headers:auth()});resetRoom('Room deleted.')}catch(e){notify(e.message,true)}};
 $('copyInvite').onclick=()=>copyWithFeedback('copyInvite',inviteUrl);
@@ -345,4 +391,27 @@ $('emojiToggle').onclick = async () => {
     picker.innerHTML = '<p style="color:#ff9ca6;font-size:12px;padding:8px">Could not load emoji data. Check your connection.</p>';
   }
 };
+
+// ===== Auto-expanding message composer =====
+const messageBox = document.getElementById('messageInput');
+
+function resizeMessageBox() {
+  messageBox.style.height = 'auto';
+  messageBox.style.height =
+    Math.min(messageBox.scrollHeight, 160) + 'px';
+}
+
+messageBox.addEventListener('input', resizeMessageBox);
+
+// Enter = send message
+// Shift + Enter = new line
+messageBox.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+    e.preventDefault();
+
+    if (messageBox.value.trim()) {
+      document.getElementById('sendForm').requestSubmit();
+    }
+  }
+});
 </script></body></html>
