@@ -3,8 +3,8 @@
 <meta name="theme-color" content="#03111b"><meta name="description" content="PHRYGIX — temporary private and group conversations without accounts.">
 <title>PHRYGIX — Temporary Messaging</title><style>
 :root{color-scheme:dark;--bg:#03111b;--card:#071b28;--line:#17394a;--mint:#2ce5d8;--text:#e9f7fb;--muted:#94aeba;--danger:#ef6874;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Arial,sans-serif}
-*{box-sizing:border-box}body{margin:0;background:#03111b;color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.hidden{display:none!important}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+*{box-sizing:border-box}body{margin:0;background:#03111b;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.hidden{display:none!important}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
 .app{min-height:100dvh}.setup-open .setup-screen{display:grid}.setup-screen{min-height:100dvh;display:none;grid-template-columns:44% 56%;background:radial-gradient(ellipse at 0 45%,#07343b 0%,#03131e 37%,#02101a 80%)}
 .intro{padding:7vh clamp(30px,7vw,115px);position:relative;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
 .intro:before{content:"";position:absolute;left:-35%;bottom:8%;width:100%;height:50%;border:1px solid #12c7b333;border-radius:50%;box-shadow:0 0 0 28px #12c7b308,0 0 0 65px #12c7b308;transform:rotate(-18deg);pointer-events:none}
@@ -49,42 +49,51 @@ h1{font-size:25px;margin:0 0 7px;letter-spacing:-.03em}h2{font-size:21px;margin:
 .composer .attach-btn{flex:none;background:#173c48;color:var(--mint);border:1px solid #30636a;font-size:25px}.photo-preview{display:flex;gap:12px;align-items:center;padding:12px;background:#082630;border:1px solid #25535c;border-radius:12px;margin-bottom:10px}.photo-preview img{width:94px;height:82px;object-fit:cover;border-radius:9px}.photo-preview .preview-details{flex:1;min-width:0}.photo-preview input{width:100%;padding:10px;background:#031a25;color:#fff;border:1px solid #345762;border-radius:8px}.photo-preview button{background:#1a414a;border:0;color:#fff;padding:9px;border-radius:7px}.bubble img.photo-thumb{display:block;max-width:min(320px,65vw);max-height:320px;width:auto;height:auto;border-radius:9px;cursor:zoom-in}.photo-actions{display:flex;gap:9px;margin-top:8px}.photo-actions button{border:0;border-radius:6px;background:#16454b;color:#e9ffff;padding:6px 10px;font-size:12px}.photo-viewer img{display:block;max-width:90vw;max-height:72dvh;object-fit:contain;margin:auto}.photo-viewer .modal-card{width:min(95vw,1000px);text-align:center}.photo-viewer .modal-actions{justify-content:center}.photo-viewer .modal-actions button{flex:none}.upload-status{font-size:12px;color:#9fe7e2;margin:7px 0 0}
 
 /* Auto-expanding WhatsApp-style message composer */
-
-.composer form {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-}
-
+.composer form { display: flex; align-items: flex-end; gap: 10px; }
 .composer textarea {
-  flex: 1;
-  min-width: 0;
-  min-height: 46px;
-  max-height: 160px;
+  flex: 1; min-width: 0; min-height: 46px; max-height: 160px;
   padding: 13px 16px;
+  background: #071b27; color: #e9f7fb;
+  border: 1px solid #2b4856; border-radius: 23px;
+  font: inherit; font-size: 14px; line-height: 20px;
+  resize: none; overflow-y: auto; overflow-wrap: anywhere; outline: none;
+}
+.composer textarea:focus { border-color: #2ce5d8; }
+.composer textarea::placeholder { color: #86a5b5; }
 
-  background: #071b27;
-  color: #e9f7fb;
-  border: 1px solid #2b4856;
-  border-radius: 23px;
-
-  font: inherit;
-  font-size: 14px;
-  line-height: 20px;
-
-  resize: none;
-  overflow-y: auto;
-  overflow-wrap: anywhere;
-  outline: none;
+/* System messages */
+.bubble.system {
+  align-self: center; text-align: center; max-width: 80%;
+  background: #0a1e2a; color: #a3bfc8; font-size: 12px;
+  padding: 6px 12px; border-radius: 10px;
+  border-left: 0 !important; box-shadow: none;
 }
 
-.composer textarea:focus {
-  border-color: #2ce5d8;
-}
-
-.composer textarea::placeholder {
-  color: #86a5b5;
-}
+/* ===== CLOAKING MODE ===== */
+.cloak-modal{position:fixed;inset:0;z-index:60;background:#000c;display:grid;place-items:center;padding:18px}
+.cloak-card{width:min(100%,560px);max-height:90dvh;overflow:auto;background:#0b2331;border:1px solid #315362;border-radius:18px;padding:25px;color:#e9f7fb}
+.cloak-card h2{margin:0 0 10px;font-size:20px}
+.cloak-card p{color:#b3c5d2;line-height:1.55;font-size:13px}
+.cloak-card label{display:block;margin:14px 0 6px;font-size:13px;font-weight:600}
+.cloak-card input[type=password]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #3b5b70;background:#071320;color:#fff;font:inherit}
+.cloak-card button{width:100%;margin-top:12px;padding:14px;border:0;border-radius:10px;background:#2ce5d8;color:#022b31;font-weight:800;cursor:pointer}
+.cloak-card button.secondary{background:#183748;color:#d9f0f5;border:1px solid #315163}
+.cloak-card button:disabled{opacity:.45;cursor:not-allowed}
+.cloak-card .cl-err{background:#4a2530;color:#ffe0e5;padding:10px;border-radius:8px;font-size:12px;margin-top:10px}
+.cloak-card .cl-notice{background:#113549;color:#c5e1e9;padding:10px;border-radius:8px;font-size:12px;margin-top:10px}
+.cloak-checkbox{display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:13px;color:#c5d6de}
+.cloak-checkbox input{width:auto;margin-top:2px}
+#cloakOverlay{position:fixed;inset:0;z-index:55;background:#061620;display:flex;flex-direction:column;color:#e9f7fb}
+#cloakOverlay.hidden{display:none!important}
+#cloakOverlay header{padding:14px 20px;border-bottom:1px solid #23424d;background:#0c2531;font-weight:600;display:flex;align-items:center;gap:10px}
+#cloakMessages{flex:1;overflow-y:auto;padding:20px 6%;display:flex;flex-direction:column;gap:12px}
+.cloak-bubble{max-width:76%;padding:11px 14px;border-radius:4px 15px 15px 15px;background:#1c3241;line-height:1.45;font-size:14px;align-self:flex-start;overflow-wrap:anywhere}
+.cloak-bubble.mine{align-self:flex-end;background:#00666b;border-radius:15px 4px 15px 15px}
+#cloakComposer{display:flex;gap:10px;padding:13px 20px;background:#0d2834;border-top:1px solid #23424d}
+#cloakComposer input{flex:1;padding:13px 16px;border-radius:23px;border:1px solid #2b4856;background:#071b27;color:#e9f7fb;font:inherit}
+#cloakComposer button{padding:0 20px;border:0;border-radius:23px;background:#2ce5d8;color:#022b31;font-weight:800;cursor:pointer}
+#cloakUnlockBtn{position:fixed;right:18px;bottom:18px;z-index:57;background:#1a414a;color:#e9f7fb;border:1px solid #2b5b63;border-radius:24px;padding:10px 18px;font-size:12px;cursor:pointer}
+body.cloak-active .chat-screen{display:none!important}
 </style></head><body class="setup-open"><div class="app">
 <div class="setup-screen">
  <div class="intro"><div class="identity"><div class="brand-symbol"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M40 7V73" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 25H29a16 16 0 0 0 0 32h5M46 25h5a16 16 0 0 1 0 32h-5" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg></div><div class="brand-name">PHRYGIX</div><div class="brand-tag">TEMPORARY MESSAGING</div></div>
@@ -131,7 +140,7 @@ h1{font-size:25px;margin:0 0 7px;letter-spacing:-.03em}h2{font-size:21px;margin:
  <div class="modal hidden" id="roomDetailsModal" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Conversation details</h2><button class="icon-btn" id="closeDetails" aria-label="Close">✕</button></div><div class="info-row"><span>Room ID</span><span id="roomText" class="secret"></span></div><div class="info-row"><span>Messages</span><span id="countText">0 / 500</span></div><button id="copyRoom" class="secondary" style="width:100%;margin-top:15px">Copy room ID</button><button id="revealInvite" class="secondary" style="width:100%;margin-top:10px">Invitation details</button></div></div>
  <div class="modal hidden" id="inviteModal" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Invite someone</h2><button class="icon-btn" id="closeInvite" aria-label="Close">✕</button></div><div id="ownerInvite" class="hidden"><p class="description" id="inviteLabel">Share this invitation privately:</p><div id="inviteOutput" class="notice secret"></div><button id="copyInvite" class="primary" style="margin-top:14px">Copy invitation link</button></div><p class="muted">Only the room creator receives the invitation link at creation. Keep it somewhere safe.</p></div></div>
  </div>
-<div class="modal hidden" id="temporaryModal" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Temporary conversation</h2><button class="icon-btn" id="closeTemporary">✕</button></div><p class="description">Rooms expire after 24 hours. Deleting a room ends access for everyone and removes its messages and attachments.</p><button id="temporaryDelete" class="danger" style="width:100%">Delete conversation for everyone</button><button id="temporaryLeave" class="secondary hidden" style="width:100%;margin-top:10px">Leave group</button></div></div><div class="modal photo-viewer hidden" id="photoViewer" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Photo</h2><button class="icon-btn" id="closePhotoViewer">✕</button></div><img id="photoLarge" alt="Conversation photo"><p id="photoLargeCaption" class="description"></p><div class="modal-actions"><button id="downloadPhoto" class="secondary">↓ Download</button></div></div></div>
+<div class="modal hidden" id="temporaryModal" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Temporary conversation</h2><button class="icon-btn" id="closeTemporary">✕</button></div><p class="description">Rooms expire after 24 hours. Deleting a room ends access for everyone and removes its messages and attachments.</p><button id="temporaryDelete" class="danger" style="width:100%">Delete conversation for everyone</button><button id="temporaryLeave" class="secondary hidden" style="width:100%;margin-top:10px">Leave group</button><button id="temporaryCloak" class="secondary" style="width:100%;margin-top:10px">Activate Cloaking Mode</button></div></div><div class="modal photo-viewer hidden" id="photoViewer" role="dialog" aria-modal="true"><div class="modal-card"><div class="modal-head"><h2>Photo</h2><button class="icon-btn" id="closePhotoViewer">✕</button></div><img id="photoLarge" alt="Conversation photo"><p id="photoLargeCaption" class="description"></p><div class="modal-actions"><button id="downloadPhoto" class="secondary">↓ Download</button></div></div></div>
  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script><script>'use strict';
 const API='https://phrygix-chatbox.phrygix.workers.dev';
 const SITE_KEY='0x4AAAAAAFZ5WwbVr7UMzi3m';
@@ -139,6 +148,8 @@ const $=id=>document.getElementById(id),show=(id,on=true)=>$(id).classList.toggl
 const qs=new URLSearchParams(location.search);let roomId=qs.get('room')||'',inviteToken=new URLSearchParams(location.hash.slice(1)).get('invite');
 if(location.hash)history.replaceState(null,'',location.pathname+location.search);
 let selectedType='private',roomType='private',role=null,memberId=null,session=null,socket=null,inviteUrl=null,recoveryValue=null,connected=false,turnstileId=null,turnstileToken='',cooldownUntil=0,cooldownTimer=null,maxMessages=500,roomMembers=[],expiry=null,manualClose=false;
+// ===== Cloak state =====
+let cloakConfigured=false, cloakActive=false, cloakBusy=false;
 const storageKey=id=>`phrygix-chat-v3:${id}`;
 async function copyWithFeedback(id,value){if(!value)return;const button=$(id),original=button.dataset.original||button.textContent;button.dataset.original=original;try{await navigator.clipboard.writeText(value);button.textContent='✓ Copied!';button.style.boxShadow='0 0 0 3px rgba(64,220,193,.35)';notify('Copied to clipboard.');clearTimeout(button._copyTimer);button._copyTimer=setTimeout(()=>{button.textContent=original;button.style.boxShadow='';},2200);}catch(e){notify('Copy failed. Please select and copy manually.',true)}}
 function notify(message='',error=false){$('alert').textContent=message;$('alert').classList.toggle('error',error);show('alert',!!message)}
@@ -155,16 +166,96 @@ function cooldown(seconds){const n=Number(seconds);if(!Number.isFinite(n)||n<=0)
 function setConnected(on){connected=on;$('messageInput').disabled=!on;$('messageInput').placeholder=on?'Type a message…':'Connect to send messages';sendState()}
 function closeSocket(){if(socket){const old=socket;socket=null;old.onclose=null;try{old.close()}catch{}}setConnected(false)}
 function resetRoom(message){document.body.classList.remove('room-open');document.body.classList.add('setup-open');closeSocket();if(roomId)sessionStorage.removeItem(storageKey(roomId));roomId='';session=null;role=null;memberId=null;inviteUrl=null;recoveryValue=null;inviteToken=null;roomMembers=[];show('chatPanel',false);show('secretPanel',false);show('claimPanel',false);show('recoverPanel');show('startPanel');$('messages').replaceChildren();$('recoverSecret').value='';history.replaceState(null,'','/chatbox.html');resetTurnstile();notify(message);screen('create')}
-function renderMessage(msg){if(!msg?.id||document.getElementById('m-'+msg.id))return;const bubble=document.createElement('div');bubble.id='m-'+msg.id;bubble.className='bubble'+((roomType==='group'?msg.member_id===memberId:msg.role===role)?' mine':'');const body=document.createElement('div');body.textContent=msg.text||'';if(msg.file_id){const a=document.createElement('button');a.type='button';a.className='secondary';a.style.cssText='display:block;margin:6px 0;padding:10px;border-radius:8px;max-width:100%;overflow-wrap:anywhere';a.textContent='📄 '+(msg.file_name||'Document')+' · '+Math.ceil((msg.file_size||0)/1024)+' KB · Download';a.onclick=()=>downloadDocument(msg.file_id,msg.file_name);body.prepend(a)}if(msg.sticker_id){const st=document.createElement('div');st.style.fontSize='56px';st.textContent=STICKERS[msg.sticker_id]||'✨';body.prepend(st)}if(msg.photo_id){const image=document.createElement('img');image.className='photo-thumb';image.alt='Shared photo';image.loading='lazy';body.prepend(image);loadPhoto(msg.photo_id,image);image.onclick=()=>viewPhoto(msg.photo_id,msg.text||'');}const meta=document.createElement('small');const name=roomType==='group'?(msg.name||roomMembers.find(m=>m.id===(msg.member_id||msg.role))?.name||'Former member'):(msg.role===role?'You':'Other participant');meta.textContent=name+' · '+new Date(msg.sent_at).toLocaleTimeString();bubble.append(body,meta);$('messages').append(bubble);$('messages').scrollTop=$('messages').scrollHeight}
+function renderMessage(msg){
+  // system messages
+  if(msg?.system){
+    if(!msg.id||document.getElementById('m-'+msg.id))return;
+    const el=document.createElement('div');
+    el.id='m-'+msg.id;
+    el.className='bubble system';
+    el.textContent=msg.text;
+    $('messages').append(el);
+    $('messages').scrollTop=$('messages').scrollHeight;
+    return;
+  }
+  if(!msg?.id||document.getElementById('m-'+msg.id))return;
+  const bubble=document.createElement('div');
+  bubble.id='m-'+msg.id;
+  bubble.className='bubble'+((roomType==='group'?msg.member_id===memberId:msg.role===role)?' mine':'');
+  const body=document.createElement('div');
+  body.textContent=msg.text||'';
+  if(msg.file_id){const a=document.createElement('button');a.type='button';a.className='secondary';a.style.cssText='display:block;margin:6px 0;padding:10px;border-radius:8px;max-width:100%;overflow-wrap:anywhere';a.textContent='📄 '+(msg.file_name||'Document')+' · '+Math.ceil((msg.file_size||0)/1024)+' KB · Download';a.onclick=()=>downloadDocument(msg.file_id,msg.file_name);body.prepend(a)}
+  if(msg.sticker_id){const st=document.createElement('div');st.style.fontSize='56px';st.textContent=STICKERS[msg.sticker_id]||'✨';body.prepend(st)}
+  if(msg.photo_id){const image=document.createElement('img');image.className='photo-thumb';image.alt='Shared photo';image.loading='lazy';body.prepend(image);loadPhoto(msg.photo_id,image);image.onclick=()=>viewPhoto(msg.photo_id,msg.text||'');}
+  const meta=document.createElement('small');
+  const name=roomType==='group'?(msg.name||roomMembers.find(m=>m.id===(msg.member_id||msg.role))?.name||'Former member'):(msg.role===role?'You':'Other participant');
+  meta.textContent=name+' · '+new Date(msg.sent_at).toLocaleTimeString();
+  bubble.append(body,meta);
+  $('messages').append(bubble);
+  $('messages').scrollTop=$('messages').scrollHeight;
+}
 function renderMembers(){show('memberSidebar',roomType==='group');$('memberCount').textContent=`${roomMembers.length}/10`;$('memberList').replaceChildren();for(const member of roomMembers){const item=document.createElement('div');item.className='member';const label=document.createElement('span');label.className='member-name';label.textContent=member.name+(member.admin?' ★':'')+(member.id===memberId?' (you)':'');item.append(label);if(role==='owner'&&!member.admin){const kick=document.createElement('button');kick.className='ghost';kick.textContent='Remove';kick.onclick=()=>removeMember(member.id,member.name);item.append(kick)}$('memberList').append(item)}}
 async function refreshMembers(){if(roomType!=='group'||!session)return;try{const data=await api(`/api/rooms/${encodeURIComponent(roomId)}/members`,{headers:auth()});roomMembers=data.members||[];renderMembers()}catch(e){notify(e.message,true)}}
 function openRoom(id,token,newRole,recovery=null,type='private',newMemberId=null){document.body.classList.add('room-open');document.body.classList.remove('setup-open');closeSocket();cooldownUntil=0;sendState();roomId=id;session=token;role=newRole;roomType=type;memberId=newMemberId;maxMessages=type==='group'?2000:500;storeSession();history.replaceState(null,'',`/chatbox.html?room=${encodeURIComponent(id)}`);show('startPanel',false);show('claimPanel',false);show('recoverPanel',false);show('chatPanel');$('roomText').textContent=id;$('roomHeading').textContent=type==='group'?'Group · '+(role==='owner'?'Admin':'Member'):'Private · '+role;$('chatTitle').textContent=type==='group'?'Group conversation':'Private conversation';show('deleteRoomBtn',type==='private'||role==='owner');show('leaveBtn',type==='group'&&role!=='owner');show('memberSidebar',type==='group');$('inviteLabel').textContent=type==='group'?'Reusable invitation (up to 10 registered members):':'Single-use Guest invitation:';if(recovery)showRecovery(recovery);connect()}
-async function connect(){closeSocket();$('status').textContent='Connecting…';const id=roomId,token=session;try{const history=await api(`/api/rooms/${encodeURIComponent(id)}/history`,{headers:{Authorization:`Bearer ${token}`}});if(id!==roomId||token!==session)return;if(history.room_type==='group'){roomType='group';memberId=history.member_id;role=history.role;roomMembers=history.members||[];maxMessages=history.max_messages||2000;storeSession();renderMembers();$('roomHeading').textContent='Group · '+(role==='owner'?'Admin':'Member');$('chatTitle').textContent='Group conversation';show('deleteRoomBtn',roomType==='private'||role==='owner');show('leaveBtn',role!=='owner')}else{roomType='private';maxMessages=500;show('memberSidebar',false);show('leaveBtn',false);show('deleteRoomBtn',roomType==='private'||role==='owner')}expiry=history.expires_at;$('expiryText').textContent=expiry?new Date(expiry).toLocaleString():'24h';$('messages').replaceChildren();(history.messages||[]).forEach(renderMessage);$('countText').textContent=`${history.message_count} / ${maxMessages}`}catch(e){$('status').textContent='Session unavailable';notify(e.message+'. Use recovery to transfer access.',true);show('recoverPanel');return}
-const ws=new WebSocket(API.replace(/^http/,'ws')+`/api/rooms/${encodeURIComponent(id)}/ws?session=${encodeURIComponent(token)}`);socket=ws;ws.onopen=()=>{if(socket!==ws)return;setConnected(true);$('status').textContent='Connected';notify('')};ws.onmessage=event=>{if(socket!==ws)return;let data;try{data=JSON.parse(event.data)}catch{return}if(data.type==='ready'){$('countText').textContent=`${data.message_count} / ${maxMessages}`;if(data.members){roomMembers=data.members;renderMembers()}}else if(data.type==='message'){renderMessage(data.message);$('countText').textContent=`${data.message_count} / ${maxMessages}`}else if(data.type==='room_deleted'){resetRoom('Room deleted.')}else if(['member_joined','member_left','member_kicked','member_banned'].includes(data.type)){refreshMembers()}else if(data.type==='error'){if(data.code==='MESSAGE_RATE_LIMIT')cooldown(data.retry_after);else notify(data.error||'Unable to send message',true)}};ws.onclose=e=>{if(socket!==ws)return;setConnected(false);$('status').textContent='Disconnected';if(e.code===4002){resetRoom('Room deleted.');return}if(e.code===4003||e.code===4004){resetRoom('You left or were removed from this group.');return}if(e.code===4001){notify('Session transferred or revoked. Recover with your current credential.',true);show('recoverPanel')}else notify('Connection lost. Refresh to reconnect. If the session is already connected elsewhere, close the other tab.',true)};ws.onerror=()=>{$('status').textContent='Connection error'}}
+async function connect(){
+  if(cloakActive)return;
+  closeSocket();
+  $('status').textContent='Connecting…';
+  const id=roomId,token=session;
+  try{
+    const history=await api(`/api/rooms/${encodeURIComponent(id)}/history`,{headers:{Authorization:`Bearer ${token}`}});
+    if(id!==roomId||token!==session)return;
+    if(history.cloaked){enterCloakMode();return;}
+    if(history.room_type==='group'){roomType='group';memberId=history.member_id;role=history.role;roomMembers=history.members||[];maxMessages=history.max_messages||2000;storeSession();renderMembers();$('roomHeading').textContent='Group · '+(role==='owner'?'Admin':'Member');$('chatTitle').textContent='Group conversation';show('deleteRoomBtn',roomType==='private'||role==='owner');show('leaveBtn',role!=='owner')}
+    else{roomType='private';maxMessages=500;show('memberSidebar',false);show('leaveBtn',false);show('deleteRoomBtn',roomType==='private'||role==='owner')}
+    expiry=history.expires_at;$('expiryText').textContent=expiry?new Date(expiry).toLocaleString():'24h';
+    $('messages').replaceChildren();(history.messages||[]).forEach(renderMessage);
+    $('countText').textContent=`${history.message_count} / ${maxMessages}`;
+  }catch(e){
+    $('status').textContent='Session unavailable';
+    if(e.code==='CLOAK_ACTIVE'){enterCloakMode();return;}
+    notify(e.message+'. Use recovery to transfer access.',true);show('recoverPanel');return;
+  }
+  const ws=new WebSocket(API.replace(/^http/,'ws')+`/api/rooms/${encodeURIComponent(id)}/ws?session=${encodeURIComponent(token)}`);
+  socket=ws;
+  ws.onopen=()=>{if(socket!==ws)return;setConnected(true);$('status').textContent='Connected';notify('')};
+  ws.onmessage=event=>{
+    if(socket!==ws)return;
+    let data;try{data=JSON.parse(event.data)}catch{return}
+    if(data.type==='ready'){$('countText').textContent=`${data.message_count} / ${maxMessages}`;if(data.members){roomMembers=data.members;renderMembers()}}
+    else if(data.type==='message'){renderMessage(data.message);$('countText').textContent=`${data.message_count} / ${maxMessages}`}
+    else if(data.type==='room_deleted'){resetRoom('Room deleted.')}
+    else if(['member_joined','member_left','member_kicked','member_banned','member_departed'].includes(data.type)){
+      if(data.system_message)renderMessage(data.system_message);
+      refreshMembers();
+    }
+    else if(data.type==='role_changed'&&data.new_role==='owner'){
+      role='owner';storeSession();
+      notify('You are now the group admin.',false);
+      // Server will close with 4006; reconnect to pick up role
+    }
+    else if(data.type==='error'){
+      if(data.code==='MESSAGE_RATE_LIMIT')cooldown(data.retry_after);
+      else if(data.code==='CLOAK_ACTIVE')enterCloakMode();
+      else notify(data.error||'Unable to send message',true)
+    }
+  };
+  ws.onclose=e=>{
+    if(socket!==ws)return;
+    setConnected(false);$('status').textContent='Disconnected';
+    if(e.code===4002){resetRoom('Room deleted.');return}
+    if(e.code===4003||e.code===4004){resetRoom('You left or were removed from this group.');return}
+    if(e.code===4005){enterCloakMode();return}
+    if(e.code===4006){setTimeout(()=>connect(),300);return}
+    if(e.code===4001){notify('Session transferred or revoked. Recover with your current credential.',true);show('recoverPanel')}
+    else notify('Connection lost. Refresh to reconnect. If the session is already connected elsewhere, close the other tab.',true)
+  };
+  ws.onerror=()=>{$('status').textContent='Connection error'};
+}
 async function removeMember(id,name){if(!confirm(`Remove ${name} from the group? Their slot will become available.`))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/kick`,{method:'POST',headers:auth(),body:JSON.stringify({member_id:id})});await refreshMembers()}catch(e){notify(e.message,true)}}
 $('createBtn').onclick=async()=>{if(!turnstileToken)return notify('Complete security verification first.',true);const name=$('displayName').value.trim();if(selectedType==='group'&&(!name||name.length>32))return notify('Enter a display name (1–32 characters).',true);try{$('createBtn').disabled=true;const body={turnstile_token:turnstileToken};if(selectedType==='group'){body.room_type='group';body.display_name=name}const data=await api('/api/rooms',{method:'POST',body:JSON.stringify(body)});inviteUrl=data.invite_url;openRoom(data.room_id,data.session_token,'owner',data.recovery_token,data.room_type||selectedType,'owner');$('inviteOutput').textContent=inviteUrl;show('ownerInvite')}catch(e){notify(e.message,true)}finally{resetTurnstile()}};
 $('claimBtn').onclick=async()=>{const name=$('joinName').value.trim();try{$('claimBtn').disabled=true;let body={invite_token:inviteToken};if(name)body.display_name=name;let data;try{data=await api(`/api/rooms/${encodeURIComponent(roomId)}/claim`,{method:'POST',body:JSON.stringify(body)})}catch(e){if(e.code==='INVALID_INVITE'&&!name){show('joinNameField');throw new Error('This may be a group invitation. Enter a display name to join.')}throw e}inviteToken=null;openRoom(roomId,data.session_token,data.role||'guest',data.recovery_token,data.room_type||'private',data.member_id||null);show('ownerInvite',false)}catch(e){notify(e.message,true)}finally{$('claimBtn').disabled=false}};
-$('recoverBtn').onclick=async()=>{const id=$('recoverRoom').value.trim(),credential=$('recoverSecret').value.trim().toLowerCase();if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)||!/^[a-f0-9]{64}$/.test(credential))return notify('Enter a valid Room ID and 64-character recovery credential.',true);try{$('recoverBtn').disabled=true;let data;try{data=await api(`/api/rooms/${encodeURIComponent(id)}/transfer`,{method:'POST',body:JSON.stringify({role:$('recoverRole').value,recovery_token:credential})})}catch(e){if(e.code==='INVALID_RECOVERY' || e.message==='Recovery failed'){throw e}throw e}$('recoverSecret').value='';inviteUrl=null;show('ownerInvite',false);openRoom(id,data.session_token,data.role,data.recovery_token,data.room_type||'private',data.member_id||null)}catch(e){notify(e.message,true)}finally{$('recoverBtn').disabled=false}};
+$('recoverBtn').onclick=async()=>{const id=$('recoverRoom').value.trim(),credential=$('recoverSecret').value.trim().toLowerCase();if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)||!/^[a-f0-9]{64}$/.test(credential))return notify('Enter a valid Room ID and 64-character recovery credential.',true);try{$('recoverBtn').disabled=true;let data=await api(`/api/rooms/${encodeURIComponent(id)}/transfer`,{method:'POST',body:JSON.stringify({role:$('recoverRole').value,recovery_token:credential})});$('recoverSecret').value='';inviteUrl=null;show('ownerInvite',false);openRoom(id,data.session_token,data.role,data.recovery_token,data.room_type||'private',data.member_id||null);if(data.cloaked){enterCloakMode()}}catch(e){notify(e.message,true)}finally{$('recoverBtn').disabled=false}};
 $('sendForm').onsubmit=e=>{e.preventDefault();const text=$('messageInput').value.trim();if(!text||!connected||socket?.readyState!==WebSocket.OPEN||Date.now()<cooldownUntil)return;socket.send(JSON.stringify({type:'message',text}));$('messageInput').value='';resizeMessageBox();};
 $('leaveBtn').onclick=async()=>{if(roomType!=='group'||role==='owner'||!confirm('Permanently leave this group and free your slot?'))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/leave`,{method:'POST',headers:auth()});resetRoom('You left the group.')}catch(e){notify(e.message,true)}};
 $('deleteRoomBtn').onclick=async()=>{if((roomType==='group'&&role!=='owner')||!confirm('Permanently delete this conversation and all attachments for EVERYONE? This cannot be undone.'))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/delete`,{method:'POST',headers:auth()});resetRoom('Room deleted.')}catch(e){notify(e.message,true)}};
@@ -173,7 +264,7 @@ $('copyRecovery').onclick=()=>copyWithFeedback('copyRecovery',recoveryValue);
 $('dismissRecovery').onclick=()=>{recoveryValue=null;$('recoveryOutput').textContent='';show('secretPanel',false)};
 mountTurnstile();if(roomId){$('recoverRoom').value=roomId;let saved=null;try{saved=JSON.parse(sessionStorage.getItem(storageKey(roomId))||'null')}catch{}if(saved?.session&&saved?.role)openRoom(roomId,saved.session,saved.role,null,saved.roomType||'private',saved.memberId||null);else if(inviteToken){show('startPanel',false);show('claimPanel');show('joinNameField');$('joinDescription').textContent='Private invitations are single-use. Group invitations can be reused until the group reaches 10 members. For a group, enter a display name.'}else{show('startPanel',false);notify('No active session in this browser. Use your recovery credential.',true)}}
 
-// PHRYGIX UI navigation: this only changes visible panels, never authentication.
+// PHRYGIX UI navigation
 function screen(mode){
   document.body.classList.add('setup-open');
   show('startPanel',mode==='create');
@@ -204,7 +295,7 @@ if(!roomId)screen('create');
 else if(inviteToken)screen('join');
 else if(!session)screen('restore');
 
-// PHRYGIX photo sharing — authenticated R2-backed uploads.
+// PHRYGIX photo sharing
 let photoQueue=[],activePhotoUrl=null,activePhotoId=null;
 const photoBlobs=new Map();
 function photoNotice(s,error=false){$('photoStatus').textContent=s;show('photoStatus',!!s);$('photoStatus').style.color=error?'#ff9ca6':'#9fe7e2';}
@@ -223,26 +314,26 @@ resetRoom=function(...args){for(const u of photoBlobs.values())URL.revokeObjectU
 
 // PHRYGIX attachments, emoji and temporary controls.
 const STICKERS={cat:'😺',laugh:'🤣',love:'🥰',fire:'🔥',party:'🥳',cool:'😎',cry:'😭',ghost:'👻'};
-$('temporaryMenuBtn').onclick=()=>{show('temporaryModal');show('temporaryDelete',roomType==='private'||role==='owner');show('temporaryLeave',roomType==='group'&&role!=='owner')};
+$('temporaryMenuBtn').onclick=()=>{
+  show('temporaryModal');
+  show('temporaryDelete',roomType==='private'||role==='owner');
+  show('temporaryLeave',roomType==='group'&&role!=='owner');
+  show('temporaryCloak',!!(roomId&&session));
+};
 $('closeTemporary').onclick=()=>show('temporaryModal',false);
 $('temporaryDelete').onclick=()=>{show('temporaryModal',false);$('deleteRoomBtn').click()};
 $('temporaryLeave').onclick=()=>{show('temporaryModal',false);$('leaveBtn').click()};
+$('temporaryCloak').onclick=()=>{show('temporaryModal',false);cloakActivate()};
 $('attachDocument').onclick=()=>{if(connected)$('documentFile').click();else photoNotice('Connect before sending documents.',true)};
 const docMime={pdf:'application/pdf',docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',pptx:'application/vnd.openxmlformats-officedocument.presentationml.presentation',txt:'text/plain',csv:'text/csv'};
 $('documentFile').onchange=async()=>{const file=$('documentFile').files?.[0];if(!file)return;const ext=file.name.split('.').pop().toLowerCase();if(!docMime[ext]||file.size>5*1024*1024){photoNotice('Choose PDF, DOCX, XLSX, PPTX, TXT or CSV under 5 MB.',true);return}if(!confirm('Send document "'+file.name+'" to this conversation?'))return;try{photoNotice('Uploading document…');const res=await fetch(API+`/api/rooms/${encodeURIComponent(roomId)}/document-upload`,{method:'POST',headers:{...auth(),'Content-Type':docMime[ext],'X-File-Name':encodeURIComponent(file.name)},body:file});const data=await res.json().catch(()=>({}));if(!res.ok)throw Error(data.error||'Upload failed');photoNotice('Document sent.')}catch(e){photoNotice(e.message,true)}finally{$('documentFile').value=''}};
 async function downloadDocument(id,name){try{const res=await fetch(API+`/api/rooms/${encodeURIComponent(roomId)}/document?id=${encodeURIComponent(id)}`,{headers:auth(),cache:'no-store'});if(!res.ok)throw Error('Document unavailable');const blob=await res.blob(),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name||'document';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000)}catch(e){notify(e.message,true)}}
 
-// ===== EMOJI PICKER — loads full Unicode set from CDN =====
+// ===== EMOJI PICKER =====
 const EMOJI_JSON_URL = 'https://cdn.jsdelivr.net/npm/emoji.json@16.0.0/emoji.json';
 const EMOJI_GROUPS = ['Smileys & Emotion','People & Body','Animals & Nature','Food & Drink','Travel & Places','Activities','Objects','Symbols','Flags'];
-const EMOJI_GROUP_LABELS = {
-  'Smileys & Emotion':'😀','People & Body':'👋','Animals & Nature':'🐻',
-  'Food & Drink':'🍔','Travel & Places':'✈️','Activities':'⚽',
-  'Objects':'💡','Symbols':'❤️','Flags':'🏳️'
-};
-
+const EMOJI_GROUP_LABELS = {'Smileys & Emotion':'😀','People & Body':'👋','Animals & Nature':'🐻','Food & Drink':'🍔','Travel & Places':'✈️','Activities':'⚽','Objects':'💡','Symbols':'❤️','Flags':'🏳️'};
 let emojiData = null;
-
 async function loadEmojiData() {
   if (emojiData) return emojiData;
   const res = await fetch(EMOJI_JSON_URL, { cache: 'force-cache' });
@@ -250,53 +341,28 @@ async function loadEmojiData() {
   emojiData = await res.json();
   return emojiData;
 }
-
 function buildEmojiPicker(data) {
   const picker = $('emojiPicker');
   picker.innerHTML = '';
-
-  // Search input
   const searchWrap = document.createElement('div');
   searchWrap.style.cssText = 'margin-bottom:9px';
   const search = document.createElement('input');
-  search.type = 'search';
-  search.placeholder = 'Search emoji…';
+  search.type = 'search'; search.placeholder = 'Search emoji…';
   search.style.cssText = 'width:100%;padding:9px 12px;border-radius:9px;border:1px solid #28535d;background:#031a25;color:#e9f7fb;font-size:13px';
-  searchWrap.append(search);
-  picker.append(searchWrap);
-
-  // Category tabs
+  searchWrap.append(search); picker.append(searchWrap);
   const tabs = document.createElement('div');
   tabs.style.cssText = 'display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px';
   const grid = document.createElement('div');
   grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;max-height:220px;overflow-y:auto;padding:2px';
-
-  // Group emojis by category (emoji.json uses "group" field, or fallback to "category")
   const grouped = {};
-  for (const e of data) {
-    const g = e.group || e.category || 'Symbols';
-    (grouped[g] ||= []).push(e);
-  }
-
+  for (const e of data) { const g = e.group || e.category || 'Symbols'; (grouped[g] ||= []).push(e); }
   let activeGroup = null;
-
   function renderGrid(filter) {
     grid.replaceChildren();
     const q = (filter || '').trim().toLowerCase();
     let list = [];
-
-    if (q) {
-      // Search across all groups by name/short_name/keywords
-      for (const g of Object.keys(grouped)) {
-        for (const e of grouped[g]) {
-          const hay = ((e.name || '') + ' ' + (e.short_name || '') + ' ' + (e.short_names || []).join(' ') + ' ' + (e.keywords || []).join(' ')).toLowerCase();
-          if (hay.includes(q)) list.push(e);
-        }
-      }
-    } else if (activeGroup) {
-      list = grouped[activeGroup] || [];
-    }
-
+    if (q) { for (const g of Object.keys(grouped)) { for (const e of grouped[g]) { const hay = ((e.name || '') + ' ' + (e.short_name || '') + ' ' + (e.short_names || []).join(' ') + ' ' + (e.keywords || []).join(' ')).toLowerCase(); if (hay.includes(q)) list.push(e); } } }
+    else if (activeGroup) { list = grouped[activeGroup] || []; }
     for (const e of list) {
       const b = document.createElement('button');
       b.type = 'button';
@@ -305,113 +371,325 @@ function buildEmojiPicker(data) {
       b.style.cssText = 'font-size:20px;padding:4px;width:34px;height:34px;line-height:1;background:transparent;border:0;border-radius:6px';
       b.onmouseenter = () => b.style.background = '#15414d';
       b.onmouseleave = () => b.style.background = 'transparent';
-      b.onclick = () => { const input = $('messageInput'); input.value += b.textContent; input.focus(); };
+      b.onclick = () => { const input = $('messageInput'); input.value += b.textContent; input.focus(); resizeMessageBox(); };
       grid.append(b);
     }
-    if (!list.length) {
-      const empty = document.createElement('p');
-      empty.textContent = q ? 'No emoji match your search.' : 'Select a category above.';
-      empty.style.cssText = 'color:#86a5b5;font-size:12px;padding:10px';
-      grid.append(empty);
-    }
+    if (!list.length) { const empty = document.createElement('p'); empty.textContent = q ? 'No emoji match your search.' : 'Select a category above.'; empty.style.cssText = 'color:#86a5b5;font-size:12px;padding:10px'; grid.append(empty); }
   }
-
   for (const g of EMOJI_GROUPS) {
-    if (!grouped[g] && !grouped[g.replace(' & ', ' & ')] && !grouped[g.replace('Smileys & Emotion','Smileys & People')]) {
-      // still show tab for consistency if data exists under slightly different name
-    }
     const tab = document.createElement('button');
     tab.type = 'button';
     tab.textContent = (EMOJI_GROUP_LABELS[g] || '•');
     tab.title = g;
     tab.style.cssText = 'font-size:18px;width:34px;height:32px;border-radius:7px;border:1px solid #28535d;background:#092d37;color:#cfeef2;line-height:1';
-    tab.onclick = () => {
-      tabs.querySelectorAll('button').forEach(b => { b.style.background = '#092d37'; });
-      tab.style.background = '#0d4a50';
-      activeGroup = g;
-      search.value = '';
-      renderGrid('');
-    };
+    tab.onclick = () => { tabs.querySelectorAll('button').forEach(b => { b.style.background = '#092d37'; }); tab.style.background = '#0d4a50'; activeGroup = g; search.value = ''; renderGrid(''); };
     tabs.append(tab);
   }
-
   search.oninput = () => renderGrid(search.value);
-
   picker.append(tabs, grid);
-
-  // Stickers (custom, hardcoded)
   const stickerHead = document.createElement('p');
   stickerHead.textContent = 'Stickers';
   stickerHead.style.cssText = 'margin:12px 0 6px;font-size:12px;color:#9fe7e2;font-weight:700';
   const stickerGrid = document.createElement('div');
   stickerGrid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
-
-  const ALL_STICKERS = {
-    cat:'😺',laugh:'🤣',love:'🥰',fire:'🔥',party:'🥳',cool:'😎',cry:'😭',ghost:'👻',
-    wink:'😉',heart:'❤️',star:'⭐',sparkle:'✨',thumbsup:'👍',clap:'👏',pray:'🙏',wave:'👋',
-    muscle:'💪',party_popper:'🎉',rocket:'🚀',crown:'👑',trophy:'🏆',gift:'🎁',balloon:'🎈',cake:'🎂',
-    coffee:'☕',pizza:'🍕',beer:'🍺',sun:'☀️',moon:'🌙',rainbow:'🌈',flower:'🌸',tree:'🌳',
-    dog:'🐶',catface:'🐱',unicorn:'🦄',dragon:'🐉',skull:'💀',alien:'👽',robot:'🤖',poop:'💩',
-    clown:'🤡',devil:'😈',angel:'😇',nerd:'🤓',sleepy:'😴',sick:'🤒',dizzy:'😵',mindblown:'🤯'
-  };
-
+  const ALL_STICKERS = {cat:'😺',laugh:'🤣',love:'🥰',fire:'🔥',party:'🥳',cool:'😎',cry:'😭',ghost:'👻',wink:'😉',heart:'❤️',star:'⭐',sparkle:'✨',thumbsup:'👍',clap:'👏',pray:'🙏',wave:'👋',muscle:'💪',party_popper:'🎉',rocket:'🚀',crown:'👑',trophy:'🏆',gift:'🎁',balloon:'🎈',cake:'🎂',coffee:'☕',pizza:'🍕',beer:'🍺',sun:'☀️',moon:'🌙',rainbow:'🌈',flower:'🌸',tree:'🌳',dog:'🐶',catface:'🐱',unicorn:'🦄',dragon:'🐉',skull:'💀',alien:'👽',robot:'🤖',poop:'💩',clown:'🤡',devil:'😈',angel:'😇',nerd:'🤓',sleepy:'😴',sick:'🤒',dizzy:'😵',mindblown:'🤯'};
   for (const [id, e] of Object.entries(ALL_STICKERS)) {
     const b = document.createElement('button');
-    b.type = 'button';
-    b.textContent = e;
-    b.title = 'Sticker: ' + id;
+    b.type = 'button'; b.textContent = e; b.title = 'Sticker: ' + id;
     b.style.cssText = 'font-size:28px;padding:4px;width:42px;height:42px;line-height:1;background:transparent;border:0;border-radius:8px';
     b.onmouseenter = () => b.style.background = '#15414d';
     b.onmouseleave = () => b.style.background = 'transparent';
-    b.onclick = () => { const input = $('messageInput'); input.value += e; input.focus(); show('emojiPicker', false); };
+    b.onclick = () => { const input = $('messageInput'); input.value += e; input.focus(); resizeMessageBox(); show('emojiPicker', false); };
     stickerGrid.append(b);
   }
-
   picker.append(stickerHead, stickerGrid);
-
-  // Open first group by default
   const firstTab = tabs.querySelector('button');
   if (firstTab) firstTab.click();
 }
-
-// Toggle: lazy-load data on first open
 let emojiPickerReady = false;
 $('emojiToggle').onclick = async () => {
   const picker = $('emojiPicker');
   const opening = picker.classList.contains('hidden');
   show('emojiPicker', opening);
   if (!opening || emojiPickerReady) return;
-
   picker.innerHTML = '<p style="color:#86a5b5;font-size:12px;padding:8px">Loading emoji…</p>';
-  try {
-    const data = await loadEmojiData();
-    buildEmojiPicker(data);
-    emojiPickerReady = true;
-  } catch (e) {
-    picker.innerHTML = '<p style="color:#ff9ca6;font-size:12px;padding:8px">Could not load emoji data. Check your connection.</p>';
-  }
+  try { const data = await loadEmojiData(); buildEmojiPicker(data); emojiPickerReady = true; }
+  catch (e) { picker.innerHTML = '<p style="color:#ff9ca6;font-size:12px;padding:8px">Could not load emoji data. Check your connection.</p>'; }
 };
 
 // ===== Auto-expanding message composer =====
 const messageBox = document.getElementById('messageInput');
-
 function resizeMessageBox() {
   messageBox.style.height = 'auto';
-  messageBox.style.height =
-    Math.min(messageBox.scrollHeight, 160) + 'px';
+  messageBox.style.height = Math.min(messageBox.scrollHeight, 160) + 'px';
 }
-
 messageBox.addEventListener('input', resizeMessageBox);
-
-// Enter = send message
-// Shift + Enter = new line
 messageBox.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
     e.preventDefault();
-
-    if (messageBox.value.trim()) {
-      document.getElementById('sendForm').requestSubmit();
-    }
+    if (messageBox.value.trim()) document.getElementById('sendForm').requestSubmit();
   }
 });
+
+// ============================================================
+// ===== CLOAKING MODE — client side =====
+// ============================================================
+
+function ensureCloakUI() {
+  if (document.getElementById('cloakSetupModal')) return;
+  document.body.insertAdjacentHTML('beforeend', `
+    <div id="cloakSetupModal" class="cloak-modal hidden" role="dialog" aria-modal="true">
+      <div class="cloak-card">
+        <h2>PHRYGIX Cloaking Setup</h2>
+        <p>Create two different passwords. They will be verified on the server; only salted password verifiers are stored.</p>
+        <div id="cloakAlert" class="cl-err hidden" role="status"></div>
+        <label for="cloakRestore">Restore password</label>
+        <input id="cloakRestore" type="password" autocomplete="off" minlength="8" maxlength="128" placeholder="8–128 characters">
+        <label for="cloakExit">Permanent exit password</label>
+        <input id="cloakExit" type="password" autocomplete="off" minlength="8" maxlength="128" placeholder="8–128 characters — different from restore">
+        <button id="cloakSetupSave">Save cloak passwords</button>
+        <button id="cloakSetupCancel" class="secondary">Cancel</button>
+      </div>
+    </div>
+
+    <div id="cloakUnlockModal" class="cloak-modal hidden" role="dialog" aria-modal="true">
+      <div class="cloak-card">
+        <h2>Unlock Cloaking Mode</h2>
+        <p>Enter one of your cloak passwords. Restore returns you to the real chat. Permanent exit revokes your membership.</p>
+        <div id="cloakUnlockAlert" class="cl-err hidden" role="status"></div>
+        <label for="cloakPassword">Password</label>
+        <input id="cloakPassword" type="password" autocomplete="off" maxlength="128" placeholder="Restore or permanent exit password">
+        <label class="cloak-checkbox">
+          <input type="checkbox" id="cloakConfirmExit">
+          <span>This is my <strong>permanent exit</strong> password — I understand I will be removed from this conversation.</span>
+        </label>
+        <button id="cloakUnlockSubmit">Unlock</button>
+        <button id="cloakUnlockCancel" class="secondary">Cancel</button>
+      </div>
+    </div>
+
+    <div id="cloakOverlay" class="hidden">
+      <header>📘 PHRYGIX Assistant</header>
+      <div id="cloakMessages"></div>
+      <div id="cloakComposer">
+        <input id="cloakInput" placeholder="Ask the assistant anything…" autocomplete="off" maxlength="2000">
+        <button id="cloakSend">Send</button>
+      </div>
+      <button id="cloakUnlockBtn" type="button">Unlock</button>
+    </div>
+  `);
+  wireCloakUI();
+}
+
+const CLOAK_BOT = (() => {
+  const topics = {
+    cooking: [
+      "For a quick weeknight meal, try a one-pan lemon chicken: sear thighs, add stock, lemon, and herbs, then finish in the oven for 20 minutes.",
+      "Pasta water is your secret ingredient — the starch helps sauces cling. Save a cup before draining.",
+      "Salt your onions at the start; it draws out water and speeds up caramelisation.",
+      "A pinch of sugar balances acidic tomato sauces without making them sweet."
+    ],
+    math: [
+      "The sum of the first n odd numbers is n² — a nice visual proof uses a growing square of dots.",
+      "For a quadratic ax² + bx + c = 0, the discriminant b² − 4ac tells you how many real roots exist.",
+      "Euler's identity e^(iπ) + 1 = 0 ties together five fundamental constants.",
+      "To estimate √n, start with a guess x, then iterate x → (x + n/x)/2. It converges fast."
+    ],
+    science: [
+      "Water is densest at about 4 °C, which is why ice floats and lakes freeze from the top down.",
+      "The speed of light in a vacuum is 299,792,458 m/s — exact by definition since 1983.",
+      "Plants convert light into chemical energy with roughly 3–6% efficiency, not the 100% you might guess.",
+      "Mitochondria have their own DNA, a relic of their ancient bacterial origins."
+    ],
+    general: [
+      "The Great Wall of China is not visible from space with the naked eye — a common myth.",
+      "Octopuses have three hearts and blue blood thanks to a copper-based pigment called hemocyanin.",
+      "A day on Venus is longer than its year — it rotates slower than it orbits.",
+      "Honey never spoils in practice; sealed jars from ancient tombs have been found edible."
+    ]
+  };
+  function pick(category) {
+    const arr = topics[category] || topics.general;
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+  function classify(text) {
+    const t = text.toLowerCase();
+    if (/(cook|recipe|food|meal|bake|pasta|sauce)/.test(t)) return 'cooking';
+    if (/(math|algebra|equation|number|prime|geometry|calcul)/.test(t)) return 'math';
+    if (/(science|physics|chemistry|biology|atom|energy|space)/.test(t)) return 'science';
+    return 'general';
+  }
+  return {
+    reply(text) { return pick(classify(text)); },
+    greeting() { return "Hi! I'm a scripted assistant. Ask about cooking, math, science, or general knowledge."; }
+  };
+})();
+
+function renderCloakBubble(text, mine) {
+  const box = document.getElementById('cloakMessages');
+  const el = document.createElement('div');
+  el.className = 'cloak-bubble' + (mine ? ' mine' : '');
+  el.textContent = text;
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+}
+
+function clearCloakMessages() {
+  const box = document.getElementById('cloakMessages');
+  if (box) box.replaceChildren();
+}
+
+function cloakNotice(msg, isError = false) {
+  const el = document.getElementById('cloakAlert');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.toggle('error', isError);
+  el.classList.toggle('hidden', !msg);
+}
+
+async function cloakSetup() {
+  ensureCloakUI();
+  cloakShow('cloakSetupModal', true);
+  cloakShow('cloakAlert', false);
+  document.getElementById('cloakRestore').value = '';
+  document.getElementById('cloakExit').value = '';
+}
+
+async function cloakActivate() {
+  if (!session || !roomId) return notify('Not in a room', true);
+  if (cloakBusy) return;
+  if (!cloakConfigured) { cloakSetup(); return; }
+  cloakBusy = true;
+  try {
+    await api(`/api/rooms/${encodeURIComponent(roomId)}/cloak/activate`, { method: 'POST', headers: auth(), body: JSON.stringify({}) });
+    enterCloakMode();
+  } catch (e) {
+    if (e.code === 'CLOAK_NOT_CONFIGURED') cloakSetup();
+    else notify(e.message, true);
+  } finally {
+    cloakBusy = false;
+  }
+}
+
+function enterCloakMode() {
+  ensureCloakUI();
+  cloakActive = true;
+  clearCloakMessages();
+  renderCloakBubble(CLOAK_BOT.greeting(), false);
+  cloakShow('cloakOverlay', true);
+  cloakShow('cloakUnlockBtn', true);
+  document.body.classList.add('cloak-active');
+  // Clear real DOM to prevent accidental leakage
+  const realMessages = document.getElementById('messages');
+  if (realMessages) realMessages.replaceChildren();
+  // Hide real-session controls
+  show('ownerInvite', false);
+  show('ownerDelete', false);
+  // Detach the socket (server closed it anyway)
+  closeSocket();
+}
+
+function exitCloakMode() {
+  cloakActive = false;
+  cloakShow('cloakOverlay', false);
+  cloakShow('cloakUnlockBtn', false);
+  document.body.classList.remove('cloak-active');
+  if (roomId && session) connect();
+}
+
+async function cloakUnlock() {
+  ensureCloakUI();
+  cloakShow('cloakUnlockModal', true);
+  cloakShow('cloakUnlockAlert', false);
+  document.getElementById('cloakPassword').value = '';
+  document.getElementById('cloakConfirmExit').checked = false;
+}
+
+async function cloakSubmitUnlock() {
+  const pw = document.getElementById('cloakPassword').value;
+  if (!pw) return;
+  if (!session || !roomId) return;
+  const alertEl = document.getElementById('cloakUnlockAlert');
+  alertEl.classList.add('hidden');
+  try {
+    const data = await api(`/api/rooms/${encodeURIComponent(roomId)}/cloak/unlock`, {
+      method: 'POST', headers: auth(),
+      body: JSON.stringify({
+        password: pw,
+        confirm_permanent_exit: document.getElementById('cloakConfirmExit').checked === true
+      })
+    });
+    cloakShow('cloakUnlockModal', false);
+
+    if (data.action === 'restore') { exitCloakMode(); return; }
+
+    if (data.action === 'exit') {
+      // Personal permanent exit — clear this browser, leave server state for others
+      clearCloakMessages();
+      cloakShow('cloakOverlay', false);
+      cloakShow('cloakUnlockBtn', false);
+      sessionStorage.removeItem(storageKey(roomId));
+      roomId = '';
+      session = null;
+      role = null;
+      memberId = null;
+      const realMessages = document.getElementById('messages');
+      if (realMessages) realMessages.replaceChildren();
+      show('chatPanel', false);
+      show('startPanel', true);
+      document.body.classList.remove('room-open');
+      document.body.classList.add('setup-open');
+      document.body.classList.remove('cloak-active');
+      notify('You have permanently left this conversation. Other participants still have access to their own history.');
+    }
+  } catch (e) {
+    if (e.code === 'CONFIRM_REQUIRED') alertEl.textContent = 'Tick the confirmation box to use your permanent exit password.';
+    else if (e.code === 'CLOAK_LOCKED') alertEl.textContent = e.message || 'Too many attempts. Try again later.';
+    else alertEl.textContent = e.message || 'Incorrect password';
+    alertEl.classList.remove('hidden');
+  }
+}
+
+function cloakShow(id, on = true) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('hidden', !on);
+}
+
+function wireCloakUI() {
+  document.getElementById('cloakSetupSave').onclick = async () => {
+    const restore = document.getElementById('cloakRestore').value;
+    const exit = document.getElementById('cloakExit').value;
+    if (restore.length < 8 || exit.length < 8) return cloakNotice('Both passwords must be at least 8 characters', true);
+    if (restore === exit) return cloakNotice('Passwords must be different', true);
+    try {
+      await api(`/api/rooms/${encodeURIComponent(roomId)}/cloak/setup`, {
+        method: 'POST', headers: auth(),
+        body: JSON.stringify({ restore_password: restore, exit_password: exit })
+      });
+      cloakConfigured = true;
+      cloakShow('cloakSetupModal', false);
+      await api(`/api/rooms/${encodeURIComponent(roomId)}/cloak/activate`, { method: 'POST', headers: auth(), body: JSON.stringify({}) });
+      enterCloakMode();
+    } catch (e) {
+      cloakNotice(e.message, true);
+    }
+  };
+  document.getElementById('cloakSetupCancel').onclick = () => cloakShow('cloakSetupModal', false);
+  document.getElementById('cloakUnlockSubmit').onclick = cloakSubmitUnlock;
+  document.getElementById('cloakUnlockCancel').onclick = () => cloakShow('cloakUnlockModal', false);
+  document.getElementById('cloakUnlockBtn').onclick = cloakUnlock;
+
+  const input = document.getElementById('cloakInput');
+  const send = () => {
+    const text = input.value.trim();
+    if (!text) return;
+    renderCloakBubble(text, true);
+    input.value = '';
+    setTimeout(() => renderCloakBubble(CLOAK_BOT.reply(text), false), 400);
+  };
+  document.getElementById('cloakSend').onclick = send;
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); }
+  });
+}
 </script></body></html>
