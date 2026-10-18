@@ -1,169 +1,54 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PHRYGIX Chatbox — Private temporary chat</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PHRYGIX Chatbox — Temporary Private & Group Chat</title>
 <style>
-:root{color-scheme:dark;font-family:system-ui,Segoe UI,Arial,sans-serif;background:#080f19;color:#e9f5fa}*{box-sizing:border-box}body{margin:0}header{padding:18px 5%;border-bottom:1px solid #23384b;font-weight:800;letter-spacing:.22em}main{max-width:900px;margin:35px auto;padding:0 16px}.panel{border:1px solid #294257;background:#101e2d;border-radius:16px;padding:22px;margin-bottom:18px}h1{font-size:1.5rem}h2{font-size:1.05rem}p,.hint{color:#b3c5d2;line-height:1.5}input,select,button{font:inherit;border-radius:9px;padding:12px}input,select{background:#071320;color:#fff;border:1px solid #3b5b70;width:100%}button{border:0;background:#78d7d5;color:#061b24;font-weight:700;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}.notice{padding:12px;border-radius:9px;background:#203448;overflow-wrap:anywhere}.error{background:#4c2430;color:#ffdfe5}.messages{height:350px;overflow:auto;background:#07131e;border:1px solid #294257;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}.bubble{padding:12px 14px;border-radius:13px;max-width:78%;background:#21364b;align-self:flex-start;overflow-wrap:anywhere}.bubble.mine{background:#205457;align-self:flex-end}.bubble small{display:block;color:#c1d1d9;margin-top:5px}.field{margin:12px 0}.field label{display:block;margin-bottom:6px}.subtle{font-size:.85rem;color:#9db3c4}a{color:#7ee0de}.danger{background:#d87d88}#inviteOutput,#recoveryOutput{font-family:monospace;font-size:.85rem}#chatStatus{font-weight:600}</style></head>
-<body><header>₱HRYGIX</header><main><h1>Chatbox <span class="subtle">v3.6</span></h1><p>Temporary two-person chat. Rooms expire after 24 hours. Messages are stored on the server and are <strong>not end-to-end encrypted</strong>.</p>
+:root{color-scheme:dark;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:#080f19;color:#e9f5fa}*{box-sizing:border-box}body{margin:0}header{border-bottom:1px solid #24394b;padding:16px max(18px,calc((100vw - 1000px)/2));font-weight:900;letter-spacing:.18em;color:#8de7df}main{max-width:1000px;margin:28px auto;padding:0 16px}.panel{border:1px solid #2b4559;background:#101e2d;border-radius:18px;padding:22px;margin-bottom:16px}h1{font-size:1.7rem;margin:0 0 8px}h2{font-size:1.12rem;margin:0 0 10px}p{color:#b4c7d3;line-height:1.5}input,button,select{font:inherit;border-radius:10px;padding:12px}input,select{background:#091724;color:#f2fbff;border:1px solid #426176;width:100%;min-width:0}button{background:#78d7d5;color:#061b24;border:0;font-weight:750;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.ghost{background:#243c50;color:#e5f6fb}.danger{background:#e08a95;color:#251018}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.row>*{min-width:0}.grow{flex:1}.hidden{display:none!important}.notice{padding:12px;border-radius:10px;background:#1c3549;overflow-wrap:anywhere}.error{background:#532b37;color:#ffe3e8}.subtle{font-size:.85rem;color:#9fb6c7}.field{margin:14px 0}.field label{display:block;margin-bottom:7px}.tabs{display:flex;gap:10px;margin:18px 0}.tabs button{flex:1}.tabs .inactive{background:#243a4d;color:#c0d5df}.chat-layout{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:14px}.messages{height:420px;overflow:auto;background:#081520;border:1px solid #2b4559;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}.bubble{background:#263d50;padding:10px 13px;border-radius:13px;max-width:83%;align-self:flex-start;overflow-wrap:anywhere}.bubble.mine{background:#1c5655;align-self:flex-end}.bubble small{display:block;color:#bbd2dd;font-size:.72rem;margin-top:5px}.bubble strong{display:block;color:#9dece6;font-size:.8rem;margin-bottom:4px}.sidebar{border:1px solid #2b4559;background:#0a1926;border-radius:12px;padding:14px;align-self:start}.member{padding:10px 0;border-bottom:1px solid #273d4d;display:flex;justify-content:space-between;align-items:center;gap:8px;overflow-wrap:anywhere}.member button{font-size:.75rem;padding:6px}.member-name{min-width:0;overflow-wrap:anywhere}.secret{font-family:ui-monospace,monospace;font-size:.8rem;word-break:break-all}#status{font-weight:700;color:#93e4df}a{color:#8be9e3}#sendForm{display:flex;gap:8px;margin-top:12px}#sendForm input{flex:1}@media(max-width:720px){.chat-layout{grid-template-columns:1fr}.messages{height:380px}.panel{padding:16px}main{margin:18px auto}}
+</style></head><body><header>PHRYGIX</header><main>
+<h1>Chatbox <span class="subtle">v3.7 beta</span></h1><p>Temporary conversations without accounts. Rooms expire after 24 hours. Messages are stored on the server and <strong>are not end-to-end encrypted</strong>.</p>
 <div id="alert" class="notice hidden" role="status"></div>
-<section id="startPanel" class="panel"><h2>Create a private room</h2><p>The creator becomes Owner. Share only the Guest invitation link.</p><div id="turnstileWidget" style="margin:16px 0"></div><button id="createBtn" disabled>Create room</button></section>
-<section id="claimPanel" class="panel hidden"><h2>Join as Guest</h2><p>Claiming this invitation permanently uses it. This browser receives the Guest session.</p><button id="claimBtn">Claim invitation</button></section>
-<section id="recoverPanel" class="panel"><h2>Recover or transfer a session</h2><p>To recover a session, you need <strong>both your Room ID and recovery credential</strong>. Choose the role that matches the credential. Transferring revokes the previous session.</p>
-<div class="field"><label for="recoverRoom">Room ID</label><input id="recoverRoom" placeholder="e.g. 12345678-abcd-4abc-8abc-123456789abc" autocomplete="off" spellcheck="false" required><p class="subtle">Find this in your chat under “Room:”. A recovery credential alone cannot identify your room.</p></div>
-<div class="field"><label for="recoverRole">Which session are you recovering?</label><select id="recoverRole"><option value="owner">Owner</option><option value="guest">Guest</option></select></div>
-<div class="field"><label for="recoverSecret">Recovery credential</label><input id="recoverSecret" type="password" placeholder="Paste your 64-character recovery credential" autocomplete="off" autocapitalize="off" spellcheck="false" required><p class="subtle">This is not your session token or the Guest invitation link.</p></div>
-<p class="notice">Keep your <strong>Room ID</strong> and <strong>current recovery credential</strong> together in a secure place. After each successful transfer, save the newly generated recovery credential; the old one stops working.</p><button id="recoverBtn">Transfer session to this browser</button></section>
-<section id="secretPanel" class="panel hidden"><h2>Save your recovery credential now</h2><p>Save this <strong>new recovery credential</strong> together with your <strong>Room ID</strong>. The previous recovery credential no longer works after a transfer. This credential is not stored in your browser.</p><p class="subtle">Room ID: <strong id="recoveryRoomId"></strong></p><div id="recoveryOutput" class="notice"></div><div class="row" style="margin-top:12px"><button id="copyRecovery">Copy recovery credential</button><button id="dismissRecovery">I saved it</button></div></section>
-<section id="chatPanel" class="panel hidden"><div class="row"><h2>Live chat — <span id="roleText"></span></h2><span id="chatStatus">Connecting…</span></div><p class="subtle">Room: <span id="roomText"></span> · <span id="countText">0 / 500</span> messages</p><div id="ownerInvite" class="hidden"><p>Guest invitation (share privately; valid once):</p><div id="inviteOutput" class="notice"></div><button id="copyInvite" style="margin:10px 0">Copy Guest invitation</button></div><div id="messages" class="messages" aria-live="polite"></div><form id="sendForm" class="row" style="margin-top:12px"><input id="messageInput" maxlength="2000" placeholder="Connect to send messages" disabled required><button id="sendBtn" disabled>Send</button></form><p id="rateNotice" class="notice error hidden" role="status" aria-live="polite" style="margin-top:10px"></p><p class="subtle">If your session is revoked, transfer it with the current recovery credential.</p><div id="ownerDelete" class="hidden" style="margin-top:20px;border-top:1px solid #294257;padding-top:18px"><h2>Delete room for everyone</h2><p>Immediately revoke both sessions and permanently delete all stored messages. This cannot be undone.</p><button id="deleteRoomBtn" class="danger" type="button">Delete room for everyone</button></div></section>
+<section id="startPanel" class="panel"><h2>Start a conversation</h2><div class="tabs"><button id="privateTab" type="button">Private · 2 people</button><button id="groupTab" type="button" class="inactive">Group · up to 10</button></div><p id="createDescription">A private room with a single-use guest invitation.</p><div id="nameField" class="field hidden"><label for="displayName">Your group display name (1–32 characters)</label><input id="displayName" maxlength="32" placeholder="Choose a temporary name" autocomplete="off"></div><div id="turnstileWidget" style="margin:16px 0"></div><button id="createBtn" disabled>Create private room</button></section>
+<section id="claimPanel" class="panel hidden"><h2>Join invitation</h2><p id="joinDescription">Claim this invitation to join the conversation.</p><div id="joinNameField" class="field hidden"><label for="joinName">Your display name</label><input id="joinName" maxlength="32" placeholder="Choose a temporary name" autocomplete="off"></div><button id="claimBtn">Join conversation</button></section>
+<section id="recoverPanel" class="panel"><h2>Recover / transfer session</h2><p>Use your room ID and latest recovery credential. A transfer revokes the previous browser session.</p><div class="field"><label for="recoverRoom">Room ID</label><input id="recoverRoom" autocomplete="off" placeholder="Room UUID"></div><div id="recoverRoleField" class="field"><label for="recoverRole">Private Chat role</label><select id="recoverRole"><option value="owner">Owner</option><option value="guest">Guest</option></select></div><div class="field"><label for="recoverSecret">Recovery credential</label><input id="recoverSecret" type="password" autocomplete="off" placeholder="64-character credential"></div><button id="recoverBtn">Transfer session</button><p class="subtle">For group rooms, the backend identifies the member using the recovery credential; no role selection is needed.</p></section>
+<section id="secretPanel" class="panel hidden"><h2>Save your recovery credential</h2><p>Save this with your Room ID. Each transfer creates a new credential and revokes the previous one.</p><p class="subtle">Room ID: <strong id="recoveryRoomId"></strong></p><div id="recoveryOutput" class="notice secret"></div><div class="row" style="margin-top:10px"><button id="copyRecovery">Copy credential</button><button id="dismissRecovery" class="ghost">I saved it</button></div></section>
+<section id="chatPanel" class="panel hidden"><div class="row"><h2 id="roomHeading" class="grow">Live chat</h2><span id="status">Connecting…</span></div><p class="subtle">Room: <span id="roomText"></span> · <span id="countText">0 / 500</span> messages · <span id="expiryText">24h</span></p><div id="ownerInvite" class="hidden"><p id="inviteLabel">Share this invitation privately:</p><div id="inviteOutput" class="notice secret"></div><button id="copyInvite" class="ghost" style="margin:10px 0">Copy invitation link</button></div><div class="chat-layout"><div><div id="messages" class="messages" aria-live="polite"></div><form id="sendForm"><input id="messageInput" maxlength="2000" placeholder="Connect to send messages" disabled required><button id="sendBtn" disabled>Send</button></form><p id="rateNotice" class="notice error hidden" role="status"></p></div><aside id="memberSidebar" class="sidebar hidden"><h2>Members <span id="memberCount" class="subtle"></span></h2><div id="memberList"></div><p class="subtle">Leaving frees your membership slot. Disconnecting does not.</p></aside></div><div class="row" style="margin-top:16px"><button id="leaveBtn" class="danger hidden">Leave group</button><button id="deleteRoomBtn" class="danger hidden">Delete room for everyone</button></div></section>
 </main><script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script><script>
 'use strict';
-const API = 'https://phrygix-chatbox.phrygix.workers.dev';
-const TURNSTILE_SITE_KEY = '0x4AAAAAAFZ5WwbVr7UMzi3m';
-let turnstileId = null, turnstileToken = '';
-function mountTurnstile(){
-  if(!window.turnstile){setTimeout(mountTurnstile,200);return;}
-  if(turnstileId !== null)return;
-  try {
-    turnstileId=window.turnstile.render('#turnstileWidget',{
-      sitekey:TURNSTILE_SITE_KEY,
-      callback:token=>{turnstileToken=token;$('createBtn').disabled=false;},
-      'expired-callback':()=>{turnstileToken='';$('createBtn').disabled=true;},
-      'error-callback':()=>{turnstileToken='';$('createBtn').disabled=true;alertText('Security verification could not load. Please refresh.',true);}
-    });
-  }catch(e){alertText('Unable to initialize security verification: '+e.message,true)}
-}
-function resetTurnstile(){turnstileToken='';$('createBtn').disabled=true;if(turnstileId!==null&&window.turnstile)window.turnstile.reset(turnstileId);}
-
-const $ = id => document.getElementById(id);
-const params = new URLSearchParams(location.search);
-let roomId = params.get('room') || '';
-let inviteToken = new URLSearchParams(location.hash.slice(1)).get('invite');
-let role = null, session = null, socket = null, inviteUrl = null, recoveryValue = null, connected = false;
-let cooldownUntil = 0, cooldownTimer = null;
-// Remove the one-time invitation from browser history immediately.
-if (location.hash) history.replaceState(null, '', location.pathname + location.search);
-const storageKey = id => `phrygix-chat-v3:${id}`;
-function show(id, yes=true){$(id).classList.toggle('hidden',!yes)}
-function alertText(message, error=false){$('alert').textContent=message; $('alert').classList.toggle('error',error);show('alert',!!message)}
-function storeSession(){sessionStorage.setItem(storageKey(roomId), JSON.stringify({role,session}));}
-function showRecovery(value){recoveryValue=value;$('recoveryRoomId').textContent=roomId;$('recoveryOutput').textContent=value;show('secretPanel');}
-function updateStatus(text){$('chatStatus').textContent=text;}
-function setConnected(value){
-  connected=value;
-  $('messageInput').disabled=!value;
-  $('messageInput').placeholder=value?'Type a message…':'Connect to send messages';
-  updateSendState();
-}
-function updateSendState(){
-  const remaining=Math.max(0,Math.ceil((cooldownUntil-Date.now())/1000));
-  $('sendBtn').disabled=!connected||remaining>0;
-  $('sendBtn').textContent=remaining>0?`Wait ${remaining}s`:'Send';
-  const notice=$('rateNotice');
-  notice.textContent=remaining>0?`You're sending messages too quickly. Please wait ${remaining} second${remaining===1?'':'s'} before sending again.`:'';
-  show('rateNotice',remaining>0);
-  if(!remaining&&cooldownTimer){clearInterval(cooldownTimer);cooldownTimer=null;}
-}
-function startCooldown(seconds){
-  const duration=Number(seconds);
-  if(!Number.isFinite(duration)||duration<=0){alertText('Message limit reached. Please wait a moment before trying again.',true);return;}
-  cooldownUntil=Math.max(cooldownUntil,Date.now()+Math.ceil(duration)*1000);
-  updateSendState();
-  if(!cooldownTimer)cooldownTimer=setInterval(updateSendState,250);
-}
-function resetCooldown(){
-  cooldownUntil=0;
-  if(cooldownTimer){clearInterval(cooldownTimer);cooldownTimer=null;}
-  updateSendState();
-}
-async function api(path,options={}){
-  const res=await fetch(API+path,{cache:'no-store',...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});
-  let data={};try{data=await res.json()}catch{}
-  if(!res.ok)throw new Error(data.error||`Request failed (${res.status})`);
-  return data;
-}
-function openRoom(id,sessionToken,asRole,recoveryToken=null){
-  resetCooldown();roomId=id;role=asRole;session=sessionToken;storeSession();
-  history.replaceState(null,'',`/chatbox.html?room=${encodeURIComponent(id)}`);
-  show('startPanel',false);show('claimPanel',false);show('recoverPanel',false);show('chatPanel');
-  $('roomText').textContent=id;$('roleText').textContent=role;show('ownerDelete',role==='owner');
-  if(recoveryToken)showRecovery(recoveryToken);
-  connect();
-}
-function handleRoomDeleted(){
-  if(socket){const old=socket;socket=null;old.onclose=null;try{old.close()}catch{}}
-  setConnected(false);resetCooldown();updateStatus('Room deleted');
-  if(roomId)sessionStorage.removeItem(storageKey(roomId));
-  session=null;inviteToken=null;inviteUrl=null;recoveryValue=null;
-  $('messages').replaceChildren();$('recoveryOutput').textContent='';$('recoverSecret').value='';
-  show('secretPanel',false);show('chatPanel',false);show('recoverPanel',false);show('claimPanel',false);show('startPanel');
-  history.replaceState(null,'','/chatbox.html');
-  resetTurnstile();
-  alertText('This room has been permanently deleted. Stored messages and active sessions have been removed.');
-}
-function renderMessage(msg){
-  if(document.getElementById(`m-${msg.id}`))return;
-  const bubble=document.createElement('div');bubble.className='bubble'+(msg.role===role?' mine':'');bubble.id=`m-${msg.id}`;
-  const body=document.createElement('div');body.textContent=msg.text;
-  const meta=document.createElement('small');meta.textContent=(msg.role===role?'You':'Other participant')+' · '+new Date(msg.sent_at).toLocaleTimeString();
-  bubble.append(body,meta);$('messages').appendChild(bubble);$('messages').scrollTop=$('messages').scrollHeight;
-}
-async function connect(){
-  if(socket){socket.onclose=null;socket.close();socket=null;}
-  setConnected(false);updateStatus('Connecting…');
-  try{
-    const historyData=await api(`/api/rooms/${encodeURIComponent(roomId)}/history`,{headers:{Authorization:`Bearer ${session}`}});
-    $('messages').replaceChildren();historyData.messages.forEach(renderMessage);
-    $('countText').textContent=`${historyData.message_count} / 500`;
-  }catch(error){updateStatus('Session unavailable');alertText(error.message+'. Use recovery to transfer access.',true);show('recoverPanel');return;}
-  const wsUrl=API.replace(/^http/,'ws')+`/api/rooms/${encodeURIComponent(roomId)}/ws?session=${encodeURIComponent(session)}`;
-  const ws=new WebSocket(wsUrl);socket=ws;
-  ws.onopen=()=>{setConnected(true);updateStatus('Connected · '+role);alertText('');};
-  ws.onmessage=event=>{let data;try{data=JSON.parse(event.data)}catch{return}
-    if(data.type==='ready')$('countText').textContent=`${data.message_count} / 500`;
-    if(data.type==='message'){renderMessage(data.message);$('countText').textContent=`${data.message_count} / 500`;}
-    if(data.type==='room_deleted'){handleRoomDeleted();return;}
-    if(data.type==='error'){
-      if(data.code==='MESSAGE_RATE_LIMIT')startCooldown(data.retry_after);
-      else alertText(data.error||'Unable to send message',true);
-    }
-  };
-  ws.onclose=event=>{if(socket!==ws)return;setConnected(false);updateStatus('Disconnected');
-    if(event.code===4002){handleRoomDeleted();return;}
-    if(event.code===4001){alertText('This session was transferred or expired. Use your current recovery credential.',true);show('recoverPanel');}
-    else alertText('Disconnected. If another browser is already connected with this role, close that connection before refreshing.',true);
-  };
-  ws.onerror=()=>{updateStatus('Connection error');};
-}
-$('deleteRoomBtn').onclick=async()=>{
-  if(role!=='owner'||!session||!roomId)return;
-  if(!confirm('Delete this room for everyone? All messages will be permanently removed and neither participant can recover the room.'))return;
-  try{
-    $('deleteRoomBtn').disabled=true;
-    await api(`/api/rooms/${encodeURIComponent(roomId)}/delete`,{method:'POST',headers:{Authorization:`Bearer ${session}`}});
-    handleRoomDeleted();
-  }catch(e){alertText(e.message,true)}finally{$('deleteRoomBtn').disabled=false}
-};
-$('createBtn').onclick=async()=>{if(!turnstileToken){alertText('Complete security verification first.',true);return;}try{$('createBtn').disabled=true;const data=await api('/api/rooms',{method:'POST',body:JSON.stringify({turnstile_token:turnstileToken})});
-  inviteUrl=data.invite_url;openRoom(data.room_id,data.session_token,'owner',data.recovery_token);
-  $('inviteOutput').textContent=inviteUrl;show('ownerInvite');
-}catch(e){alertText(e.message,true)}finally{resetTurnstile()}};
-$('claimBtn').onclick=async()=>{try{$('claimBtn').disabled=true;const data=await api(`/api/rooms/${encodeURIComponent(roomId)}/claim`,{method:'POST',body:JSON.stringify({invite_token:inviteToken})});
-  inviteToken=null;openRoom(roomId,data.session_token,'guest',data.recovery_token);
-}catch(e){alertText(e.message,true)}finally{$('claimBtn').disabled=false}};
-$('recoverBtn').onclick=async()=>{const id=$('recoverRoom').value.trim(),credential=$('recoverSecret').value.trim().toLowerCase();
-  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)){alertText('Enter a valid Room ID (UUID) from your original chat.',true);return;}
-  if(!/^[a-f0-9]{64}$/.test(credential)){alertText('Enter the 64-character recovery credential for the selected role.',true);return;}
-  try{$('recoverBtn').disabled=true;const data=await api(`/api/rooms/${encodeURIComponent(id)}/transfer`,{method:'POST',body:JSON.stringify({role:$('recoverRole').value,recovery_token:credential})});
-    $('recoverSecret').value='';inviteUrl=null;show('ownerInvite',false);openRoom(id,data.session_token,data.role,data.recovery_token);
-  }catch(e){alertText(e.message==='Recovery failed'?'Recovery credential does not match this Room ID and role. Check that you are using the latest credential.':e.message,true)}finally{$('recoverBtn').disabled=false}};
-$('sendForm').onsubmit=e=>{e.preventDefault();const value=$('messageInput').value.trim();if(!value||!connected||socket?.readyState!==WebSocket.OPEN)return;
-  if(Date.now()<cooldownUntil){updateSendState();return;}
-  socket.send(JSON.stringify({type:'message',text:value}));$('messageInput').value='';};
-$('copyInvite').onclick=async()=>{if(inviteUrl)await navigator.clipboard.writeText(inviteUrl)};
-$('copyRecovery').onclick=async()=>{if(recoveryValue)await navigator.clipboard.writeText(recoveryValue)};
+const API='https://phrygix-chatbox.phrygix.workers.dev';
+const SITE_KEY='0x4AAAAAAFZ5WwbVr7UMzi3m';
+const $=id=>document.getElementById(id),show=(id,on=true)=>$(id).classList.toggle('hidden',!on);
+const qs=new URLSearchParams(location.search);let roomId=qs.get('room')||'',inviteToken=new URLSearchParams(location.hash.slice(1)).get('invite');
+if(location.hash)history.replaceState(null,'',location.pathname+location.search);
+let selectedType='private',roomType='private',role=null,memberId=null,session=null,socket=null,inviteUrl=null,recoveryValue=null,connected=false,turnstileId=null,turnstileToken='',cooldownUntil=0,cooldownTimer=null,maxMessages=500,roomMembers=[],expiry=null,manualClose=false;
+const storageKey=id=>`phrygix-chat-v3:${id}`;
+function notify(message='',error=false){$('alert').textContent=message;$('alert').classList.toggle('error',error);show('alert',!!message)}
+function switchType(type){selectedType=type;show('nameField',type==='group');$('privateTab').classList.toggle('inactive',type!=='private');$('groupTab').classList.toggle('inactive',type!=='group');$('createDescription').textContent=type==='group'?'A temporary group for up to 10 registered members, including the Admin.':'A private room with a single-use guest invitation.';$('createBtn').textContent=type==='group'?'Create group':'Create private room'}
+$('privateTab').onclick=()=>switchType('private');$('groupTab').onclick=()=>switchType('group');
+function mountTurnstile(){if(!window.turnstile){setTimeout(mountTurnstile,200);return}if(turnstileId!==null)return;try{turnstileId=window.turnstile.render('#turnstileWidget',{sitekey:SITE_KEY,callback:t=>{turnstileToken=t;$('createBtn').disabled=false},'expired-callback':()=>{turnstileToken='';$('createBtn').disabled=true},'error-callback':()=>{turnstileToken='';$('createBtn').disabled=true;notify('Security verification could not load.',true)}})}catch(e){notify('Unable to initialize security verification: '+e.message,true)}}
+function resetTurnstile(){turnstileToken='';$('createBtn').disabled=true;if(turnstileId!==null&&window.turnstile)window.turnstile.reset(turnstileId)}
+async function api(path,opts={}){const res=await fetch(API+path,{cache:'no-store',...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});let data={};try{data=await res.json()}catch{}if(!res.ok){const e=new Error(data.error||`Request failed (${res.status})`);e.code=data.code;e.status=res.status;throw e}return data}
+const auth=()=>({Authorization:`Bearer ${session}`});
+function storeSession(){sessionStorage.setItem(storageKey(roomId),JSON.stringify({role,session,roomType,memberId}))}
+function showRecovery(value){recoveryValue=value;$('recoveryRoomId').textContent=roomId;$('recoveryOutput').textContent=value;show('secretPanel')}
+function sendState(){const remaining=Math.max(0,Math.ceil((cooldownUntil-Date.now())/1000));$('sendBtn').disabled=!connected||remaining>0;$('sendBtn').textContent=remaining?`Wait ${remaining}s`:'Send';$('rateNotice').textContent=remaining?`You're sending messages too quickly. Wait ${remaining} seconds.`:'';show('rateNotice',remaining>0);if(!remaining&&cooldownTimer){clearInterval(cooldownTimer);cooldownTimer=null}}
+function cooldown(seconds){const n=Number(seconds);if(!Number.isFinite(n)||n<=0)return notify('Please wait before sending again.',true);cooldownUntil=Math.max(cooldownUntil,Date.now()+Math.ceil(n)*1000);sendState();if(!cooldownTimer)cooldownTimer=setInterval(sendState,250)}
+function setConnected(on){connected=on;$('messageInput').disabled=!on;$('messageInput').placeholder=on?'Type a message…':'Connect to send messages';sendState()}
+function closeSocket(){if(socket){const old=socket;socket=null;old.onclose=null;try{old.close()}catch{}}setConnected(false)}
+function resetRoom(message){closeSocket();if(roomId)sessionStorage.removeItem(storageKey(roomId));roomId='';session=null;role=null;memberId=null;inviteUrl=null;recoveryValue=null;inviteToken=null;roomMembers=[];show('chatPanel',false);show('secretPanel',false);show('claimPanel',false);show('recoverPanel');show('startPanel');$('messages').replaceChildren();$('recoverSecret').value='';history.replaceState(null,'','/chatbox.html');resetTurnstile();notify(message)}
+function renderMessage(msg){if(!msg?.id||document.getElementById('m-'+msg.id))return;const bubble=document.createElement('div');bubble.id='m-'+msg.id;bubble.className='bubble'+((roomType==='group'?msg.member_id===memberId:msg.role===role)?' mine':'');const body=document.createElement('div');body.textContent=msg.text;const meta=document.createElement('small');const name=roomType==='group'?(msg.name||roomMembers.find(m=>m.id===(msg.member_id||msg.role))?.name||'Former member'):(msg.role===role?'You':'Other participant');meta.textContent=name+' · '+new Date(msg.sent_at).toLocaleTimeString();bubble.append(body,meta);$('messages').append(bubble);$('messages').scrollTop=$('messages').scrollHeight}
+function renderMembers(){show('memberSidebar',roomType==='group');$('memberCount').textContent=`${roomMembers.length}/10`;$('memberList').replaceChildren();for(const member of roomMembers){const item=document.createElement('div');item.className='member';const label=document.createElement('span');label.className='member-name';label.textContent=member.name+(member.admin?' ★':'')+(member.id===memberId?' (you)':'');item.append(label);if(role==='owner'&&!member.admin){const kick=document.createElement('button');kick.className='ghost';kick.textContent='Remove';kick.onclick=()=>removeMember(member.id,member.name);item.append(kick)}$('memberList').append(item)}}
+async function refreshMembers(){if(roomType!=='group'||!session)return;try{const data=await api(`/api/rooms/${encodeURIComponent(roomId)}/members`,{headers:auth()});roomMembers=data.members||[];renderMembers()}catch(e){notify(e.message,true)}}
+function openRoom(id,token,newRole,recovery=null,type='private',newMemberId=null){closeSocket();cooldownUntil=0;sendState();roomId=id;session=token;role=newRole;roomType=type;memberId=newMemberId;maxMessages=type==='group'?2000:500;storeSession();history.replaceState(null,'',`/chatbox.html?room=${encodeURIComponent(id)}`);show('startPanel',false);show('claimPanel',false);show('recoverPanel',false);show('chatPanel');$('roomText').textContent=id;$('roomHeading').textContent=type==='group'?'Group chat · '+(role==='owner'?'Admin':'Member'):'Private chat · '+role;show('deleteRoomBtn',role==='owner');show('leaveBtn',type==='group'&&role!=='owner');show('memberSidebar',type==='group');$('inviteLabel').textContent=type==='group'?'Reusable invitation (up to 10 registered members):':'Single-use Guest invitation:';if(recovery)showRecovery(recovery);connect()}
+async function connect(){closeSocket();$('status').textContent='Connecting…';const id=roomId,token=session;try{const history=await api(`/api/rooms/${encodeURIComponent(id)}/history`,{headers:{Authorization:`Bearer ${token}`}});if(id!==roomId||token!==session)return;if(history.room_type==='group'){roomType='group';memberId=history.member_id;role=history.role;roomMembers=history.members||[];maxMessages=history.max_messages||2000;storeSession();renderMembers();$('roomHeading').textContent='Group chat · '+(role==='owner'?'Admin':'Member');show('deleteRoomBtn',role==='owner');show('leaveBtn',role!=='owner')}else{roomType='private';maxMessages=500;show('memberSidebar',false);show('leaveBtn',false);show('deleteRoomBtn',role==='owner')}expiry=history.expires_at;$('expiryText').textContent=expiry?new Date(expiry).toLocaleString():'24h';$('messages').replaceChildren();(history.messages||[]).forEach(renderMessage);$('countText').textContent=`${history.message_count} / ${maxMessages}`}catch(e){$('status').textContent='Session unavailable';notify(e.message+'. Use recovery to transfer access.',true);show('recoverPanel');return}
+const ws=new WebSocket(API.replace(/^http/,'ws')+`/api/rooms/${encodeURIComponent(id)}/ws?session=${encodeURIComponent(token)}`);socket=ws;ws.onopen=()=>{if(socket!==ws)return;setConnected(true);$('status').textContent='Connected';notify('')};ws.onmessage=event=>{if(socket!==ws)return;let data;try{data=JSON.parse(event.data)}catch{return}if(data.type==='ready'){$('countText').textContent=`${data.message_count} / ${maxMessages}`;if(data.members){roomMembers=data.members;renderMembers()}}else if(data.type==='message'){renderMessage(data.message);$('countText').textContent=`${data.message_count} / ${maxMessages}`}else if(data.type==='room_deleted'){resetRoom('Room deleted.')}else if(['member_joined','member_left','member_kicked','member_banned'].includes(data.type)){refreshMembers()}else if(data.type==='error'){if(data.code==='MESSAGE_RATE_LIMIT')cooldown(data.retry_after);else notify(data.error||'Unable to send message',true)}};ws.onclose=e=>{if(socket!==ws)return;setConnected(false);$('status').textContent='Disconnected';if(e.code===4002){resetRoom('Room deleted.');return}if(e.code===4003||e.code===4004){resetRoom('You left or were removed from this group.');return}if(e.code===4001){notify('Session transferred or revoked. Recover with your current credential.',true);show('recoverPanel')}else notify('Connection lost. Refresh to reconnect. If the session is already connected elsewhere, close the other tab.',true)};ws.onerror=()=>{$('status').textContent='Connection error'}}
+async function removeMember(id,name){if(!confirm(`Remove ${name} from the group? Their slot will become available.`))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/kick`,{method:'POST',headers:auth(),body:JSON.stringify({member_id:id})});await refreshMembers()}catch(e){notify(e.message,true)}}
+$('createBtn').onclick=async()=>{if(!turnstileToken)return notify('Complete security verification first.',true);const name=$('displayName').value.trim();if(selectedType==='group'&&(!name||name.length>32))return notify('Enter a display name (1–32 characters).',true);try{$('createBtn').disabled=true;const body={turnstile_token:turnstileToken};if(selectedType==='group'){body.room_type='group';body.display_name=name}const data=await api('/api/rooms',{method:'POST',body:JSON.stringify(body)});inviteUrl=data.invite_url;openRoom(data.room_id,data.session_token,'owner',data.recovery_token,data.room_type||selectedType,'owner');$('inviteOutput').textContent=inviteUrl;show('ownerInvite')}catch(e){notify(e.message,true)}finally{resetTurnstile()}};
+$('claimBtn').onclick=async()=>{const name=$('joinName').value.trim();try{$('claimBtn').disabled=true;let body={invite_token:inviteToken};if(name)body.display_name=name;let data;try{data=await api(`/api/rooms/${encodeURIComponent(roomId)}/claim`,{method:'POST',body:JSON.stringify(body)})}catch(e){if(e.code==='INVALID_INVITE'&&!name){show('joinNameField');throw new Error('This may be a group invitation. Enter a display name to join.')}throw e}inviteToken=null;openRoom(roomId,data.session_token,data.role||'guest',data.recovery_token,data.room_type||'private',data.member_id||null);show('ownerInvite',false)}catch(e){notify(e.message,true)}finally{$('claimBtn').disabled=false}};
+$('recoverBtn').onclick=async()=>{const id=$('recoverRoom').value.trim(),credential=$('recoverSecret').value.trim().toLowerCase();if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)||!/^[a-f0-9]{64}$/.test(credential))return notify('Enter a valid Room ID and 64-character recovery credential.',true);try{$('recoverBtn').disabled=true;let data;try{data=await api(`/api/rooms/${encodeURIComponent(id)}/transfer`,{method:'POST',body:JSON.stringify({role:$('recoverRole').value,recovery_token:credential})})}catch(e){if(e.code==='INVALID_RECOVERY' || e.message==='Recovery failed'){throw e}throw e}$('recoverSecret').value='';inviteUrl=null;show('ownerInvite',false);openRoom(id,data.session_token,data.role,data.recovery_token,data.room_type||'private',data.member_id||null)}catch(e){notify(e.message,true)}finally{$('recoverBtn').disabled=false}};
+$('sendForm').onsubmit=e=>{e.preventDefault();const text=$('messageInput').value.trim();if(!text||!connected||socket?.readyState!==WebSocket.OPEN||Date.now()<cooldownUntil)return;socket.send(JSON.stringify({type:'message',text}));$('messageInput').value=''};
+$('leaveBtn').onclick=async()=>{if(roomType!=='group'||role==='owner'||!confirm('Permanently leave this group and free your slot?'))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/leave`,{method:'POST',headers:auth()});resetRoom('You left the group.')}catch(e){notify(e.message,true)}};
+$('deleteRoomBtn').onclick=async()=>{if(role!=='owner'||!confirm('Delete this room and all messages for everyone? This cannot be undone.'))return;try{await api(`/api/rooms/${encodeURIComponent(roomId)}/delete`,{method:'POST',headers:auth()});resetRoom('Room deleted.')}catch(e){notify(e.message,true)}};
+$('copyInvite').onclick=async()=>{try{if(inviteUrl)await navigator.clipboard.writeText(inviteUrl)}catch(e){notify('Copy failed. Select the invitation manually.',true)}};
+$('copyRecovery').onclick=async()=>{try{if(recoveryValue)await navigator.clipboard.writeText(recoveryValue)}catch(e){notify('Copy failed. Select the credential manually.',true)}};
 $('dismissRecovery').onclick=()=>{recoveryValue=null;$('recoveryOutput').textContent='';show('secretPanel',false)};
-mountTurnstile();
-if(roomId){$('recoverRoom').value=roomId;let saved=null;try{saved=JSON.parse(sessionStorage.getItem(storageKey(roomId))||'null')}catch{}
-  if(saved?.session&&saved?.role){openRoom(roomId,saved.session,saved.role)}
-  else if(inviteToken){show('startPanel',false);show('claimPanel')}
-  else {show('startPanel',false);alertText('No active session in this browser. Use your recovery credential to transfer access.',true)}
-}
+mountTurnstile();if(roomId){$('recoverRoom').value=roomId;let saved=null;try{saved=JSON.parse(sessionStorage.getItem(storageKey(roomId))||'null')}catch{}if(saved?.session&&saved?.role)openRoom(roomId,saved.session,saved.role,null,saved.roomType||'private',saved.memberId||null);else if(inviteToken){show('startPanel',false);show('claimPanel');show('joinNameField');$('joinDescription').textContent='Private invitations are single-use. Group invitations can be reused until the group reaches 10 members. For a group, enter a display name.'}else{show('startPanel',false);notify('No active session in this browser. Use your recovery credential.',true)}}
 </script></body></html>
