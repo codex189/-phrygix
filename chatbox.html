@@ -78,7 +78,7 @@ h1{font-size:25px;margin:0 0 7px;letter-spacing:-.03em}h2{font-size:21px;margin:
   </aside>
   <main class="chat-main"><div class="chat-header"><div class="avatar" id="chatAvatar">✦</div><div style="min-width:0"><strong id="chatTitle">Conversation</strong><small><span id="status">Connecting…</span> · Expires <span id="expiryText">in 24h</span></small></div><div class="chat-header-actions"><button type="button" class="expiry-pill" id="temporaryMenuBtn" title="Manage temporary room">TEMPORARY ▾</button><button class="icon-btn" onclick="document.getElementById('roomDetailsModal').classList.remove('hidden')" title="Room information" aria-label="Room information"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v2"/></svg></button></div></div>
   <div id="messages" class="messages" aria-live="polite"></div>
-  <div class="composer"><div id="photoPreview" class="photo-preview hidden"><img id="photoPreviewImage" alt="Photo preview"><div class="preview-details"><p class="muted" id="photoFilename">Selected photo</p><input id="photoCaption" maxlength="500" placeholder="Add a caption (optional)"></div><button id="cancelPhoto" type="button">✕</button><button id="sendPhoto" type="button" class="primary" style="width:auto">Send</button></div><input type="file" id="documentFile" accept=".pdf,.docx,.xlsx,.pptx,.txt,.csv" hidden><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" multiple hidden><form id="sendForm"><button type="button" id="attachPhoto" class="attach-btn" title="Attach photos" aria-label="Attach photos">+</button><button type="button" id="attachDocument" class="attach-btn" title="Attach document (5 MB)" aria-label="Attach document" style="font-size:19px">📄</button><button type="button" id="emojiToggle" class="attach-btn" title="Emojis and stickers" style="font-size:19px">☺</button><input id="messageInput" maxlength="2000" placeholder="Type a message…" disabled required aria-label="Message"><button id="sendBtn" disabled aria-label="Send message">➤</button></form><div id="emojiPicker" class="hidden" style="padding:12px;background:#092d37;border:1px solid #28535d;border-radius:12px;margin-top:9px"><div id="emojiChoices" style="display:flex;flex-wrap:wrap;gap:7px"></div></div><p id="rateNotice" class="notice error hidden" role="status"></p><p id="photoStatus" class="upload-status hidden" role="status"></p></div></main>
+  <div class="composer"><div id="photoPreview" class="photo-preview hidden"><img id="photoPreviewImage" alt="Photo preview"><div class="preview-details"><p class="muted" id="photoFilename">Selected photo</p><input id="photoCaption" maxlength="500" placeholder="Add a caption (optional)"></div><button id="cancelPhoto" type="button">✕</button><button id="sendPhoto" type="button" class="primary" style="width:auto">Send</button></div><input type="file" id="documentFile" accept=".pdf,.docx,.xlsx,.pptx,.txt,.csv" hidden><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" multiple hidden><form id="sendForm"><button type="button" id="attachPhoto" class="attach-btn" title="Attach photos" aria-label="Attach photos">+</button><button type="button" id="attachDocument" class="attach-btn" title="Attach document (5 MB)" aria-label="Attach document" style="font-size:19px">📄</button><button type="button" id="emojiToggle" class="attach-btn" title="Emojis and stickers" style="font-size:19px">☺</button><input id="messageInput" maxlength="2000" placeholder="Type a message…" disabled required aria-label="Message"><button id="sendBtn" disabled aria-label="Send message">➤</button></form><div id="emojiPicker" class="hidden" style="padding:12px;background:#092d37;border:1px solid #28535d;border-radius:12px;margin-top:9px"></div><p id="rateNotice" class="notice error hidden" role="status"></p><p id="photoStatus" class="upload-status hidden" role="status"></p></div></main>
   <aside class="members-panel"><div class="members-head"><h2>Members</h2><p class="muted">Group limit: 10 registered members</p></div><div id="memberSidebar" class="member-sidebar hidden"><div id="memberCount" class="muted" style="padding:15px"></div><div id="memberList"></div><p class="subtle muted">Leaving frees your slot; disconnecting doesn't.</p></div><div style="padding:15px"><button id="leaveBtn" class="danger hidden" style="width:100%">Leave group</button><button id="deleteRoomBtn" class="danger hidden" style="width:100%;margin-top:10px">Delete room</button></div></aside>
  </div>
  <div class="modal hidden" id="secretPanel" role="dialog" aria-modal="true" aria-labelledby="recoveryHeading"><div class="modal-card"><div class="modal-head"><h2 id="recoveryHeading">Save your recovery credential</h2><button class="icon-btn" id="closeRecovery" aria-label="Close">✕</button></div><p class="description">Keep this credential and your Room ID together. Every transfer invalidates the previous credential.</p><p class="muted">Room ID: <strong id="recoveryRoomId"></strong></p><div id="recoveryOutput" class="notice secret"></div><div class="modal-actions"><button id="copyRecovery" class="primary">Copy credential</button><button id="dismissRecovery" class="secondary">I saved it</button></div></div></div>
@@ -185,8 +185,164 @@ $('attachDocument').onclick=()=>{if(connected)$('documentFile').click();else pho
 const docMime={pdf:'application/pdf',docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',pptx:'application/vnd.openxmlformats-officedocument.presentationml.presentation',txt:'text/plain',csv:'text/csv'};
 $('documentFile').onchange=async()=>{const file=$('documentFile').files?.[0];if(!file)return;const ext=file.name.split('.').pop().toLowerCase();if(!docMime[ext]||file.size>5*1024*1024){photoNotice('Choose PDF, DOCX, XLSX, PPTX, TXT or CSV under 5 MB.',true);return}if(!confirm('Send document "'+file.name+'" to this conversation?'))return;try{photoNotice('Uploading document…');const res=await fetch(API+`/api/rooms/${encodeURIComponent(roomId)}/document-upload`,{method:'POST',headers:{...auth(),'Content-Type':docMime[ext],'X-File-Name':encodeURIComponent(file.name)},body:file});const data=await res.json().catch(()=>({}));if(!res.ok)throw Error(data.error||'Upload failed');photoNotice('Document sent.')}catch(e){photoNotice(e.message,true)}finally{$('documentFile').value=''}};
 async function downloadDocument(id,name){try{const res=await fetch(API+`/api/rooms/${encodeURIComponent(roomId)}/document?id=${encodeURIComponent(id)}`,{headers:auth(),cache:'no-store'});if(!res.ok)throw Error('Document unavailable');const blob=await res.blob(),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name||'document';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000)}catch(e){notify(e.message,true)}}
-const emojis='😀 😁 😂 🤣 😊 😍 🥰 😘 😭 🥹 😎 😤 🤔 🙏 👍 👏 ❤️ 💔 🔥 💯 🎉 💀 👀 🤝 😈 🐱'.split(' ');
-for(const e of emojis){const b=document.createElement('button');b.type='button';b.textContent=e;b.style.cssText='font-size:22px;padding:6px;width:auto;background:transparent;border:0';b.onclick=()=>{const input=$('messageInput');input.value+=e;input.focus()};$('emojiChoices').append(b)}
-for(const [id,e] of Object.entries(STICKERS)){const b=document.createElement('button');b.type='button';b.textContent=e;b.title='Sticker';b.style.cssText='font-size:30px;padding:6px;width:auto;background:transparent;border:0';b.onclick=()=>{const input=$('messageInput');input.value+=e;input.focus();show('emojiPicker',false)};$('emojiChoices').append(b)}
-$('emojiToggle').onclick=()=>show('emojiPicker',$('emojiPicker').classList.contains('hidden'));
+
+// ===== EMOJI PICKER — loads full Unicode set from CDN =====
+const EMOJI_JSON_URL = 'https://cdn.jsdelivr.net/npm/emoji.json@16.0.0/emoji.json';
+const EMOJI_GROUPS = ['Smileys & Emotion','People & Body','Animals & Nature','Food & Drink','Travel & Places','Activities','Objects','Symbols','Flags'];
+const EMOJI_GROUP_LABELS = {
+  'Smileys & Emotion':'😀','People & Body':'👋','Animals & Nature':'🐻',
+  'Food & Drink':'🍔','Travel & Places':'✈️','Activities':'⚽',
+  'Objects':'💡','Symbols':'❤️','Flags':'🏳️'
+};
+
+let emojiData = null;
+
+async function loadEmojiData() {
+  if (emojiData) return emojiData;
+  const res = await fetch(EMOJI_JSON_URL, { cache: 'force-cache' });
+  if (!res.ok) throw new Error('Emoji data failed to load');
+  emojiData = await res.json();
+  return emojiData;
+}
+
+function buildEmojiPicker(data) {
+  const picker = $('emojiPicker');
+  picker.innerHTML = '';
+
+  // Search input
+  const searchWrap = document.createElement('div');
+  searchWrap.style.cssText = 'margin-bottom:9px';
+  const search = document.createElement('input');
+  search.type = 'search';
+  search.placeholder = 'Search emoji…';
+  search.style.cssText = 'width:100%;padding:9px 12px;border-radius:9px;border:1px solid #28535d;background:#031a25;color:#e9f7fb;font-size:13px';
+  searchWrap.append(search);
+  picker.append(searchWrap);
+
+  // Category tabs
+  const tabs = document.createElement('div');
+  tabs.style.cssText = 'display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px';
+  const grid = document.createElement('div');
+  grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;max-height:220px;overflow-y:auto;padding:2px';
+
+  // Group emojis by category (emoji.json uses "group" field, or fallback to "category")
+  const grouped = {};
+  for (const e of data) {
+    const g = e.group || e.category || 'Symbols';
+    (grouped[g] ||= []).push(e);
+  }
+
+  let activeGroup = null;
+
+  function renderGrid(filter) {
+    grid.replaceChildren();
+    const q = (filter || '').trim().toLowerCase();
+    let list = [];
+
+    if (q) {
+      // Search across all groups by name/short_name/keywords
+      for (const g of Object.keys(grouped)) {
+        for (const e of grouped[g]) {
+          const hay = ((e.name || '') + ' ' + (e.short_name || '') + ' ' + (e.short_names || []).join(' ') + ' ' + (e.keywords || []).join(' ')).toLowerCase();
+          if (hay.includes(q)) list.push(e);
+        }
+      }
+    } else if (activeGroup) {
+      list = grouped[activeGroup] || [];
+    }
+
+    for (const e of list) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = e.emoji || String.fromCodePoint(...(e.unified || '').split('-').map(h => parseInt(h, 16)));
+      b.title = e.name || '';
+      b.style.cssText = 'font-size:20px;padding:4px;width:34px;height:34px;line-height:1;background:transparent;border:0;border-radius:6px';
+      b.onmouseenter = () => b.style.background = '#15414d';
+      b.onmouseleave = () => b.style.background = 'transparent';
+      b.onclick = () => { const input = $('messageInput'); input.value += b.textContent; input.focus(); };
+      grid.append(b);
+    }
+    if (!list.length) {
+      const empty = document.createElement('p');
+      empty.textContent = q ? 'No emoji match your search.' : 'Select a category above.';
+      empty.style.cssText = 'color:#86a5b5;font-size:12px;padding:10px';
+      grid.append(empty);
+    }
+  }
+
+  for (const g of EMOJI_GROUPS) {
+    if (!grouped[g] && !grouped[g.replace(' & ', ' & ')] && !grouped[g.replace('Smileys & Emotion','Smileys & People')]) {
+      // still show tab for consistency if data exists under slightly different name
+    }
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.textContent = (EMOJI_GROUP_LABELS[g] || '•');
+    tab.title = g;
+    tab.style.cssText = 'font-size:18px;width:34px;height:32px;border-radius:7px;border:1px solid #28535d;background:#092d37;color:#cfeef2;line-height:1';
+    tab.onclick = () => {
+      tabs.querySelectorAll('button').forEach(b => { b.style.background = '#092d37'; });
+      tab.style.background = '#0d4a50';
+      activeGroup = g;
+      search.value = '';
+      renderGrid('');
+    };
+    tabs.append(tab);
+  }
+
+  search.oninput = () => renderGrid(search.value);
+
+  picker.append(tabs, grid);
+
+  // Stickers (custom, hardcoded)
+  const stickerHead = document.createElement('p');
+  stickerHead.textContent = 'Stickers';
+  stickerHead.style.cssText = 'margin:12px 0 6px;font-size:12px;color:#9fe7e2;font-weight:700';
+  const stickerGrid = document.createElement('div');
+  stickerGrid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
+
+  const ALL_STICKERS = {
+    cat:'😺',laugh:'🤣',love:'🥰',fire:'🔥',party:'🥳',cool:'😎',cry:'😭',ghost:'👻',
+    wink:'😉',heart:'❤️',star:'⭐',sparkle:'✨',thumbsup:'👍',clap:'👏',pray:'🙏',wave:'👋',
+    muscle:'💪',party_popper:'🎉',rocket:'🚀',crown:'👑',trophy:'🏆',gift:'🎁',balloon:'🎈',cake:'🎂',
+    coffee:'☕',pizza:'🍕',beer:'🍺',sun:'☀️',moon:'🌙',rainbow:'🌈',flower:'🌸',tree:'🌳',
+    dog:'🐶',catface:'🐱',unicorn:'🦄',dragon:'🐉',skull:'💀',alien:'👽',robot:'🤖',poop:'💩',
+    clown:'🤡',devil:'😈',angel:'😇',nerd:'🤓',sleepy:'😴',sick:'🤒',dizzy:'😵',mindblown:'🤯'
+  };
+
+  for (const [id, e] of Object.entries(ALL_STICKERS)) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = e;
+    b.title = 'Sticker: ' + id;
+    b.style.cssText = 'font-size:28px;padding:4px;width:42px;height:42px;line-height:1;background:transparent;border:0;border-radius:8px';
+    b.onmouseenter = () => b.style.background = '#15414d';
+    b.onmouseleave = () => b.style.background = 'transparent';
+    b.onclick = () => { const input = $('messageInput'); input.value += e; input.focus(); show('emojiPicker', false); };
+    stickerGrid.append(b);
+  }
+
+  picker.append(stickerHead, stickerGrid);
+
+  // Open first group by default
+  const firstTab = tabs.querySelector('button');
+  if (firstTab) firstTab.click();
+}
+
+// Toggle: lazy-load data on first open
+let emojiPickerReady = false;
+$('emojiToggle').onclick = async () => {
+  const picker = $('emojiPicker');
+  const opening = picker.classList.contains('hidden');
+  show('emojiPicker', opening);
+  if (!opening || emojiPickerReady) return;
+
+  picker.innerHTML = '<p style="color:#86a5b5;font-size:12px;padding:8px">Loading emoji…</p>';
+  try {
+    const data = await loadEmojiData();
+    buildEmojiPicker(data);
+    emojiPickerReady = true;
+  } catch (e) {
+    picker.innerHTML = '<p style="color:#ff9ca6;font-size:12px;padding:8px">Could not load emoji data. Check your connection.</p>';
+  }
+};
 </script></body></html>
