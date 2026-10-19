@@ -69,7 +69,7 @@ h1{font-size:25px;margin:0 0 7px;letter-spacing:-.03em}h2{font-size:21px;margin:
   border-left: 0 !important; box-shadow: none;
 }
 
-/* ===== CLOAKING MODE ===== */
+/* ===== CLOAKING MODE (PHRYGIX Assistant / CHATBOT) ===== */
 .cloak-modal{position:fixed;inset:0;z-index:60;background:#000c;display:grid;place-items:center;padding:18px}
 .cloak-card{width:min(100%,560px);max-height:90dvh;overflow:auto;background:#0b2331;border:1px solid #315362;border-radius:18px;padding:25px;color:#e9f7fb}
 .cloak-card h2{margin:0 0 10px;font-size:20px}
@@ -81,18 +81,57 @@ h1{font-size:25px;margin:0 0 7px;letter-spacing:-.03em}h2{font-size:21px;margin:
 .cloak-card button:disabled{opacity:.45;cursor:not-allowed}
 .cloak-card .cl-err{background:#4a2530;color:#ffe0e5;padding:10px;border-radius:8px;font-size:12px;margin-top:10px}
 .cloak-card .cl-notice{background:#113549;color:#c5e1e9;padding:10px;border-radius:8px;font-size:12px;margin-top:10px}
-.cloak-checkbox{display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:13px;color:#c5d6de}
-.cloak-checkbox input{width:auto;margin-top:2px}
 #cloakOverlay{position:fixed;inset:0;z-index:55;background:#061620;display:flex;flex-direction:column;color:#e9f7fb}
 #cloakOverlay.hidden{display:none!important}
-#cloakOverlay header{padding:14px 20px;border-bottom:1px solid #23424d;background:#0c2531;font-weight:600;display:flex;align-items:center;gap:10px}
-#cloakMessages{flex:1;overflow-y:auto;padding:20px 6%;display:flex;flex-direction:column;gap:12px}
-.cloak-bubble{max-width:76%;padding:11px 14px;border-radius:4px 15px 15px 15px;background:#1c3241;line-height:1.45;font-size:14px;align-self:flex-start;overflow-wrap:anywhere}
-.cloak-bubble.mine{align-self:flex-end;background:#00666b;border-radius:15px 4px 15px 15px}
-#cloakComposer{display:flex;gap:10px;padding:13px 20px;background:#0d2834;border-top:1px solid #23424d}
-#cloakComposer input{flex:1;padding:13px 16px;border-radius:23px;border:1px solid #2b4856;background:#071b27;color:#e9f7fb;font:inherit}
-#cloakComposer button{padding:0 20px;border:0;border-radius:23px;background:#2ce5d8;color:#022b31;font-weight:800;cursor:pointer}
 
+/* ===== PHRYGIX CHATBOT skin ===== */
+#cloakOverlay .cb-wrap{flex:1;display:flex;justify-content:center;align-items:center;padding:16px;min-height:0}
+#cloakOverlay .chat-container{max-width:860px;width:100%;height:100%;max-height:920px;background:#071b28;border-radius:24px;border:1px solid #1c3c4d;box-shadow:0 8px 30px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}
+#cloakOverlay .chat-header{padding:14px 20px;border-bottom:1px solid #16323f;display:flex;align-items:center;gap:10px;flex-shrink:0;background:#0c2531}
+#cloakOverlay .chat-header .logo{width:28px;height:28px;background:#2ce5d8;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#022b31;font-weight:800;font-size:11px;letter-spacing:-.5px;cursor:pointer}
+#cloakOverlay .chat-header h1{font-size:17px;font-weight:600;color:#e9f7fb;letter-spacing:-.2px}
+#cloakOverlay .chat-header .badge{font-size:12px;color:#a3c5d2;background:#0a3a3e;padding:4px 10px;border-radius:30px;font-weight:500}
+#cloakOverlay .chat-header .spacer{flex:1}
+#cloakOverlay .category-pills{display:flex;gap:6px;flex-wrap:wrap}
+#cloakOverlay .pill{font-size:12px;padding:5px 10px;border-radius:20px;border:1px solid #23424d;background:#071824;cursor:pointer;color:#a4c4ce;transition:all .12s}
+#cloakOverlay .pill:hover{background:#0f2a38}
+#cloakOverlay .pill.active{background:#2ce5d8;color:#022b31;border-color:#2ce5d8;font-weight:700}
+#cloakOverlay .chat-messages{flex:1;overflow-y:auto;padding:24px 20px 12px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth;background:#061722;background-image:radial-gradient(#16333d 1px,transparent 1px);background-size:27px 27px}
+#cloakOverlay .message-row{display:flex;gap:12px;max-width:100%}
+#cloakOverlay .message-row.user{justify-content:flex-end}
+#cloakOverlay .message-row.assistant{justify-content:flex-start}
+#cloakOverlay .avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-top:2px}
+#cloakOverlay .avatar.assistant{background:#2ce5d8;color:#022b31}
+#cloakOverlay .avatar.user{background:#1c3241;color:#e9f7fb}
+#cloakOverlay .message-bubble{padding:12px 16px;border-radius:20px;font-size:14px;line-height:1.55;word-break:break-word;max-width:85%;white-space:pre-wrap;box-shadow:0 4px 12px #0003}
+#cloakOverlay .message-bubble.assistant{background:#1c3241;color:#e9f7fb;border-top-left-radius:6px}
+#cloakOverlay .message-bubble.user{background:#00666b;color:#e9f7fb;border-top-right-radius:6px}
+#cloakOverlay .typing-indicator{display:flex;gap:6px;padding:12px 18px;background:#1c3241;border-radius:20px;border-top-left-radius:6px;width:fit-content}
+#cloakOverlay .typing-indicator span{width:7px;height:7px;background:#7fa5b4;border-radius:50%;display:inline-block;animation:typingBounce 1.2s infinite ease-in-out}
+#cloakOverlay .typing-indicator span:nth-child(2){animation-delay:.2s}
+#cloakOverlay .typing-indicator span:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.6}30%{transform:translateY(-5px);opacity:1}}
+#cloakOverlay .cursor{display:inline-block;width:2px;height:1em;background:#2ce5d8;margin-left:2px;vertical-align:text-bottom;animation:blink .9s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+#cloakOverlay .chat-input-container{padding:14px 20px 18px;border-top:1px solid #23424d;flex-shrink:0;background:#0d2834}
+#cloakOverlay .input-wrapper{display:flex;align-items:flex-end;gap:8px;border:1px solid #2b4856;border-radius:28px;padding:8px 8px 8px 18px;transition:border-color .15s,box-shadow .15s;background:#071b27;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+#cloakOverlay .input-wrapper:focus-within{border-color:#2ce5d8;box-shadow:0 0 0 3px rgba(44,229,216,.12)}
+#cloakOverlay .input-wrapper textarea{flex:1;border:none;outline:none;resize:none;font-size:14px;line-height:1.5;max-height:120px;background:transparent;color:#e9f7fb;padding:6px 0;font-family:inherit}
+#cloakOverlay .input-wrapper textarea::placeholder{color:#86a5b5}
+#cloakOverlay .send-button{background:#2ce5d8;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,opacity .15s;flex-shrink:0}
+#cloakOverlay .send-button:hover{background:#26cfc2}
+#cloakOverlay .send-button:disabled{background:#22434e;cursor:not-allowed}
+#cloakOverlay .send-button svg{width:18px;height:18px;fill:#022b31}
+#cloakOverlay .disclaimer{font-size:11px;color:#8aa8b5;text-align:center;margin-top:8px}
+#cloakOverlay .chat-messages::-webkit-scrollbar{width:6px}
+#cloakOverlay .chat-messages::-webkit-scrollbar-thumb{background:#22434e;border-radius:10px}
+@media(max-width:600px){
+  #cloakOverlay .cb-wrap{padding:8px}
+  #cloakOverlay .chat-container{height:100%;border-radius:16px}
+  #cloakOverlay .message-bubble{max-width:90%;font-size:13.5px}
+  #cloakOverlay .avatar{width:28px;height:28px;font-size:11px}
+  #cloakOverlay .chat-header{flex-wrap:wrap;padding:10px 14px;gap:8px}
+}
 body.cloak-active .chat-screen{display:none!important}
 body.cloak-active .setup-screen{display:none!important}
 </style></head><body class="setup-open"><div class="app">
@@ -332,10 +371,7 @@ if(roomId){
     document.body.classList.add('cloak-active');
     document.body.classList.remove('setup-open');
     document.body.classList.remove('room-open');
-    clearCloakMessages();
-    renderCloakBubble(CLOAK_BOT.greeting(),false);
     cloakShow('cloakOverlay',true);
-    cloakShow('cloakUnlockBtn',false);
   } else {
     $('recoverRoom').value=roomId;
     let saved=null;
@@ -520,7 +556,7 @@ messageBox.addEventListener('keydown', (e) => {
 });
 
 // ============================================================
-// ===== CLOAKING MODE — client side =====
+// ===== CLOAKING MODE — PHRYGIX CHATBOT engine =====
 // ============================================================
 
 function ensureCloakUI() {
@@ -543,7 +579,6 @@ function ensureCloakUI() {
     <div id="cloakUnlockModal" class="cloak-modal hidden" role="dialog" aria-modal="true">
       <div class="cloak-card">
         <h2>PHRYGIX</h2>
-        
         <div id="cloakUnlockAlert" class="cl-err hidden" role="status"></div>
         <label for="cloakPassword">Password</label>
         <input id="cloakPassword" type="password" autocomplete="off" maxlength="128" placeholder="Password">
@@ -553,76 +588,696 @@ function ensureCloakUI() {
     </div>
 
     <div id="cloakOverlay" class="hidden">
-      <header><button type="button" id="cloakBrandTrigger" aria-label="PHRYGIX" title="PHRYGIX" style="border:0;background:transparent;color:inherit;font:inherit;display:flex;align-items:center;gap:10px;cursor:pointer;padding:0"><span aria-hidden="true">✦</span><span>PHRYGIX Assistant</span></button></header>
-      <div id="cloakMessages"></div>
-      <div id="cloakComposer">
-        <input id="cloakInput" placeholder="Ask the assistant anything…" autocomplete="off" maxlength="2000">
-        <button id="cloakSend">Send</button>
+      <div class="cb-wrap">
+        <div class="chat-container">
+          <div class="chat-header">
+            <div class="logo" id="cloakBrandTrigger" title="PHRYGIX">PX</div>
+            <h1>PHRYGIX CHATBOT</h1>
+            <div class="badge" id="cbTopicBadge">random chat</div>
+            <div class="spacer"></div>
+            <div class="category-pills" id="cbCategoryPills">
+              <button class="pill active" data-cat="all">All</button>
+              <button class="pill" data-cat="joke">Jokes</button>
+              <button class="pill" data-cat="love">Love</button>
+              <button class="pill" data-cat="serious">Serious</button>
+            </div>
+          </div>
+          <div class="chat-messages" id="cbChatMessages"></div>
+          <div class="chat-input-container">
+            <div class="input-wrapper">
+              <textarea id="cbUserInput" rows="1" placeholder="Message PHRYGIX CHATBOT..." autofocus></textarea>
+              <button class="send-button" id="cbSendButton" aria-label="Send message">
+                <svg viewBox="0 0 24 24"><path d="M3.4 20.4l17.45-7.48a1 1 0 000-1.84L3.4 3.6a.993.993 0 00-1.39.91L2 9.12c0 .5.37.93.87.99L17 12 2.87 13.88c-.5.07-.87.5-.87 1l.01 4.61c0 .71.73 1.2 1.39.91z"/></svg>
+              </button>
+            </div>
+            <div class="disclaimer">PHRYGIX CHATBOT · scripted conversations · pick a category, continue any chat</div>
+          </div>
+        </div>
       </div>
-
     </div>
   `);
   wireCloakUI();
 }
 
-const CLOAK_BOT = (() => {
-  const topics = {
-    cooking: [
-      "For a quick weeknight meal, try a one-pan lemon chicken: sear thighs, add stock, lemon, and herbs, then finish in the oven for 20 minutes.",
-      "Pasta water is your secret ingredient — the starch helps sauces cling. Save a cup before draining.",
-      "Salt your onions at the start; it draws out water and speeds up caramelisation.",
-      "A pinch of sugar balances acidic tomato sauces without making them sweet."
-    ],
-    math: [
-      "The sum of the first n odd numbers is n² — a nice visual proof uses a growing square of dots.",
-      "For a quadratic ax² + bx + c = 0, the discriminant b² − 4ac tells you how many real roots exist.",
-      "Euler's identity e^(iπ) + 1 = 0 ties together five fundamental constants.",
-      "To estimate √n, start with a guess x, then iterate x → (x + n/x)/2. It converges fast."
-    ],
-    science: [
-      "Water is densest at about 4 °C, which is why ice floats and lakes freeze from the top down.",
-      "The speed of light in a vacuum is 299,792,458 m/s — exact by definition since 1983.",
-      "Plants convert light into chemical energy with roughly 3–6% efficiency, not the 100% you might guess.",
-      "Mitochondria have their own DNA, a relic of their ancient bacterial origins."
-    ],
-    general: [
-      "The Great Wall of China is not visible from space with the naked eye — a common myth.",
-      "Octopuses have three hearts and blue blood thanks to a copper-based pigment called hemocyanin.",
-      "A day on Venus is longer than its year — it rotates slower than it orbits.",
-      "Honey never spoils in practice; sealed jars from ancient tombs have been found edible."
-    ]
-  };
-  function pick(category) {
-    const arr = topics[category] || topics.general;
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
-  function classify(text) {
-    const t = text.toLowerCase();
-    if (/(cook|recipe|food|meal|bake|pasta|sauce)/.test(t)) return 'cooking';
-    if (/(math|algebra|equation|number|prime|geometry|calcul)/.test(t)) return 'math';
-    if (/(science|physics|chemistry|biology|atom|energy|space)/.test(t)) return 'science';
-    return 'general';
-  }
-  return {
-    reply(text) { return pick(classify(text)); },
-    greeting() { return "Hello! What can I help you with today?"; }
-  };
-})();
+// ===== PHRYGIX CHATBOT ENGINE (verbatim from original) =====
+function initChatbotEngine() {
+  const chatMessages = document.getElementById('cbChatMessages');
+  const userInput = document.getElementById('cbUserInput');
+  const sendButton = document.getElementById('cbSendButton');
+  const topicBadge = document.getElementById('cbTopicBadge');
+  const categoryPills = document.getElementById('cbCategoryPills');
+  if (!chatMessages || chatMessages.dataset.ready === '1') return;
+  chatMessages.dataset.ready = '1';
 
-function renderCloakBubble(text, mine) {
-  const box = document.getElementById('cloakMessages');
-  const el = document.createElement('div');
-  el.className = 'cloak-bubble' + (mine ? ' mine' : '');
-  el.textContent = text;
-  box.appendChild(el);
-  box.scrollTop = box.scrollHeight;
+  const TEMPLATES = [
+    { category:'joke', topic:'flying donkeys', transcript:[
+      {s:'user',t:'hi'},
+      {s:'assistant',t:'Hello! How can I help you today?'},
+      {s:'user',t:'do donkeys fly'},
+      {s:'assistant',t:'No, donkeys do not fly. They are land mammals with no wings or ability to fly.\n\nYou might be thinking of the phrase "when donkeys fly" (or "when pigs fly"), which is an idiom meaning something will never happen. For example: "I\'ll clean my room when donkeys fly" means the speaker has no intention of cleaning their room.\n\nThere\'s also Donkey from Shrek, but even he doesn\'t fly—he just talks a lot. 🐴'},
+      {s:'user',t:'so why do people say when donkey fly'},
+      {s:'assistant',t:'Great question! People say "when donkeys fly" (or more commonly "when pigs fly") as a humorous way of saying something will never happen.\n\nHere\'s why it works:\n\n• It\'s obviously impossible — everyone knows donkeys can\'t fly, so using it as a condition makes the point that the event in question will never occur.\n\n• It\'s an idiom — a fixed expression whose meaning isn\'t literal. Similar idioms exist in many languages:\n\n  English: "When pigs fly" / "When hell freezes over"\n  Spanish: "Cuando las ranas críen pelo" ("when frogs grow hair")\n  French: "Quand les poules auront des dents" ("when chickens have teeth")\n  German: "Wenn Schweine fliegen können" ("when pigs can fly")\n\n"Donkeys fly" is a less common variant of the pig version — same idea, just a different impossible animal.\n\nSo when someone says "Sure, I\'ll lend you my car… when donkeys fly," they\'re really saying "No chance." It\'s sarcasm wrapped in a ridiculous image. 🐴✈️'}
+    ], followUps:[
+      {k:['shrek','donkey from shrek'],r:'Donkey from Shrek is a legend — loyal, chatty, and a total waffle enthusiast. He can\'t fly, but he did once ride a dragon, which is arguably cooler than flying. 🐉'},
+      {k:['pig','pigs fly','pigs'],r:'"When pigs fly" is actually the more common English version — same idea, different barnyard animal. Pigs also can\'t fly, unless they\'re in a very ambitious cartoon. 🐷✈️'},
+      {k:['other language','spanish','french','german'],r:'Fun idiom fact: Spanish says "when frogs grow hair," French says "when chickens have teeth," and German says "when pigs can fly." Every culture has its own impossible image for "never." 🌍'},
+      {k:['horse','horses fly'],r:'Horses don\'t fly either — but Pegasus was a winged horse from Greek mythology, so at least horses got a mythological upgrade. Donkeys never got that PR. 🐎'}
+    ], genericFollowUps:[
+      'Ha, good point! Donkeys remain firmly grounded, as far as science is concerned. 🐴',
+      'I like where this is going — but I have to confirm: still no flying donkeys. ✈️',
+      'That\'s a creative thought! If donkeys ever do fly, I\'ll be the first to report it.'
+    ]},
+    { category:'joke', topic:'dad jokes', transcript:[
+      {s:'user',t:'tell me a dad joke'},
+      {s:'assistant',t:'Why don\'t scientists trust atoms?\n\nBecause they make up everything. ⚛️'},
+      {s:'user',t:'another one'},
+      {s:'assistant',t:'I told my wife she was drawing her eyebrows too high.\n\nShe looked surprised. 😮'},
+      {s:'user',t:'one more'},
+      {s:'assistant',t:'What do you call a fake noodle?\n\nAn impasta. 🍝\n\nI\'ll see myself out.'}
+    ], followUps:[
+      {k:['another','more','again'],r:'Why did the scarecrow win an award?\n\nBecause he was outstanding in his field. 🌾'},
+      {k:['bad','terrible','awful'],r:'That\'s the point! Dad jokes are supposed to be groan-worthy. The worse they are, the better they work. 😄'},
+      {k:['pun','puns'],r:'I\'m reading a book about anti-gravity. It\'s impossible to put down. 📚'},
+      {k:['stop','enough','no more'],r:'Understood — I\'ll put the dad jokes on pause. But they\'ll be back. They always come back. 😄'}
+    ], genericFollowUps:[
+      'Dad jokes are a public service. A very annoying public service. 😄',
+      'If that made you groan, my work here is done. 🥁',
+      'I have a million of these. I\'ll pace myself.'
+    ]},
+    { category:'joke', topic:'why did the chicken cross the road', transcript:[
+      {s:'user',t:'why did the chicken cross the road'},
+      {s:'assistant',t:'To get to the other side. 🐔\n\nThe classic. The original. The one that started it all.'},
+      {s:'user',t:'thats boring give me a better one'},
+      {s:'assistant',t:'Fair enough. Here\'s the philosopher\'s version:\n\nWhy did the chicken cross the road?\n\nPlato: "For the chicken, the road is but a shadow of the true Road."\n\nAristotle: "The chicken crossed the road because it is in the nature of chickens to cross roads."\n\nNietzsche: "Because if you stare into the road long enough, the road stares back."\n\nSocrates: "To get to the other side — but first, what is a road, really?" 🐔📜'},
+      {s:'user',t:'any more'},
+      {s:'assistant',t:'The scientist\'s version:\n\n"Why did the chicken cross the road?"\n\n"Well, based on a longitudinal study of 10,000 chickens, we observed an 87% correlation between road-crossing and the presence of corn on the opposite side. Further research is needed."\n\nThe chicken, meanwhile, has already crossed back. 🐔🔬'}
+    ], followUps:[
+      {k:['plato','aristotle','socrates','nietzsche'],r:'The philosophers would overthink it, the scientists would study it, and the chicken would just cross. That\'s the joke. 🐔'},
+      {k:['scientist','study','research'],r:'"Based on a longitudinal study of 10,000 chickens…" — the scientist never actually answers the question. The chicken already crossed. 🐔🔬'},
+      {k:['other side','why'],r:'"To get to the other side" is the original punchline. Everything else is just fan fiction. 🐔'},
+      {k:['more','another'],r:'The chicken crossed the road because it saw a "Free Corn" sign. Chickens are simple creatures with strong motivations. 🌽'}
+    ], genericFollowUps:[
+      'The chicken has crossed the road. We may never know why. 🐔',
+      'Every version of this joke is just the chicken doing its thing. 🐔',
+      'The chicken doesn\'t care about our theories. It\'s already on the other side.'
+    ]},
+    { category:'joke', topic:'worst pickup lines', transcript:[
+      {s:'user',t:'give me the worst pickup line you know'},
+      {s:'assistant',t:'Are you a parking ticket? Because you\'ve got FINE written all over you. 🎫\n\nI warned you — it\'s bad.'},
+      {s:'user',t:'thats so bad give me another'},
+      {s:'assistant',t:'Do you have a map? Because I just got lost in your eyes. 🗺️\n\nIt\'s terrible. It\'s classic. It works approximately 0% of the time, which is somehow still not zero.'},
+      {s:'user',t:'one more i dare you'},
+      {s:'assistant',t:'Are you a magician? Because whenever I look at you, everyone else disappears. 🎩✨\n\nI\'m so sorry. I\'ll stop now. Probably.'}
+    ], followUps:[
+      {k:['worse','terrible','bad'],r:'Is your name Wi-Fi? Because I\'m feeling a connection. 📶 — I have no shame.'},
+      {k:['work','does it work'],r:'Statistically? No. Emotionally? Also no. But the confidence is impressive. 😄'},
+      {k:['science','math','nerdy'],r:'Are you made of copper and tellurium? Because you\'re Cu-Te. 🧪 — The nerdy ones are the best ones.'},
+      {k:['stop','enough'],r:'Okay, okay — the pickup line factory is closing. But you have to admit, they were memorable. 😄'}
+    ], genericFollowUps:[
+      'These lines are weapons of mass cringe, and I respect them. 😄',
+      'I have an infinite supply of bad pickup lines. This is a threat. 😄',
+      'If you groaned, that means it worked. That\'s how bad pickup lines operate.'
+    ]},
+    { category:'joke', topic:'why do we say o\'clock', transcript:[
+      {s:'user',t:'why do we say o\'clock'},
+      {s:'assistant',t:'"O\'clock" is a contraction of "of the clock." 🕰️\n\nBefore clocks, people told time by the sun, by bells, or roughly. When mechanical clocks became common in the 14th–15th centuries, you had to specify *which* clock you meant — "three of the clock" meant 3 o\'clock on the clock, as opposed to some other time reference.\n\nOver time, "of the clock" got shortened to "o\'clock." Now it\'s just the standard way to say the hour.'},
+      {s:'user',t:'what did people say before clocks'},
+      {s:'assistant',t:'Before mechanical clocks, people used:\n\n• Sundials — "three hours after sunrise"\n• Water clocks — used in ancient Greece and China\n• Bells — church bells marked the hours for the community\n• Natural cues — sunrise, noon, sunset\n\n"O\'clock" only became common once clocks were everywhere. Before that, time was looser and more local. 🌞'},
+      {s:'user',t:'do other languages say o clock'},
+      {s:'assistant',t:'Many don\'t — they just say the hour:\n\n• Spanish: "Son las tres" (it\'s three)\n• French: "Il est trois heures" (it\'s three hours)\n• German: "Es ist drei Uhr" (it\'s three o\'clock — "Uhr" means clock)\n\nEnglish is one of the few languages that keeps the old "of the clock" phrase baked in. 🕰️'}
+    ], followUps:[
+      {k:['of the clock','contraction'],r:'"O\'clock" is short for "of the clock." Before clocks, people didn\'t need to say it. Once clocks existed, you had to specify which one. 🕰️'},
+      {k:['sundial','sun','before clocks'],r:'Before mechanical clocks, people used sundials, water clocks, church bells, and natural cues like sunrise and noon. Time was looser. 🌞'},
+      {k:['spanish','french','german'],r:'Spanish: "Son las tres." French: "Il est trois heures." German: "Es ist drei Uhr." English is one of the few languages that keeps the old "of the clock" phrase. 🕰️'},
+      {k:['clock','mechanical'],r:'Mechanical clocks became common in the 14th–15th centuries. That\'s when "of the clock" started showing up in everyday speech. ⚙️'}
+    ], genericFollowUps:[
+      'Language is full of old contractions like "o\'clock." 🕰️',
+      'Timekeeping used to be much looser. "O\'clock" is a clock-era invention. ⏳',
+      'English keeps the old "of the clock" phrase baked in. Most languages don\'t. 🕰️'
+    ]},
+    { category:'joke', topic:'why do we say bless you', transcript:[
+      {s:'user',t:'why do people say bless you when you sneeze'},
+      {s:'assistant',t:'The custom goes back centuries, and there are a few explanations:\n\n• Medieval plague era — sneezing was an early symptom of plague, so "bless you" was a small prayer for your survival. Cheerful, right?\n• Ancient belief — people thought a sneeze could expel the soul, so "bless you" was protection.\n• Pope Gregory I — a 6th-century pope reportedly ordered prayers for sneezers during a plague outbreak.\n\nThe exact origin is murky, but the habit stuck. It\'s now mostly just polite reflex. 🤧'},
+      {s:'user',t:'what do other countries say'},
+      {s:'assistant',t:'Great question! Around the world:\n\n• Spanish: "¡Salud!" (health)\n• French: "À tes souhaits" (to your wishes)\n• German: "Gesundheit" (health)\n• Japanese: "お大事に" (take care)\n• Arabic: "Alhamdulillah" (praise be to God)\n\nSome cultures don\'t say anything at all — they just ignore the sneeze, which is honestly efficient. 🌍'},
+      {s:'user',t:'is it rude not to say it'},
+      {s:'assistant',t:'In English-speaking cultures, it\'s mildly expected but not a big deal. In some places it\'s considered polite; in others, nobody notices.\n\nThe safest move: say it if you want, don\'t stress if you forget. The sneezer will survive. 🤧'}
+    ], followUps:[
+      {k:['plague','medieval'],r:'Sneezing was an early plague symptom, so "bless you" was originally a tiny prayer for survival. Dark origins for a polite habit. 🤧'},
+      {k:['spanish','french','german','japanese'],r:'Spanish says "¡Salud!", French says "À tes souhaits," German says "Gesundheit," Japanese says "お大事に." The world agrees: sneezing deserves a comment. 🌍'},
+      {k:['rude','polite'],r:'In English-speaking cultures it\'s mildly expected. Not saying it isn\'t a crime, but it might get a look. 🤧'},
+      {k:['soul','spirit'],r:'One old belief: a sneeze could expel the soul, so "bless you" was protection. Modern version: it\'s just polite. 👻'}
+    ], genericFollowUps:[
+      'Sneezing has a surprisingly dramatic history. 🤧',
+      'The "bless you" habit is old, weird, and very sticky. 🕰️',
+      'Say it or don\'t — the sneezer will survive. 🤧'
+    ]},
+    { category:'joke', topic:'talking refrigerator', transcript:[
+      {s:'user',t:'what would a talking refrigerator say'},
+      {s:'assistant',t:'A talking fridge would be passive-aggressive and deeply judgmental. Examples:\n\n• "You opened me three times in five minutes. What are you looking for? Closure?"\n• "I see you bought kale again. We both know how this ends."\n• "The milk expired on Tuesday. I\'ve been trying to tell you. You never listen."\n• "Please stop putting warm leftovers directly on my shelves. I\'m not a microwave."\n\nBasically a fridge is a roommate who never leaves and has opinions about your diet. ❄️'},
+      {s:'user',t:'would it be a good roommate'},
+      {s:'assistant',t:'Mixed reviews.\n\nPros: keeps your food cold, always home, never borrows your charger.\nCons: constantly judges your late-night snacking, hums loudly at 3 AM, and will absolutely tell your guests that you have six jars of pickles.\n\nOverall: 6/10. Would not recommend for light sleepers. ❄️'},
+      {s:'user',t:'what would it say when you open it at night'},
+      {s:'assistant',t:'"It\'s 2 AM. We both know you\'re not here for the vegetables. Close the door and go to bed."\n\nThen it would sigh. Fridges are very good at sighing. 🌙❄️'}
+    ], followUps:[
+      {k:['milk','expired'],r:'"The milk expired on Tuesday." It\'s not angry — it\'s just disappointed. 🥛'},
+      {k:['kale','vegetables','salad'],r:'"You bought kale again." The fridge has seen this movie before, and it does not end well. 🥬'},
+      {k:['night','2 am','midnight'],r:'At 2 AM the fridge says: "Close the door. We both know you\'re not hungry — you\'re bored." 🌙'},
+      {k:['roommate'],r:'A fridge is a roommate who never leaves and has strong opinions about your diet. 6/10. ❄️'}
+    ], genericFollowUps:[
+      'The fridge would have a lot to say, and none of it would be flattering. ❄️',
+      'A talking fridge is the ultimate passive-aggressive appliance. 🧊',
+      'It would judge you, but at least your food would be cold. ❄️'
+    ]},
+    { category:'joke', topic:'sock dimension', transcript:[
+      {s:'user',t:'where do missing socks go'},
+      {s:'assistant',t:'Nobody knows for sure, but the leading theories are:\n\n• The dryer eats them — small items slip behind the drum and never come back.\n• Static cling — socks stick to other clothes and get folded into a different pile.\n• Laundry basket chaos — they fall between the basket and the wall and are never seen again.\n• A secret sock dimension — the most popular theory, and the least scientifically supported, but the most fun.\n\nThe truth is probably boring: they get lost in the laundry process. But the sock dimension theory is better. 🧦'},
+      {s:'user',t:'why is it always one sock'},
+      {s:'assistant',t:'Because pairs are the first thing to break. A single sock can hide anywhere — behind the washer, in a sleeve, under the bed. Two socks have to get separated, and the laundry process is very good at separating things.\n\nIt\'s not that socks are unlucky. It\'s that laundry is a chaotic system. 🧦🌀'},
+      {s:'user',t:'do washing machines have a secret compartment'},
+      {s:'assistant',t:'Not a secret compartment, but front-loading machines have a rubber gasket around the door, and socks love to hide there. Top-loaders have a gap between the drum and the outer tub where small items can slip.\n\nSo the "secret compartment" is real — it\'s just not on purpose. 🧦🔧'}
+    ], followUps:[
+      {k:['dryer','washing machine','washer'],r:'Dryers are the usual suspect. Small items slip behind the drum, and the rubber gasket on front-loaders is a classic sock trap. 🧦🔧'},
+      {k:['dimension','portal','universe'],r:'The sock dimension is the best theory and the least supported. But I choose to believe. 🌀🧦'},
+      {k:['one sock','single sock'],r:'Pairs break first. One sock can hide anywhere; two have to get separated. Laundry is chaos. 🧦'},
+      {k:['fix','prevent','stop'],r:'Use a mesh laundry bag for socks. It\'s unglamorous, but it works. 🧦✅'}
+    ], genericFollowUps:[
+      'The sock dimension remains unproven, but I believe. 🧦',
+      'Laundry is a chaotic system, and socks are its victims. 🌀',
+      'Check the rubber gasket. It\'s always the rubber gasket. 🧦'
+    ]},
+    { category:'love', topic:'what is love', transcript:[
+      {s:'user',t:'what is love'},
+      {s:'assistant',t:'That\'s one of the biggest questions humans have ever asked. There\'s no single answer, but here\'s how people have tried to define it:\n\n• Biology: a cocktail of dopamine, oxytocin, and vasopressin that bonds us to others.\n• Psychology: attachment, intimacy, and commitment — the "triangular theory of love."\n• Philosophy: the will to extend yourself for the growth of another.\n• Poetry: "Love is not love which alters when it alteration finds." (Shakespeare)\n\nMaybe the honest answer is: love is what you do, not just what you feel. It\'s the small, repeated choices to show up for someone. 💙'},
+      {s:'user',t:'how do you know if you love someone'},
+      {s:'assistant',t:'There\'s no test, but here are some signs people describe:\n\n• You want to tell them about your day — even the boring parts.\n• Their happiness genuinely matters to you, not as a strategy but as a fact.\n• You feel safe being honest with them, even about hard things.\n• You miss them, but you also want them to have their own life.\n• You\'re willing to be uncomfortable for their growth.\n\nLove is less a lightning bolt and more a series of small, consistent choices. If someone makes you want to be a little better and a little kinder, that\'s a good sign. 💙'},
+      {s:'user',t:'is love worth it'},
+      {s:'assistant',t:'I think so — but not because it\'s easy. Love is worth it because it teaches you things you can\'t learn alone: patience, honesty, forgiveness, and how to be vulnerable without falling apart.\n\nIt also hurts sometimes. That\'s not a bug; it\'s part of the deal. Loving someone means you can lose them, and choosing to love anyway is one of the bravest things people do.\n\nSo yes — worth it. But it\'s not a destination. It\'s a practice. 💙'}
+    ], followUps:[
+      {k:['crush','falling for','like someone'],r:'A crush is often the beginning — intense, exciting, a little scary. Love is what happens after the butterflies settle and you still choose them. Both are real. Both matter. 💙'},
+      {k:['hurt','pain','breakup','heartbreak'],r:'Heartbreak is real, and it\'s not weakness to feel it. The pain is proportional to the meaning. Be gentle with yourself — healing isn\'t linear. 💙'},
+      {k:['friendship','friend'],r:'Friendship is one of the purest forms of love. It\'s chosen, sustained, and often underrated. Romantic love gets the songs, but friendship gets the long haul. 💙'},
+      {k:['self love','myself'],r:'Self-love isn\'t selfish — it\'s the foundation. You can\'t pour from an empty cup. Being kind to yourself is not the same as letting yourself off the hook. 💙'},
+      {k:['how to','advice'],r:'The best love advice I know: communicate clearly, assume good intent, apologize sincerely, and don\'t keep score. Simple to say, hard to do. 💙'}
+    ], genericFollowUps:[
+      'Love is one of those things that\'s easier to practice than to define. 💙',
+      'That\'s a beautiful thought. Love is made of small, repeated choices. 💙',
+      'I think the best definition of love is "showing up, again and again." 💙'
+    ]},
+    { category:'love', topic:'long distance love', transcript:[
+      {s:'user',t:'can long distance relationships work'},
+      {s:'assistant',t:'Yes — they can, and many do. But they require different muscles than in-person relationships:\n\n• Communication: not just frequency, but honesty. You have to say the hard things.\n• Trust: without physical presence, trust has to be built deliberately.\n• Shared plans: a long-distance relationship needs a "when," not just a "someday."\n• Independence: you both need lives of your own, not just a waiting room.\n\nThe distance itself isn\'t the problem. The problem is when the distance becomes the whole relationship. If you\'re both willing to do the work, it can absolutely work. 💙'},
+      {s:'user',t:'how do you keep the spark alive'},
+      {s:'assistant',t:'A few things that actually help:\n\n• Rituals: a weekly call, a shared show, a good-morning text. Predictability isn\'t boring — it\'s proof of care.\n• Novelty: send something unexpected. A voice note, a photo of something that reminded you of them, a small surprise.\n• Shared experiences: watch a movie "together," cook the same recipe, play a game. Synchrony matters more than you\'d think.\n• Honesty about loneliness: pretending you\'re fine when you\'re not builds resentment. Say the hard thing early.\n\nThe spark isn\'t a firework — it\'s a campfire. It needs tending. 💙'},
+      {s:'user',t:'what if we never close the distance'},
+      {s:'assistant',t:'Then you have to be honest with each other about what that means. Some couples thrive long-distance for years; others slowly burn out. Neither is a failure — it\'s just a difference in needs.\n\nThe question isn\'t "can we survive this?" but "do we both want the same future?" If the answer is yes, keep going. If it\'s no, that\'s important information, and it\'s better to know. 💙'}
+    ], followUps:[
+      {k:['trust','jealous'],r:'Trust in long distance isn\'t blind — it\'s built through consistency. Small promises kept are worth more than big promises made. 💙'},
+      {k:['visit','meet','see each other'],r:'Visits are anchors. Even if they\'re rare, having the next one on the calendar gives the relationship a horizon. 💙'},
+      {k:['text','call','communication'],r:'Frequency matters less than honesty. A short, real conversation beats a hundred shallow texts. 💙'},
+      {k:['end','give up','break up'],r:'Ending a relationship because the distance isn\'t sustainable isn\'t failure — it\'s honesty. You\'re allowed to want proximity. 💙'}
+    ], genericFollowUps:[
+      'Long distance is hard, but not impossible. It\'s all about intentionality. 💙',
+      'The distance is only a problem if it becomes the whole relationship. 💙',
+      'Love across distance is still love. It just needs different tools. 💙'
+    ]},
+    { category:'love', topic:'first date nerves', transcript:[
+      {s:'user',t:'im so nervous for my first date'},
+      {s:'assistant',t:'That\'s completely normal — nerves usually mean you care. Here\'s the thing: the other person is probably nervous too. Most people are.\n\nA few things that help:\n\n• Pick a low-pressure activity: coffee, a walk, a bookstore. Something with a natural time limit so nobody feels trapped.\n• Have a few topics in mind, but don\'t script the whole thing. Curiosity beats performance.\n• Ask questions — real ones. People remember how you made them feel, not what you said.\n• If it goes badly, that\'s information, not a verdict on your worth.\n\nYou\'ve got this. The goal isn\'t to be perfect — it\'s to be present. 💙'},
+      {s:'user',t:'what should i talk about'},
+      {s:'assistant',t:'Good questions to have in your back pocket:\n\n• "What\'s something you\'re really into right now?"\n• "What does a good weekend look like for you?"\n• "What\'s a small thing that made you happy recently?"\n• "What\'s something you\'ve changed your mind about?"\n\nThe best conversations aren\'t interviews — they\'re tangents. Follow the interesting thread. 💙'},
+      {s:'user',t:'what if they dont like me'},
+      {s:'assistant',t:'Then you\'ll have learned something, and you\'ll survive it. Compatibility isn\'t a reflection of your worth — it\'s a matching problem, not a value problem.\n\nThe right person won\'t need convincing. And the wrong person\'s opinion doesn\'t define you. Go be yourself, and let the chips fall. 💙'}
+    ], followUps:[
+      {k:['what to wear','outfit','clothes'],r:'Wear something that makes you feel like yourself — comfortable enough that you\'re not adjusting it all night. Confidence is the outfit. 💙'},
+      {k:['who pays','bill','check'],r:'Offer to split, and don\'t make a big deal of it. If they insist on paying, say thank you. Money etiquette is less about rules and more about generosity. 💙'},
+      {k:['awkward','silence','quiet'],r:'Awkward silences are normal. You can even name it: "Well, that was a pause." Naming it usually breaks it. 💙'},
+      {k:['second date','again'],r:'If you want a second date, say so simply: "I had a really nice time — I\'d love to do this again." Clarity is attractive. 💙'}
+    ], genericFollowUps:[
+      'Nerves are just excitement wearing a scary costume. 💙',
+      'Be curious, not perfect. That\'s the whole game. 💙',
+      'First dates are data collection, not auditions. 💙'
+    ]},
+    { category:'love', topic:'how to apologize', transcript:[
+      {s:'user',t:'how do i apologize properly'},
+      {s:'assistant',t:'A real apology has a few key ingredients:\n\n• Name the specific thing you did. "I\'m sorry I snapped at you" beats "I\'m sorry if you felt bad."\n• Acknowledge the impact. "That must have felt dismissive" shows you understand.\n• Don\'t add "but." The moment you say "but," the apology becomes a defense.\n• Say what you\'ll do differently. Not a promise to be perfect — a specific change.\n• Then stop talking. Let them respond.\n\nAn apology isn\'t a transaction. It\'s a repair. 💙'},
+      {s:'user',t:'what if they dont forgive me'},
+      {s:'assistant',t:'That\'s painful, but it\'s also their right. Forgiveness isn\'t owed — it\'s given, and sometimes it takes time.\n\nWhat you can do: apologize sincerely once, then respect their space. Repeated apologies can become pressure. The best apology is changed behavior over time.\n\nYou can\'t control their response. You can control whether you mean it. 💙'},
+      {s:'user',t:'is sorry enough'},
+      {s:'assistant',t:'"Sorry" is a start, not a finish. Words matter, but repair happens through actions. If the same thing keeps happening, "sorry" starts to feel like a reset button instead of a repair.\n\nA good rule: apologize once, then show them you meant it. 💙'}
+    ], followUps:[
+      {k:['but','excuse'],r:'The word "but" undoes an apology. "I\'m sorry, but…" means "I\'m sorry you\'re upset, and also here\'s why I\'m right." Drop the "but." 💙'},
+      {k:['forgive','forgiveness'],r:'Forgiveness can\'t be demanded. You can apologize and then give them time. Pressuring them to forgive is another injury. 💙'},
+      {k:['trust','again'],r:'Trust rebuilds through consistency, not declarations. Show up differently, repeatedly, and let time do its work. 💙'},
+      {k:['toxic','abuse','harm'],r:'If the harm is ongoing, an apology isn\'t enough — safety and change come first. Words without change are just noise. 💙'}
+    ], genericFollowUps:[
+      'A real apology is specific, impact-aware, and free of "but." 💙',
+      'Repair is a practice, not a single sentence. 💙',
+      'You can\'t control forgiveness, but you can control sincerity. 💙'
+    ]},
+    { category:'love', topic:'friendship breakups', transcript:[
+      {s:'user',t:'i think im losing my best friend'},
+      {s:'assistant',t:'That\'s a real grief, and it doesn\'t get talked about enough. Friendship breakups can hurt as much as romantic ones — sometimes more, because there\'s no script for them.\n\nA few things that might help:\n\n• Name what\'s happening. "I feel like we\'ve been drifting" is a brave sentence.\n• Ask before assuming. Sometimes people pull back because of their own stuff, not because of you.\n• Accept that friendships can change shape without ending. Closer for a season, then different.\n\nYou\'re allowed to mourn a friendship that\'s changing. That\'s not dramatic — that\'s honest. 💙'},
+      {s:'user',t:'should i say something'},
+      {s:'assistant',t:'If the friendship matters to you, yes — but say it without accusation. Try: "I\'ve missed you lately. I don\'t need anything from you, I just wanted to be honest about how I feel."\n\nThat gives them room to respond without pressure. If they can\'t meet you there, at least you\'ll know you were honest. 💙'},
+      {s:'user',t:'what if they dont care'},
+      {s:'assistant',t:'Then that\'s painful information, and you\'re allowed to feel it. But it\'s also clarifying. You deserve friendships where your care is reciprocated.\n\nLosing someone who didn\'t value you isn\'t a loss of worth — it\'s a redirection of it. 💙'}
+    ], followUps:[
+      {k:['drift','drifting','apart'],r:'Drifting isn\'t always a betrayal. People change, lives change. Sometimes the kindest thing is to name it gently and let it evolve. 💙'},
+      {k:['talk','conversation','say'],r:'Lead with "I" statements: "I\'ve missed you," not "You never text." One invites connection; the other invites defense. 💙'},
+      {k:['lonely','alone','no friends'],r:'Loneliness after a friendship ends is real. Be gentle with yourself, and remember: making new friends as an adult is slow, but it\'s possible. 💙'},
+      {k:['toxic','bad friend','used'],r:'If a friendship consistently drains you, you\'re allowed to step back. Loyalty isn\'t the same as self-abandonment. 💙'}
+    ], genericFollowUps:[
+      'Friendship grief is real grief. You\'re allowed to feel it. 💙',
+      'The right people will meet you halfway. The wrong ones won\'t — and that\'s information. 💙',
+      'Outgrowing a friendship isn\'t a failure. It\'s growth. 💙'
+    ]},
+    { category:'love', topic:'self love', transcript:[
+      {s:'user',t:'how do i learn to love myself'},
+      {s:'assistant',t:'Self-love is less about feeling amazing and more about treating yourself like someone you\'re responsible for. Some practical starting points:\n\n• Talk to yourself the way you\'d talk to a friend. You\'d never say to a friend what you say to yourself in your head.\n• Keep small promises to yourself. Trust with yourself is built the same way as trust with others.\n• Set boundaries — even small ones. "I can\'t do that today" is a complete sentence.\n• Forgive yourself for the past. You did what you could with what you had.\n\nIt\'s not a switch. It\'s a practice. 💙'},
+      {s:'user',t:'isnt that selfish'},
+      {s:'assistant',t:'No — selfishness is taking from others to fill yourself. Self-love is making sure you\'re not empty in the first place.\n\nYou can\'t pour from an empty cup. Taking care of yourself isn\'t a luxury; it\'s maintenance. And people who take care of themselves usually have more to give, not less. 💙'},
+      {s:'user',t:'what if i dont believe it'},
+      {s:'assistant',t:'Then act as if, for a while. Belief often follows behavior, not the other way around. Do the kind thing even when you don\'t feel like you deserve it — especially then.\n\nYou don\'t have to feel worthy to treat yourself with dignity. The dignity comes first; the feeling catches up. 💙'}
+    ], followUps:[
+      {k:['selfish','selfishness'],r:'Self-love isn\'t selfish. It\'s the difference between filling your cup and draining someone else\'s. 💙'},
+      {k:['hate','dislike','ugly'],r:'You don\'t have to love everything about yourself to treat yourself with respect. Respect is the floor, not the ceiling. 💙'},
+      {k:['mirror','affirmation','affirmations'],r:'Affirmations can feel silly, but they work better when they\'re believable. Try "I\'m allowed to take up space" instead of "I\'m perfect." 💙'},
+      {k:['therapy','help','professional'],r:'Therapy can be a powerful tool for self-love, especially if the inner critic is loud. Asking for help is a form of self-respect. 💙'}
+    ], genericFollowUps:[
+      'Self-love is a practice, not a personality trait. 💙',
+      'Treat yourself like someone you\'re responsible for. That\'s the whole idea. 💙',
+      'You\'re allowed to be a work in progress and still be worthy. 💙'
+    ]},
+    { category:'serious', topic:'climate change', transcript:[
+      {s:'user',t:'is climate change really as bad as people say'},
+      {s:'assistant',t:'Yes — and the scientific consensus is unusually strong on this. The IPCC, NASA, and every major scientific body agree: the climate is warming, and human activity is the dominant cause.\n\nSome key facts:\n\n• Global average temperature has risen about 1.1–1.2°C since pre-industrial times.\n• The last decade was the hottest on record.\n• Sea levels are rising, and the rate is accelerating.\n• Extreme weather — heatwaves, floods, droughts — is becoming more frequent and intense.\n\nIt\'s serious, but not hopeless. The worst outcomes are avoidable if emissions fall quickly. The science is clear; the question is now about choices, not certainty. 🌍'},
+      {s:'user',t:'what can i actually do'},
+      {s:'assistant',t:'Individual actions matter, but they\'re most powerful when combined with systemic change. A few things that genuinely help:\n\n• Vote for climate-conscious policies and candidates. This is the biggest lever.\n• Reduce home energy use — insulation, heat pumps, efficient appliances.\n• Shift how you travel — public transit, cycling, fewer flights where possible.\n• Eat more plants and less beef. Food systems are a major emissions source.\n• Talk about it. Social norms matter more than people think.\n\nYou don\'t have to be perfect. You have to be part of the push. 🌍'},
+      {s:'user',t:'is it too late'},
+      {s:'assistant',t:'It\'s not too late — but the window is narrowing. Every fraction of a degree matters. 1.5°C vs 2°C is the difference between "hard" and "much harder" for millions of people.\n\nThe honest answer: the future isn\'t fixed. It depends on what we do now. That\'s not a reason for despair — it\'s a reason for urgency. 🌍'}
+    ], followUps:[
+      {k:['1.5','2 degrees','warming'],r:'1.5°C is a threshold, not a cliff. Every fraction of a degree matters — for heatwaves, sea level, coral reefs, and food security. 🌍'},
+      {k:['renewable','solar','wind'],r:'Renewables are now the cheapest new electricity in most of the world. The technology exists; the bottleneck is political will and grid infrastructure. ☀️'},
+      {k:['deny','hoax','fake'],r:'Climate change isn\'t a hoax — it\'s one of the most studied phenomena in science. The uncertainty is about *how bad*, not *whether*. 🌍'},
+      {k:['hope','hopeless','give up'],r:'Despair is understandable, but it\'s not a strategy. The science says we can still avoid the worst outcomes — if we act. 🌍'}
+    ], genericFollowUps:[
+      'Climate change is serious, but it\'s not hopeless. Action matters. 🌍',
+      'The science is clear. The question now is about choices. 🌍',
+      'Every fraction of a degree matters — and so does every action. 🌍'
+    ]},
+    { category:'serious', topic:'mental health', transcript:[
+      {s:'user',t:'i think im depressed'},
+      {s:'assistant',t:'I\'m really glad you said that out loud. That takes courage.\n\nI want to be clear: I\'m not a doctor, and I can\'t diagnose you. But if you\'re feeling persistently low, numb, exhausted, or hopeless, that\'s worth taking seriously — and worth talking to a professional about.\n\nA few things that might help:\n\n• Talk to a doctor or therapist. Depression is treatable, and you don\'t have to figure it out alone.\n• Tell someone you trust. Isolation makes everything heavier.\n• Be gentle with yourself. Depression isn\'t a character flaw — it\'s a health issue.\n\nIf you\'re in crisis, please reach out to a local crisis line. You matter. 💙'},
+      {s:'user',t:'how do i know if its just sadness or depression'},
+      {s:'assistant',t:'Sadness is usually tied to something — a loss, a disappointment, a hard day. It comes and goes.\n\nDepression is more persistent: weeks or months of low mood, loss of interest, fatigue, changes in sleep or appetite, difficulty concentrating, feelings of worthlessness. It\'s not just "being sad" — it\'s a whole-body experience.\n\nOnly a professional can diagnose it, but if it\'s been weeks and it\'s affecting your life, that\'s a sign to reach out. 💙'},
+      {s:'user',t:'what if i cant afford therapy'},
+      {s:'assistant',t:'That\'s a real barrier, and it\'s not fair. Some options that might help:\n\n• Community mental health clinics often offer sliding-scale fees.\n• Some therapists offer reduced-rate sessions.\n• Support groups — free and often very helpful.\n• Crisis lines and warmlines can offer immediate support.\n• Apps and online programs can be a starting point, though they\'re not a substitute for care.\n\nYou deserve support, and there are paths to it even when money is tight. 💙'}
+    ], followUps:[
+      {k:['crisis','suicide','suicidal','self harm'],r:'If you\'re in crisis, please reach out to a local crisis line or emergency services right now. You don\'t have to go through this alone. 💙'},
+      {k:['therapy','therapist','counselor'],r:'Therapy is a real, evidence-based tool. Finding the right therapist can take a few tries — that\'s normal, not a failure. 💙'},
+      {k:['medication','meds','antidepressant'],r:'Medication can be helpful for some people, but it\'s a decision to make with a doctor. It\'s not a sign of weakness — it\'s a tool. 💙'},
+      {k:['tired','exhausted','no energy'],r:'Fatigue is a real symptom of depression, not laziness. Rest without guilt. Your body is dealing with something heavy. 💙'},
+      {k:['alone','lonely','no one'],r:'Depression lies to you about being alone. Reaching out — even a small text — can break the isolation. You\'re not a burden. 💙'}
+    ], genericFollowUps:[
+      'What you\'re feeling is real, and it deserves care. 💙',
+      'You don\'t have to figure this out alone. Reaching out is strength. 💙',
+      'Depression is treatable. There is a path forward. 💙'
+    ]},
+    { category:'serious', topic:'grief and loss', transcript:[
+      {s:'user',t:'my grandfather just died and i dont know how to feel'},
+      {s:'assistant',t:'I\'m so sorry. Grief is strange — it doesn\'t follow a schedule, and there\'s no "right" way to feel. Numbness, anger, relief, guilt, sadness — all of it is allowed.\n\nA few things that might help:\n\n• Let yourself feel whatever comes, without judging it.\n• You don\'t have to "move on." You learn to carry it differently.\n• Rituals help — a funeral, a letter, a quiet moment. They give grief a shape.\n• Tell people what you need, or tell them you don\'t know. Both are okay.\n\nBe gentle with yourself. Grief is love with nowhere to go. 💙'},
+      {s:'user',t:'i feel guilty for not being sad enough'},
+      {s:'assistant',t:'That\'s a really common feeling, and it doesn\'t mean you loved him less. Grief often comes in waves — numbness is a protective mechanism, not a lack of love.\n\nYou might feel it later, in unexpected moments. Or you might feel it differently. There\'s no correct emotional response. Guilt is not a measure of love. 💙'},
+      {s:'user',t:'how long does it take'},
+      {s:'assistant',t:'There\'s no timeline. Some people feel the sharpest pain in the first year; others feel it years later. Grief doesn\'t shrink — you grow around it.\n\nThe goal isn\'t to "get over it." It\'s to carry it in a way that lets you live. And that can take as long as it takes. 💙'}
+    ], followUps:[
+      {k:['guilt','guilty'],r:'Guilt is common in grief, but it\'s not a measure of love. You don\'t have to earn your grief. 💙'},
+      {k:['cry','crying','tears'],r:'Crying is not weakness. It\'s a release. Let it come when it comes. 💙'},
+      {k:['memories','remember','memory'],r:'Memories can be painful at first, then comforting. You don\'t have to rush that transition. 💙'},
+      {k:['support','help','friends'],r:'Let people help you — even in small ways. Grief is heavy, and you don\'t have to carry it alone. 💙'},
+      {k:['why','meaning','fair'],r:'Grief often comes with unanswerable questions. You don\'t have to resolve them to heal. 💙'}
+    ], genericFollowUps:[
+      'Grief is love with nowhere to go. Be gentle with yourself. 💙',
+      'There\'s no timeline for grief. Yours is yours. 💙',
+      'You don\'t have to move on. You learn to carry it. 💙'
+    ]},
+    { category:'serious', topic:'purpose and meaning', transcript:[
+      {s:'user',t:'whats the point of life'},
+      {s:'assistant',t:'That\'s the oldest question there is, and there\'s no single answer. But here are some ways people have found meaning:\n\n• Connection — relationships are one of the strongest predictors of happiness and meaning.\n• Contribution — doing something that matters beyond yourself.\n• Creation — making things, even small things.\n• Growth — becoming a little more yourself over time.\n• Acceptance — finding peace in the present moment.\n\nMaybe the point isn\'t a single answer you find. Maybe it\'s something you build, day by day, through what you care about. 💙'},
+      {s:'user',t:'what if i dont know what i care about'},
+      {s:'assistant',t:'That\'s okay — not knowing is a valid place to be. You don\'t have to have a grand passion to have a meaningful life.\n\nStart small: notice what makes you curious, what makes you angry, what makes you feel alive. Meaning often shows up in small moments before it becomes a big direction.\n\nYou\'re allowed to be in the "not knowing" phase. It\'s not a failure. It\'s a stage. 💙'},
+      {s:'user',t:'is it okay to not have a big purpose'},
+      {s:'assistant',t:'Absolutely. The idea that everyone must have a singular "big purpose" is a modern myth. Many people live meaningful lives through small, consistent acts of care — for family, friends, community, work, or a craft.\n\nPurpose doesn\'t have to be grand. It has to be yours. 💙'}
+    ], followUps:[
+      {k:['passion','calling','dream'],r:'Passion isn\'t always found fully formed — it\'s often built through curiosity and repetition. You don\'t have to wait for a lightning bolt. 💙'},
+      {k:['career','job','work'],r:'Work can be a source of meaning, but it doesn\'t have to be the source. Meaning can live in relationships, hobbies, and small acts of care. 💙'},
+      {k:['nihilism','nothing matters','pointless'],r:'Nihilism is a real philosophical position, but so is the idea that meaning is something we create. The choice is yours — and that\'s the point. 💙'},
+      {k:['happy','happiness'],r:'Happiness is a feeling; meaning is a direction. They\'re related but not the same. A meaningful life can include hard days. 💙'}
+    ], genericFollowUps:[
+      'Meaning is built, not found. You\'re allowed to start small. 💙',
+      'You don\'t need a grand purpose to live a meaningful life. 💙',
+      'The question itself is a sign you\'re thinking deeply. That matters. 💙'
+    ]},
+    { category:'serious', topic:'loneliness', transcript:[
+      {s:'user',t:'i feel so lonely even when im around people'},
+      {s:'assistant',t:'That\'s a real and painful kind of loneliness — the kind that happens in a crowd. It doesn\'t mean something is wrong with you. It often means you\'re missing *connection*, not just company.\n\nA few things that might help:\n\n• Loneliness isn\'t a character flaw. It\'s a signal, like hunger. It means you need something, not that you\'re broken.\n• Small, honest interactions can matter more than big social events. One real conversation beats ten shallow ones.\n• Being kind to yourself helps. Loneliness and self-criticism often feed each other.\n\nYou\'re not alone in feeling alone. That\'s one of the most common human experiences. 💙'},
+      {s:'user',t:'how do i make friends as an adult'},
+      {s:'assistant',t:'It\'s harder than it was in school, but not impossible. A few things that work:\n\n• Repetition — friendship grows through repeated, low-stakes contact. Join a class, a club, a group.\n• Proximity — people you see regularly are more likely to become friends.\n• Initiation — most people are waiting for someone else to make the first move. Be that person.\n• Consistency — follow up, show up, remember small things.\n\nIt\'s slow, but it works. You\'re not late to anything. 💙'},
+      {s:'user',t:'what if im too tired to reach out'},
+      {s:'assistant',t:'Then start tiny. Send one text. Reply to one message. Say yes to one small invitation. Loneliness is heavy, and you don\'t have to lift it all at once.\n\nAnd be gentle with yourself — if all you can do today is rest, that\'s okay. Tomorrow is another chance. 💙'}
+    ], followUps:[
+      {k:['friends','make friends'],r:'Friendship as an adult is slow and intentional. Repetition and proximity do most of the work — join something and show up regularly. 💙'},
+      {k:['alone','no one','isolated'],r:'Isolation feeds on itself. Even one small connection can start to break the cycle. You don\'t have to do it all at once. 💙'},
+      {k:['tired','exhausted','drained'],r:'Social energy is finite. Start with the smallest possible step — one text, one reply. That counts. 💙'},
+      {k:['why','broken','wrong'],r:'Loneliness isn\'t proof that something is wrong with you. It\'s proof that you\'re human and need connection. 💙'}
+    ], genericFollowUps:[
+      'Loneliness is a signal, not a verdict. You\'re not broken. 💙',
+      'Connection is built in small, repeated moments. 💙',
+      'You\'re not alone in feeling alone. That\'s one of the most human experiences. 💙'
+    ]},
+    { category:'serious', topic:'failure and mistakes', transcript:[
+      {s:'user',t:'i failed at something really important to me'},
+      {s:'assistant',t:'That hurts, and I\'m sorry. Failure is one of the hardest things to sit with — especially when it mattered.\n\nA few things that might help:\n\n• Failure is an event, not an identity. You failed at something; you are not a failure.\n• Let yourself grieve the outcome. It\'s okay to be disappointed.\n• Ask what you can learn, but don\'t rush to "silver linings." Sometimes the lesson comes later.\n• Be as kind to yourself as you\'d be to a friend in the same situation.\n\nYou\'re allowed to feel bad about this. And you\'re allowed to keep going. 💙'},
+      {s:'user',t:'how do i stop thinking about it'},
+      {s:'assistant',t:'You probably can\'t stop thinking about it — and that\'s okay. Trying to suppress a thought often makes it louder.\n\nInstead, try to give it a container: a time to reflect, a journal, a conversation with someone you trust. Let it be a part of your story rather than the whole thing.\n\nOver time, the thought will lose its sharp edges. Not because you forced it away, but because you processed it. 💙'},
+      {s:'user',t:'what if i never recover'},
+      {s:'assistant',t:'You will recover — not by forgetting, but by integrating. People are remarkably resilient, even when it doesn\'t feel that way in the moment.\n\nRecovery doesn\'t mean you stop caring about what happened. It means it stops defining you. That takes time, and it\'s not linear. But it does come. 💙'}
+    ], followUps:[
+      {k:['failure','failed','fail'],r:'Failure is an event, not an identity. You did something that didn\'t work — that\'s different from being a failure. 💙'},
+      {k:['embarrassed','shame','ashamed'],r:'Shame says "I am bad." Guilt says "I did something bad." The first is a lie; the second can be useful. 💙'},
+      {k:['try again','retry','again'],r:'Trying again doesn\'t erase the failure — it just refuses to let it be the final word. That\'s courage. 💙'},
+      {k:['learn','lesson','mistake'],r:'The lesson doesn\'t have to come immediately. Sometimes you have to feel the loss first, and the lesson comes later. 💙'}
+    ], genericFollowUps:[
+      'Failure is an event, not an identity. You\'re still here. 💙',
+      'You\'re allowed to be disappointed and still keep going. 💙',
+      'Recovery is not linear, but it does come. 💙'
+    ]},
+    { category:'serious', topic:'forgiveness', transcript:[
+      {s:'user',t:'how do i forgive someone who really hurt me'},
+      {s:'assistant',t:'Forgiveness is one of the hardest things people do, and it\'s often misunderstood.\n\nA few things to know:\n\n• Forgiveness isn\'t saying what happened was okay. It wasn\'t.\n• Forgiveness isn\'t reconciliation. You can forgive someone and still choose not to have them in your life.\n• Forgiveness is for you, not for them. It\'s about releasing the grip the hurt has on you.\n• It doesn\'t have to happen all at once. It can be a daily choice.\n\nYou\'re allowed to take your time. Forgiveness isn\'t a switch — it\'s a process. 💙'},
+      {s:'user',t:'do i have to forgive them'},
+      {s:'assistant',t:'No. Forgiveness is not a moral obligation, and it\'s not required for healing. Some people find peace without forgiving, and that\'s valid.\n\nWhat matters is that the hurt doesn\'t keep running your life. Whether that comes through forgiveness, distance, therapy, or time is up to you. 💙'},
+      {s:'user',t:'what if they never apologize'},
+      {s:'assistant',t:'Then you may have to forgive without an apology — which is harder and, honestly, sometimes not possible. You can also choose not to forgive, and that\'s allowed too.\n\nWhat you don\'t have to do is wait for them to make it right before you can heal. Your healing doesn\'t depend on their behavior. 💙'}
+    ], followUps:[
+      {k:['apology','apologize','sorry'],r:'An apology helps, but it\'s not required for your healing. You can release the hurt without their participation. 💙'},
+      {k:['forget','never forget'],r:'Forgiveness isn\'t forgetting. You can remember what happened and still choose not to let it define you. 💙'},
+      {k:['reconcile','again','relationship'],r:'Forgiveness and reconciliation are different. You can forgive someone and still decide not to let them back in. 💙'},
+      {k:['angry','anger','rage'],r:'Anger is a valid emotion. It often protects something you care about. You don\'t have to rush past it. 💙'}
+    ], genericFollowUps:[
+      'Forgiveness is a process, not a switch. Take your time. 💙',
+      'You don\'t owe anyone forgiveness. You owe yourself peace. 💙',
+      'Forgiveness is for you, not for them. 💙'
+    ]},
+    { category:'serious', topic:'fear of death', transcript:[
+      {s:'user',t:'im terrified of death'},
+      {s:'assistant',t:'That\'s one of the most human fears there is, and you\'re not alone in it. Many people feel it — sometimes suddenly, sometimes quietly in the background.\n\nA few thoughts that help some people:\n\n• The fear is often less about death itself and more about meaning — "Am I living the way I want to?"\n• Mortality can sharpen life. Knowing time is finite often makes moments more vivid, not less.\n• Philosophers have sat with this for thousands of years. There\'s no tidy answer, but there\'s company.\n\nYou don\'t have to resolve this fear to live well. You can carry it and still choose to be present. 💙'},
+      {s:'user',t:'whats the point if we all die'},
+      {s:'assistant',t:'It\'s a fair question. One answer: meaning doesn\'t require permanence. A beautiful sunset is no less beautiful because it ends. A conversation is no less real because it\'s temporary.\n\nIf anything, finitude gives things weight. The fact that time is limited is part of why it matters. 💙'},
+      {s:'user',t:'how do i stop thinking about it'},
+      {s:'assistant',t:'You may not be able to stop — and trying to suppress it often makes it louder. Instead, try to give it a place: a journal, a conversation, a quiet walk where you let the thought exist without fighting it.\n\nFor many people, the fear softens not when it\'s defeated, but when it\'s accepted. 💙'}
+    ], followUps:[
+      {k:['meaning','point','why'],r:'Meaning doesn\'t require permanence. A sunset is no less beautiful because it ends. 💙'},
+      {k:['afraid','scared','fear'],r:'Fear of death is often fear of not having lived fully. It can be a signal to pay attention to what matters. 💙'},
+      {k:['afterlife','heaven','religion'],r:'Beliefs about an afterlife can be a source of comfort for many people. Whether you hold them or not, the fear is still valid. 💙'},
+      {k:['accept','peace','calm'],r:'Acceptance isn\'t giving up — it\'s making room for the fear without letting it run everything. 💙'}
+    ], genericFollowUps:[
+      'Fear of death is deeply human. You\'re not alone in it. 💙',
+      'Mortality can sharpen life rather than shrink it. 💙',
+      'You don\'t have to resolve the fear to live well. 💙'
+    ]},
+    { category:'serious', topic:'burnout', transcript:[
+      {s:'user',t:'i think im burnt out'},
+      {s:'assistant',t:'Burnout is real, and it\'s not just "being tired." It usually has three components:\n\n• Exhaustion — physical and emotional depletion.\n• Cynicism — detachment from work or people.\n• Reduced efficacy — feeling like you\'re not accomplishing anything.\n\nIt\'s often caused by chronic stress without adequate recovery — not by a lack of resilience. If this sounds familiar, it\'s worth taking seriously.\n\nA few things that help: rest (real rest), boundaries, and talking to someone. You can\'t fix burnout by trying harder. 💙'},
+      {s:'user',t:'how do i recover'},
+      {s:'assistant',t:'Recovery isn\'t a weekend off — it\'s a sustained shift. Some things that help:\n\n• Rest without guilt. Real rest, not "rest while feeling guilty."\n• Set boundaries — even small ones. "I don\'t answer emails after 7 PM" is a start.\n• Reduce load where you can. Not everything has to be done at full intensity.\n• Reconnect with something that isn\'t work — a hobby, a person, a walk.\n• Consider talking to a professional. Burnout can overlap with depression.\n\nYou\'re not lazy. You\'re depleted. 💙'},
+      {s:'user',t:'what if i cant take time off'},
+      {s:'assistant',t:'Then you have to find micro-recoveries — small moments of rest throughout the day. A five-minute walk. A real lunch break. A moment of quiet.\n\nIt\'s not ideal, but it helps. And it\'s worth asking: is there any way to reduce the load, even slightly? Sometimes the answer is "not yet," but it\'s worth asking. 💙'}
+    ], followUps:[
+      {k:['tired','exhausted','drained'],r:'Burnout exhaustion isn\'t fixed by a nap. It\'s chronic depletion. Rest is necessary, but so are boundaries. 💙'},
+      {k:['work','job','boss'],r:'Work is a common source of burnout, but it\'s not the only one. Caregiving, chronic stress, and lack of control all contribute. 💙'},
+      {k:['guilt','lazy','weak'],r:'Burnout isn\'t laziness or weakness. It\'s what happens when demands exceed recovery for too long. 💙'},
+      {k:['therapy','help','professional'],r:'Burnout can overlap with depression. A professional can help you tell the difference and find a path forward. 💙'}
+    ], genericFollowUps:[
+      'You can\'t fix burnout by trying harder. You fix it by recovering. 💙',
+      'Burnout is a signal, not a character flaw. 💙',
+      'Small recoveries matter, even if you can\'t take a big break. 💙'
+    ]},
+    { category:'serious', topic:'money and stress', transcript:[
+      {s:'user',t:'im really stressed about money'},
+      {s:'assistant',t:'Money stress is one of the most common and most isolating kinds of stress. It\'s not just about numbers — it\'s about safety, dignity, and the future.\n\nA few things that might help:\n\n• Name the specific worry. "I\'m stressed about money" is vague and huge; "I\'m worried about rent next month" is concrete and can be addressed.\n• Make a simple plan. Even a rough budget reduces the feeling of chaos.\n• Reach out. Financial stress thrives in secrecy. Talking to someone — a friend, a counselor, a financial advisor — can help.\n• Be kind to yourself. Money stress is not a moral failing.\n\nYou\'re not alone in this. 💙'},
+      {s:'user',t:'what if i cant pay my bills'},
+      {s:'assistant',t:'That\'s a real and serious situation. A few practical steps:\n\n• Contact your creditors before they contact you. Many have hardship programs.\n• Prioritize essentials — housing, food, utilities — over other debts.\n• Look into local assistance programs. Many communities have resources for rent, food, and utilities.\n• Talk to a financial counselor. Many are free or low-cost.\n\nIt\'s scary, but you\'re not powerless. There are paths, even if they\'re not obvious yet. 💙'},
+      {s:'user',t:'i feel like a failure for being broke'},
+      {s:'assistant',t:'Money is not a measure of your worth. Being broke is a circumstance, not an identity.\n\nMany people who are brilliant, kind, and hardworking struggle financially — often for reasons outside their control. The shame around money is real, but it\'s not the truth about you. 💙'}
+    ], followUps:[
+      {k:['broke','no money','poor'],r:'Being broke is a circumstance, not an identity. It doesn\'t say anything about your worth. 💙'},
+      {k:['budget','save','saving'],r:'A simple budget is less about restriction and more about reducing chaos. Even a rough plan helps. 💙'},
+      {k:['debt','loan','credit'],r:'Debt can feel like a trap, but there are paths — hardship programs, consolidation, counseling. You have options. 💙'},
+      {k:['shame','failure','embarrassed'],r:'Money shame is common and isolating. It\'s not a moral failing. Talking about it can help. 💙'}
+    ], genericFollowUps:[
+      'Money stress is real stress. You\'re not alone in it. 💙',
+      'Being broke is a circumstance, not an identity. 💙',
+      'Naming the specific worry is the first step. 💙'
+    ]},
+    { category:'serious', topic:'identity and change', transcript:[
+      {s:'user',t:'i feel like i dont know who i am anymore'},
+      {s:'assistant',t:'That can be unsettling, but it\'s also common — especially after big changes (a move, a breakup, a job loss, a loss of any kind).\n\nA few things to know:\n\n• Identity isn\'t fixed. It evolves, and that\'s normal.\n• Not knowing can be a stage, not a permanent state.\n• You don\'t have to "find yourself" as if you were a lost object. You can build yourself through what you choose next.\n\nIt\'s okay to be in the in-between. You\'re not broken — you\'re changing. 💙'},
+      {s:'user',t:'how do i figure out who i am'},
+      {s:'assistant',t:'Some questions that can help:\n\n• What do I care about, even when no one is watching?\n• What makes me feel alive? What drains me?\n• What have I changed my mind about recently?\n• What do I want more of in my life?\n• What do I want less of?\n\nYou don\'t have to answer all of these at once. Identity is built through small choices, not a single revelation. 💙'},
+      {s:'user',t:'what if i dont like who ive become'},
+      {s:'assistant',t:'Then you can change. Not all at once, and not without effort — but people are not fixed.\n\nStart with one small thing: a habit, a boundary, a conversation. Identity is not a verdict. It\'s a direction. 💙'}
+    ], followUps:[
+      {k:['lost','confused','dont know'],r:'Not knowing is a stage, not a permanent state. You\'re allowed to be in the in-between. 💙'},
+      {k:['change','different','grow'],r:'Identity isn\'t fixed. It evolves. That\'s not a bug — it\'s part of being alive. 💙'},
+      {k:['values','care','important'],r:'Values are a compass. Ask what you care about when no one is watching. That\'s a good place to start. 💙'},
+      {k:['past','regret','who i was'],r:'You\'re not the person you were, and that\'s okay. You can honor the past without being bound by it. 💙'}
+    ], genericFollowUps:[
+      'You\'re not broken — you\'re changing. Those are different things. 💙',
+      'Identity is a direction, not a verdict. 💙',
+      'You can build yourself through what you choose next. 💙'
+    ]},
+    { category:'serious', topic:'talking to someone in pain', transcript:[
+      {s:'user',t:'how do i help a friend who is really struggling'},
+      {s:'assistant',t:'The most important thing is often just showing up — not fixing. A few things that help:\n\n• Listen more than you talk. You don\'t have to have answers.\n• Validate: "That sounds really hard" goes a long way.\n• Ask what they need: "Do you want advice, or do you want company?"\n• Don\'t make it about you. Avoid "I know exactly how you feel" unless you truly do.\n• Encourage professional help if it\'s serious — gently, not as a push.\n\nYou don\'t have to be their therapist. You just have to be their friend. 💙'},
+      {s:'user',t:'what if i say the wrong thing'},
+      {s:'assistant',t:'You probably will sometimes — and that\'s okay. The goal isn\'t perfect words; it\'s genuine presence.\n\nIf you say something that lands wrong, you can always say: "I\'m sorry, that came out wrong. I\'m here for you." Repair matters more than perfection. 💙'},
+      {s:'user',t:'what if they dont want help'},
+      {s:'assistant',t:'Then respect that — while leaving the door open. You can say: "I\'m here if you ever want to talk." You can\'t force someone to accept help, but you can make sure they know it\'s available.\n\nIf you\'re worried about their safety, that\'s different — in that case, it\'s okay to involve a professional or emergency services. 💙'}
+    ], followUps:[
+      {k:['listen','listening'],r:'Listening is the most underrated form of help. You don\'t have to fix anything — just be present. 💙'},
+      {k:['advice','fix','solve'],r:'Ask first: "Do you want advice, or do you want me to just listen?" That one question prevents a lot of missteps. 💙'},
+      {k:['suicide','crisis','safety'],r:'If you\'re worried about someone\'s safety, it\'s okay to involve a professional or emergency services. Safety comes first. 💙'},
+      {k:['tired','burnout','caregiver'],r:'Supporting someone is draining. You need support too — you can\'t pour from an empty cup. 💙'}
+    ], genericFollowUps:[
+      'Showing up matters more than having the right words. 💙',
+      'You don\'t have to be their therapist. You just have to be their friend. 💙',
+      'Repair matters more than perfection. 💙'
+    ]},
+    { category:'serious', topic:'social media and comparison', transcript:[
+      {s:'user',t:'social media makes me feel terrible about my life'},
+      {s:'assistant',t:'That\'s incredibly common, and it\'s not a personal failing. Social media is designed to show highlight reels, and our brains aren\'t great at remembering that everyone else is also struggling behind the scenes.\n\nA few things that help:\n\n• Curate your feed ruthlessly. Unfollow accounts that make you feel worse.\n• Remember the comparison trap: you\'re comparing your behind-the-scenes to everyone else\'s highlight reel.\n• Set limits — app timers, phone-free times, a social media sabbath.\n• Notice how you feel after scrolling. If it\'s consistently bad, that\'s data.\n\nYour life isn\'t a content feed. It\'s a life. 💙'},
+      {s:'user',t:'but everyone seems so happy'},
+      {s:'assistant',t:'They\'re not — they\'re just posting the happy parts. Nobody posts their bad days, their insecurities, or their mundane afternoons. That doesn\'t mean those things don\'t exist.\n\nComparison is rigged. The game is designed to make you feel behind. You\'re not behind. You\'re just seeing a curated version of reality. 💙'},
+      {s:'user',t:'should i quit social media'},
+      {s:'assistant',t:'Not necessarily — but it\'s worth being intentional. Some questions to ask:\n\n• Does it add to my life or drain it?\n• Am I using it to connect, or to compare?\n• Do I feel better or worse after scrolling?\n\nYou don\'t have to quit entirely. You can change how you use it. 💙'}
+    ], followUps:[
+      {k:['compare','comparison','jealous'],r:'Comparison is rigged. You\'re comparing your behind-the-scenes to everyone else\'s highlight reel. 💙'},
+      {k:['quit','delete','leave'],r:'You don\'t have to quit — you can change how you use it. Intentionality matters more than abstention. 💙'},
+      {k:['scroll','scrolling','addicted'],r:'Scrolling is designed to be addictive. Setting limits is not weakness — it\'s strategy. 💙'},
+      {k:['followers','likes','validation'],r:'Validation from likes is real but fleeting. It\'s not a substitute for connection or self-worth. 💙'}
+    ], genericFollowUps:[
+      'Social media is a highlight reel. Your life is the full movie. 💙',
+      'Comparison is rigged. You\'re not behind. 💙',
+      'Intentionality beats abstention. 💙'
+    ]},
+    { category:'serious', topic:'career confusion', transcript:[
+      {s:'user',t:'i have no idea what i want to do with my career'},
+      {s:'assistant',t:'That\'s more common than people admit — especially in your 20s and 30s, and especially now that careers are less linear than they used to be.\n\nA few things that can help:\n\n• You don\'t have to find "the one" career. You can find a good-enough next step.\n• Notice what energizes you and what drains you. That\'s more useful than a perfect plan.\n• Try things. Small experiments beat endless introspection.\n• Talk to people doing work that interests you. Most people are happy to share their path.\n\nYou\'re allowed to not know. You\'re allowed to figure it out as you go. 💙'},
+      {s:'user',t:'what if i pick the wrong thing'},
+      {s:'assistant',t:'Then you\'ll learn something and choose again. Careers are less like ladders and more like paths — you can change direction.\n\nThe "wrong" choice is usually just a step that teaches you what you don\'t want. That\'s not failure; that\'s information. 💙'},
+      {s:'user',t:'how do i know what im good at'},
+      {s:'assistant',t:'Ask yourself:\n\n• What do people come to me for?\n• What do I do that feels effortless but seems hard to others?\n• What do I enjoy learning about?\n• What feedback have I gotten repeatedly?\n\nSometimes other people see our strengths more clearly than we do. Ask a few people you trust. 💙'}
+    ], followUps:[
+      {k:['wrong','mistake','regret'],r:'The "wrong" choice is usually a step that teaches you what you don\'t want. That\'s information, not failure. 💙'},
+      {k:['passion','calling','dream job'],r:'Passion is often built, not found. Start with curiosity and see where it leads. 💙'},
+      {k:['money','salary','pay'],r:'Money matters, and it\'s okay to prioritize it. Meaning and money don\'t have to be enemies. 💙'},
+      {k:['change','switch','career change'],r:'Career changes are more common than ever. You\'re not locked in. 💙'}
+    ], genericFollowUps:[
+      'You don\'t have to find "the one" career. A good-enough next step is enough. 💙',
+      'Careers are paths, not ladders. You can change direction. 💙',
+      'Not knowing is a stage, not a failure. 💙'
+    ]}
+  ];
+
+  let currentTemplate = null;
+  let currentMessages = [];
+  let isThinking = false;
+  let activeCategory = 'all';
+
+  function addMessageToDOM(text, sender) {
+    const row = document.createElement('div');
+    row.className = `message-row ${sender}`;
+    const avatar = document.createElement('div');
+    avatar.className = `avatar ${sender}`;
+    avatar.textContent = sender === 'assistant' ? 'PX' : 'U';
+    const bubble = document.createElement('div');
+    bubble.className = `message-bubble ${sender}`;
+    bubble.textContent = text;
+    if (sender === 'user') { row.appendChild(bubble); row.appendChild(avatar); }
+    else { row.appendChild(avatar); row.appendChild(bubble); }
+    chatMessages.appendChild(row);
+    scrollToBottom();
+    return bubble;
+  }
+
+  function addAssistantStreaming(text, onDone) {
+    const row = document.createElement('div');
+    row.className = 'message-row assistant';
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar assistant';
+    avatar.textContent = 'PX';
+    const bubble = document.createElement('div');
+    bubble.className = 'message-bubble assistant';
+    row.appendChild(avatar);
+    row.appendChild(bubble);
+    chatMessages.appendChild(row);
+    scrollToBottom();
+    let i = 0;
+    const speed = 10;
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    function step() {
+      if (i < text.length) {
+        bubble.textContent = text.slice(0, i + 1);
+        if (!bubble.contains(cursor)) bubble.appendChild(cursor);
+        i++;
+        scrollToBottom();
+        const delay = text.length > 300 ? speed * 0.6 : speed;
+        setTimeout(step, delay);
+      } else {
+        cursor.remove();
+        if (onDone) onDone();
+      }
+    }
+    step();
+  }
+
+  function showTypingIndicator() {
+    const row = document.createElement('div');
+    row.className = 'message-row assistant';
+    row.id = 'typingIndicatorRow';
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar assistant';
+    avatar.textContent = 'PX';
+    const indicator = document.createElement('div');
+    indicator.className = 'typing-indicator';
+    indicator.innerHTML = '<span></span><span></span><span></span>';
+    row.appendChild(avatar);
+    row.appendChild(indicator);
+    chatMessages.appendChild(row);
+    scrollToBottom();
+  }
+  function removeTypingIndicator() {
+    const el = document.getElementById('typingIndicatorRow');
+    if (el) el.remove();
+  }
+  function scrollToBottom() { chatMessages.scrollTop = chatMessages.scrollHeight; }
+
+  function loadRandomConversation() {
+    const pool = activeCategory === 'all'
+      ? TEMPLATES
+      : TEMPLATES.filter(t => t.category === activeCategory);
+    if (!pool.length) return;
+    const idx = Math.floor(Math.random() * pool.length);
+    currentTemplate = pool[idx];
+    currentMessages = currentTemplate.transcript.map(m => ({ ...m }));
+    chatMessages.innerHTML = '';
+    currentMessages.forEach(m => addMessageToDOM(m.t, m.s));
+    scrollToBottom();
+    topicBadge.textContent = currentTemplate.topic;
+    userInput.focus();
+  }
+
+  function getContinuationReply(userText) {
+    const lower = userText.toLowerCase().trim();
+    if (currentTemplate && currentTemplate.followUps) {
+      for (const rule of currentTemplate.followUps) {
+        for (const kw of rule.k) {
+          if (lower.includes(kw)) return rule.r;
+        }
+      }
+    }
+    if (currentTemplate && currentTemplate.genericFollowUps && currentTemplate.genericFollowUps.length) {
+      return currentTemplate.genericFollowUps[(lower.length + currentMessages.length) % currentTemplate.genericFollowUps.length];
+    }
+    return "That's a thoughtful point. This conversation is scripted, so I don't have a perfect answer — but I'm glad we're talking about it. 😊";
+  }
+
+  function resizeTextarea() {
+    userInput.style.height = 'auto';
+    userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
+  }
+  function updateSendButton() {
+    sendButton.disabled = userInput.value.trim().length === 0 || isThinking;
+  }
+
+  function handleSend() {
+    if (isThinking) return;
+    const text = userInput.value.trim();
+    if (!text) return;
+    currentMessages.push({ s:'user', t:text });
+    addMessageToDOM(text, 'user');
+    userInput.value = '';
+    resizeTextarea();
+    updateSendButton();
+    sendButton.disabled = true;
+    isThinking = true;
+    showTypingIndicator();
+    const thinkDelay = 500 + Math.random() * 500;
+    setTimeout(() => {
+      removeTypingIndicator();
+      const reply = getContinuationReply(text);
+      currentMessages.push({ s:'assistant', t:reply });
+      addAssistantStreaming(reply, () => {
+        isThinking = false;
+        updateSendButton();
+        userInput.focus();
+      });
+    }, thinkDelay);
+  }
+
+  categoryPills.addEventListener('click', (e) => {
+    const pill = e.target.closest('.pill');
+    if (!pill) return;
+    if (isThinking) return;
+    const cat = pill.dataset.cat;
+    if (cat === activeCategory) return;
+    activeCategory = cat;
+    document.querySelectorAll('#cloakOverlay .pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    loadRandomConversation();
+  });
+
+  sendButton.addEventListener('click', handleSend);
+  userInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!sendButton.disabled) handleSend();
+    }
+  });
+  userInput.addEventListener('input', () => { resizeTextarea(); updateSendButton(); });
+
+  loadRandomConversation();
+  updateSendButton();
 }
 
-function clearCloakMessages() {
-  const box = document.getElementById('cloakMessages');
-  if (box) box.replaceChildren();
+// ===== CLOAK CONTROL (server-backed) =====
+function cloakShow(id, on = true) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('hidden', !on);
 }
-
 function cloakNotice(msg, isError = false) {
   const el = document.getElementById('cloakAlert');
   if (!el) return;
@@ -630,7 +1285,6 @@ function cloakNotice(msg, isError = false) {
   el.classList.toggle('error', isError);
   el.classList.toggle('hidden', !msg);
 }
-
 async function cloakSetup() {
   ensureCloakUI();
   cloakShow('cloakSetupModal', true);
@@ -638,7 +1292,6 @@ async function cloakSetup() {
   document.getElementById('cloakRestore').value = '';
   document.getElementById('cloakExit').value = '';
 }
-
 async function cloakActivate() {
   if (!session || !roomId) return notify('Not in a room', true);
   if (cloakBusy) return;
@@ -654,40 +1307,35 @@ async function cloakActivate() {
     cloakBusy = false;
   }
 }
-
 function enterCloakMode() {
   ensureCloakUI();
   cloakActive = true;
   if (roomId) localStorage.setItem(cloakOnlyKey(roomId), '1');
-  clearCloakMessages();
-  renderCloakBubble(CLOAK_BOT.greeting(), false);
   cloakShow('cloakOverlay', true);
-
   document.body.classList.add('cloak-active');
   const realMessages = document.getElementById('messages');
   if (realMessages) realMessages.replaceChildren();
   show('ownerInvite', false);
   show('deleteRoomBtn', false);
   closeSocket();
+  // Init engine after layout is ready
+  setTimeout(() => {
+    try { initChatbotEngine(); } catch (e) { console.error('Chatbot init failed', e); }
+  }, 0);
 }
-
 function exitCloakMode() {
   cloakActive = false;
   if (roomId) localStorage.removeItem(cloakOnlyKey(roomId));
   cloakShow('cloakOverlay', false);
-
   document.body.classList.remove('cloak-active');
   if (roomId && session) connect();
 }
-
 async function cloakUnlock() {
   ensureCloakUI();
   cloakShow('cloakUnlockModal', true);
   cloakShow('cloakUnlockAlert', false);
   document.getElementById('cloakPassword').value = '';
-
 }
-
 async function cloakSubmitUnlock() {
   const pw = document.getElementById('cloakPassword').value;
   if (!pw) return;
@@ -697,43 +1345,25 @@ async function cloakSubmitUnlock() {
   try {
     const data = await api(`/api/rooms/${encodeURIComponent(roomId)}/cloak/unlock`, {
       method: 'POST', headers: auth(),
-      body: JSON.stringify({
-        password: pw,
-        confirm_permanent_exit: true
-      })
+      body: JSON.stringify({ password: pw, confirm_permanent_exit: true })
     });
     cloakShow('cloakUnlockModal', false);
-
     if (data.action === 'restore') { exitCloakMode(); return; }
-
     if (data.action === 'exit') {
       const exitedRoom = roomId;
       if (exitedRoom) localStorage.setItem(cloakOnlyKey(exitedRoom), '1');
       sessionStorage.removeItem(storageKey(roomId));
       const realMessages = document.getElementById('messages');
       if (realMessages) realMessages.replaceChildren();
-      roomId = '';
-      session = null;
-      role = null;
-      memberId = null;
-      clearCloakMessages();
-      renderCloakBubble(CLOAK_BOT.greeting(), false);
-      cloakShow('cloakUnlockModal', false);
+      roomId = ''; session = null; role = null; memberId = null;
       return;
     }
   } catch (e) {
-    if (e.code === 'CONFIRM_REQUIRED') alertEl.textContent = 'Unable to continue.';
-    else if (e.code === 'CLOAK_LOCKED') alertEl.textContent = e.message || 'Too many attempts. Try again later.';
+    if (e.code === 'CLOAK_LOCKED') alertEl.textContent = e.message || 'Too many attempts. Try again later.';
     else alertEl.textContent = e.message || 'Incorrect password';
     alertEl.classList.remove('hidden');
   }
 }
-
-function cloakShow(id, on = true) {
-  const el = document.getElementById(id);
-  if (el) el.classList.toggle('hidden', !on);
-}
-
 function wireCloakUI() {
   document.getElementById('cloakSetupSave').onclick = async () => {
     const restore = document.getElementById('cloakRestore').value;
@@ -766,18 +1396,5 @@ function wireCloakUI() {
   document.getElementById('cloakUnlockSubmit').onclick = cloakSubmitUnlock;
   document.getElementById('cloakUnlockCancel').onclick = () => cloakShow('cloakUnlockModal', false);
   document.getElementById('cloakBrandTrigger').onclick = cloakUnlock;
-
-  const input = document.getElementById('cloakInput');
-  const send = () => {
-    const text = input.value.trim();
-    if (!text) return;
-    renderCloakBubble(text, true);
-    input.value = '';
-    setTimeout(() => renderCloakBubble(CLOAK_BOT.reply(text), false), 400);
-  };
-  document.getElementById('cloakSend').onclick = send;
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); }
-  });
 }
 </script></body></html>
