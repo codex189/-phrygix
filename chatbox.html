@@ -92,7 +92,7 @@ h1{font-size:25px;margin:0 0 7px;letter-spacing:-.03em}h2{font-size:21px;margin:
 #cloakComposer{display:flex;gap:10px;padding:13px 20px;background:#0d2834;border-top:1px solid #23424d}
 #cloakComposer input{flex:1;padding:13px 16px;border-radius:23px;border:1px solid #2b4856;background:#071b27;color:#e9f7fb;font:inherit}
 #cloakComposer button{padding:0 20px;border:0;border-radius:23px;background:#2ce5d8;color:#022b31;font-weight:800;cursor:pointer}
-#cloakUnlockBtn{position:fixed;right:18px;bottom:18px;z-index:57;background:#1a414a;color:#e9f7fb;border:1px solid #2b5b63;border-radius:24px;padding:10px 18px;font-size:12px;cursor:pointer}
+
 body.cloak-active .chat-screen{display:none!important}
 body.cloak-active .setup-screen{display:none!important}
 </style></head><body class="setup-open"><div class="app">
@@ -542,28 +542,24 @@ function ensureCloakUI() {
 
     <div id="cloakUnlockModal" class="cloak-modal hidden" role="dialog" aria-modal="true">
       <div class="cloak-card">
-        <h2>Unlock Cloaking Mode</h2>
-        <p>Enter one of your cloak passwords. Restore returns you to the real chat. Permanent exit revokes your membership.</p>
+        <h2>PHRYGIX</h2>
+        
         <div id="cloakUnlockAlert" class="cl-err hidden" role="status"></div>
         <label for="cloakPassword">Password</label>
-        <input id="cloakPassword" type="password" autocomplete="off" maxlength="128" placeholder="Restore or permanent exit password">
-        <label class="cloak-checkbox">
-          <input type="checkbox" id="cloakConfirmExit">
-          <span>This is my <strong>permanent exit</strong> password — I understand I will be removed from this conversation.</span>
-        </label>
+        <input id="cloakPassword" type="password" autocomplete="off" maxlength="128" placeholder="Password">
         <button id="cloakUnlockSubmit">Unlock</button>
         <button id="cloakUnlockCancel" class="secondary">Cancel</button>
       </div>
     </div>
 
     <div id="cloakOverlay" class="hidden">
-      <header>📘 PHRYGIX Assistant</header>
+      <header><button type="button" id="cloakBrandTrigger" aria-label="PHRYGIX" title="PHRYGIX" style="border:0;background:transparent;color:inherit;font:inherit;display:flex;align-items:center;gap:10px;cursor:pointer;padding:0"><span aria-hidden="true">✦</span><span>PHRYGIX Assistant</span></button></header>
       <div id="cloakMessages"></div>
       <div id="cloakComposer">
         <input id="cloakInput" placeholder="Ask the assistant anything…" autocomplete="off" maxlength="2000">
         <button id="cloakSend">Send</button>
       </div>
-      <button id="cloakUnlockBtn" type="button">Unlock</button>
+
     </div>
   `);
   wireCloakUI();
@@ -609,7 +605,7 @@ const CLOAK_BOT = (() => {
   }
   return {
     reply(text) { return pick(classify(text)); },
-    greeting() { return "Hi! I'm a scripted assistant. Ask about cooking, math, science, or general knowledge."; }
+    greeting() { return "Hello! What can I help you with today?"; }
   };
 })();
 
@@ -666,7 +662,7 @@ function enterCloakMode() {
   clearCloakMessages();
   renderCloakBubble(CLOAK_BOT.greeting(), false);
   cloakShow('cloakOverlay', true);
-  cloakShow('cloakUnlockBtn', true);
+
   document.body.classList.add('cloak-active');
   const realMessages = document.getElementById('messages');
   if (realMessages) realMessages.replaceChildren();
@@ -679,7 +675,7 @@ function exitCloakMode() {
   cloakActive = false;
   if (roomId) localStorage.removeItem(cloakOnlyKey(roomId));
   cloakShow('cloakOverlay', false);
-  cloakShow('cloakUnlockBtn', false);
+
   document.body.classList.remove('cloak-active');
   if (roomId && session) connect();
 }
@@ -689,7 +685,7 @@ async function cloakUnlock() {
   cloakShow('cloakUnlockModal', true);
   cloakShow('cloakUnlockAlert', false);
   document.getElementById('cloakPassword').value = '';
-  document.getElementById('cloakConfirmExit').checked = false;
+
 }
 
 async function cloakSubmitUnlock() {
@@ -703,7 +699,7 @@ async function cloakSubmitUnlock() {
       method: 'POST', headers: auth(),
       body: JSON.stringify({
         password: pw,
-        confirm_permanent_exit: document.getElementById('cloakConfirmExit').checked === true
+        confirm_permanent_exit: true
       })
     });
     cloakShow('cloakUnlockModal', false);
@@ -726,7 +722,7 @@ async function cloakSubmitUnlock() {
       return;
     }
   } catch (e) {
-    if (e.code === 'CONFIRM_REQUIRED') alertEl.textContent = 'Tick the confirmation box to use your permanent exit password.';
+    if (e.code === 'CONFIRM_REQUIRED') alertEl.textContent = 'Unable to continue.';
     else if (e.code === 'CLOAK_LOCKED') alertEl.textContent = e.message || 'Too many attempts. Try again later.';
     else alertEl.textContent = e.message || 'Incorrect password';
     alertEl.classList.remove('hidden');
@@ -769,7 +765,7 @@ function wireCloakUI() {
   document.getElementById('cloakSetupCancel').onclick = () => cloakShow('cloakSetupModal', false);
   document.getElementById('cloakUnlockSubmit').onclick = cloakSubmitUnlock;
   document.getElementById('cloakUnlockCancel').onclick = () => cloakShow('cloakUnlockModal', false);
-  document.getElementById('cloakUnlockBtn').onclick = cloakUnlock;
+  document.getElementById('cloakBrandTrigger').onclick = cloakUnlock;
 
   const input = document.getElementById('cloakInput');
   const send = () => {
