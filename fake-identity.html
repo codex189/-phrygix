@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="canonical" href="https://phrygix.xyz/fake-identity.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta name="theme-color" content="#0b111a"><meta name="description" content="Free fake name generator and random identity generator for fictional profiles, sample addresses and developer test data. Generate by country and export JSON or CSV.">
 <title>Free Fake Name Generator & Random Identity Generator | PHRYGIX</title>
 <style>
@@ -13,10 +16,87 @@
 .phrygix-ad-banner{width:320px;max-width:100%;min-height:50px;margin:0 auto;overflow:hidden}
 .phrygix-ad-native{min-height:90px;max-width:100%;overflow:hidden}
 .phrygix-sponsored-link{display:inline-block;border:1px solid var(--line);padding:9px 14px;border-radius:9px;color:var(--aqua);font-size:12px}
+
+/* Shared PHRYGIX homepage branding, with mobile-first usability refinements */
+:root{--bg:#03111b;--panel:#071b28;--panel2:#0b2633;--line:#1b3b4d;--text:#e9f7fb;--muted:#94aeba;--aqua:#2ce5d8;--violet:#80c9dc}
+body{background:radial-gradient(ellipse at 80% 0%,#0b3039 0,transparent 45%),var(--bg)}
+.top{background:rgba(3,17,27,.95);border-bottom-color:#1c4c54;position:relative;z-index:20}
+.brand{display:inline-flex;align-items:center;gap:11px;color:var(--aqua);font-weight:750;letter-spacing:.15em;white-space:nowrap}
+.brand img{width:43px;height:43px;object-fit:contain;filter:drop-shadow(0 0 9px #2ce5d844)}
+.brand:hover{color:var(--text)}
+.mobile-menu-toggle{display:none;background:#0b2633;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 13px;font-size:14px;align-items:center;gap:7px}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--aqua);outline-offset:3px}
+.card{background:linear-gradient(145deg,#0b2633,#061722)}
+.field select,.field input{background:#061722}
+.datum{background:#061722}
+@media(max-width:900px){
+ .top .shell{min-height:66px;flex-wrap:wrap;gap:8px;padding-top:9px;padding-bottom:9px}
+ .top .status{display:none}
+ .mobile-menu-toggle{display:inline-flex;margin-left:auto;min-height:44px}
+ .top .nav{display:none;flex-basis:100%;width:100%;flex-direction:column;align-items:stretch;gap:4px;padding:8px 0 10px}
+ .top .nav.is-open{display:flex}
+ .top .nav a{display:block;padding:12px 14px;min-height:44px;border-radius:9px;background:#092431;color:var(--text)}
+ .top .nav a.active{color:var(--aqua);border:1px solid #23666b}
+ .layout{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:600px){
+ html,body{max-width:100%;overflow-x:clip}
+ .shell{padding-inline:14px}
+ .brand{font-size:17px;letter-spacing:.09em;gap:8px}
+ .brand img{width:35px;height:35px}
+ .hero{padding:26px 0 20px}
+ .hero h1{font-size:clamp(28px,8vw,38px);line-height:1.15;letter-spacing:-.035em;margin:9px 0 12px}
+ .hero p{font-size:14px;line-height:1.65}
+ .eyebrow{font-size:10px;letter-spacing:.08em;overflow-wrap:anywhere}
+ .pills{gap:6px;margin-top:14px}
+ .pill{font-size:11px;padding:5px 9px}
+ .layout{gap:8px;padding-bottom:30px}
+ .card{border-radius:12px;margin-bottom:13px}
+ .cardhead{padding:13px 14px;flex-wrap:wrap;gap:8px}
+ .cardhead h2{font-size:14px;line-height:1.4}
+ .body{padding:14px}
+ .identity{padding:14px}
+ .field{margin-bottom:12px}
+ .field label{font-size:13px}
+ .field select,.field input{min-height:46px;font-size:16px;padding:11px 12px}
+ .btn{min-height:46px;display:inline-flex;align-items:center;justify-content:center;text-align:center;padding:11px 12px}
+ #identitySettings .buttons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,0.65fr)}
+ #identitySettings .buttons .btn{width:100%}
+ .switch{font-size:13px;align-items:flex-start;gap:10px}
+ .switch input{width:19px;height:19px;flex-shrink:0}
+ .profiletop{gap:11px;align-items:center;margin-bottom:16px}
+ .avatar{width:48px;height:48px;font-size:17px;border-radius:12px}
+ .personname{font-size:clamp(19px,5.8vw,25px);overflow-wrap:anywhere;line-height:1.2}
+ .sub{font-size:12px;overflow-wrap:anywhere}
+ .fields{grid-template-columns:minmax(0,1fr);gap:8px}
+ .datum{padding:11px 12px}
+ .datum .copy{min-height:34px;min-width:44px;text-align:right;padding:5px}
+ .section{padding:15px 0 5px}
+ .sectiontitle{align-items:center;gap:8px}
+ .sectiontitle h3{font-size:14px;min-width:0}
+ .sectiontitle button{min-height:40px;min-width:88px;font-size:12px;text-align:right}
+ .sectionfoot{align-items:stretch;gap:12px}
+ .sectionfoot .micro{overflow-wrap:anywhere;font-size:10px}
+ .sectionfoot .buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ .sectionfoot .buttons .btn{width:100%}
+ .batchrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;align-items:stretch}
+ .batchrow .field{grid-column:1/-1;max-width:none;width:100%}
+ .batchrow .btn{width:100%;min-width:0}
+ .batchrow #bulkGenerate{grid-column:1/-1}
+ .results{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .phrygix-ad{margin:15px auto 21px}
+ .phrygix-ad-native{overflow-x:auto}
+ #identity-seo-guide .body h2{font-size:17px;line-height:1.35}
+ #identity-seo-guide details{padding:8px 0}
+ #identity-seo-guide summary{min-height:42px;cursor:pointer}
+ .toast{left:14px;right:14px;bottom:max(14px,env(safe-area-inset-bottom));text-align:center}
+ .foot{line-height:1.8}
+}
+@media(max-width:360px){.brand{font-size:15px}.mobile-menu-toggle span{display:none}.sectionfoot .buttons{gap:7px}}
 </style></head>
-<body><header class="top"><div class="shell"><a class="brand" href="index.html">PHRY<b>GIX</b></a><nav class="nav"><a href="index.html">Home</a><a href="temp-email.html">Temporary Email</a><a class="active" href="fake-identity.html">Identity Lab</a></nav><span class="status">● LOCAL GENERATION</span></div></header>
+<body><header class="top"><div class="shell"><a class="brand" href="index.html" aria-label="PHRYGIX home"><img src="/favicon.svg" alt="" width="43" height="43"><span>PHRYGIX</span></a><nav class="nav" id="identityNav" aria-label="Main navigation"><a href="index.html">Home</a><a href="temp-email.html">Temporary Email</a><a class="active" href="fake-identity.html" aria-current="page">Identity Lab</a></nav><button class="mobile-menu-toggle" type="button" aria-controls="identityNav" aria-expanded="false" aria-label="Open navigation menu">☰ <span>Menu</span></button><span class="status">● LOCAL GENERATION</span></div></header>
 <main class="shell"><section class="hero"><div class="eyebrow">PHRYGIX / PRIVACY UTILITIES / 01</div><h1>Free Fake Name Generator &amp; <em>Random Identity Generator</em></h1><p>Rich, country-aware fictional personas for testing, design, and storytelling. Generate contact, online, personal, finance test data, and developer identifiers — all in your browser.</p><div class="pills"><span class="pill">◇ 30+ country presets</span><span class="pill">◇ African names</span><span class="pill">◇ JSON / CSV</span><span class="pill">◇ No paid API</span></div></section>
-<section class="phrygix-ad" aria-label="Advertisement"><div class="phrygix-ad-label">Advertisement</div><div class="phrygix-ad-banner"><script>atOptions = {'key':'2a7cb2a42446ecdfa3b5954762a37347','format':'iframe','height':50,'width':320,'params':{}};</script><script src="https://bauval.org/22/2a7cb2a42446ecdfa3b5954762a37347"></script></div></section><div class="layout"><aside><section class="card"><div class="cardhead"><h2>Identity settings</h2><span class="micro">CONFIG / 01</span></div><div class="body">
+<section class="phrygix-ad" aria-label="Advertisement"><div class="phrygix-ad-label">Advertisement</div><div class="phrygix-ad-banner"><script>atOptions = {'key':'2a7cb2a42446ecdfa3b5954762a37347','format':'iframe','height':50,'width':320,'params':{}};</script><script src="https://bauval.org/22/2a7cb2a42446ecdfa3b5954762a37347"></script></div></section><div class="layout"><aside id="identitySettings"><section class="card"><div class="cardhead"><h2>Identity settings</h2><span class="micro">CONFIG / 01</span></div><div class="body">
 <div class="field"><label for="region">Country</label><select id="region"></select></div>
 <div class="field"><label for="gender">Name style</label><select id="gender"><option value="any">Any</option><option value="f">Feminine</option><option value="m">Masculine</option></select></div>
 <div class="field"><label for="ageMin">Minimum age</label><input id="ageMin" type="number" min="18" max="100" value="21"></div><div class="field"><label for="ageMax">Maximum age</label><input id="ageMax" type="number" min="18" max="100" value="65"></div>
@@ -26,7 +106,7 @@
 <section class="card"><div class="body"><div class="micro">PHRYGIX EMAIL INTEGRATION</div><p class="help">Generated emails use the reserved <code>example.com</code> domain. They do not receive mail. To use a real Phrygix temporary inbox, open Temporary Email and generate an address there.</p><a class="btn" href="temp-email.html">Open Temporary Email ↗</a></div></section>
 <section class="card"><div class="body"><div class="micro">IMPORTANT</div><p class="help">Names and cities are plausible; street addresses, phone numbers, ID fields and finance data are clearly synthetic or illustrative. No real bank cards, SSNs or identity documents are generated.</p><div class="note">For authorized testing, fiction, and demos — not impersonation or bypassing identity verification.</div></div></section>
 </aside><div>
-<section class="card"><div class="cardhead"><h2>Your randomly generated identity</h2><span class="tag">SYNTHETIC PERSONA</span></div><div class="identity">
+<section class="card" id="identityResult"><div class="cardhead"><h2>Your randomly generated identity</h2><span class="tag">SYNTHETIC PERSONA</span></div><div class="identity">
 <div class="profiletop"><div class="avatar" id="avatar">—</div><div><div class="personname" id="fullName">Generating…</div><div class="sub" id="profileSubtitle">Fictional persona</div></div></div>
 <div id="sections" aria-live="polite"></div>
 <div class="sectionfoot"><span class="micro" id="profileId">PROFILE / —</span><div class="buttons"><button class="btn" id="copyAll">Copy JSON</button><button class="btn" id="share">Share settings</button><button class="btn" id="downloadJson">↓ JSON</button><button class="btn" id="downloadCsv">↓ CSV</button></div></div></div></section>
@@ -114,4 +194,22 @@ $('bulkGenerate').onclick=()=>{try{const c=cfg(),count=Number($('count').value);
 $('bulkCsv').onclick=()=>batch.length&&download('phrygix-batch.csv',csv(batch),'text/csv;charset=utf-8');$('bulkJson').onclick=()=>batch.length&&download('phrygix-batch.json',JSON.stringify(batch,null,2),'application/json');
 const q=new URLSearchParams(location.search);if(localeData.some(x=>x[0]===q.get('country')))$('region').value=q.get('country');if(['any','f','m'].includes(q.get('gender')))$('gender').value=q.get('gender');if(q.has('seed'))$('seed').value=q.get('seed').slice(0,100);if(q.has('min')&&Number(q.get('min'))>=18&&Number(q.get('min'))<=100)$('ageMin').value=q.get('min');if(q.has('max')&&Number(q.get('max'))>=18&&Number(q.get('max'))<=100)$('ageMax').value=q.get('max');
 $('year').textContent=new Date().getFullYear();generate();
-</script><nav aria-label="PHRYGIX information pages" style="display:flex;justify-content:center;flex-wrap:wrap;gap:20px;padding:22px;font:12px sans-serif;border-top:1px solid #253245;background:#090e16"><a href="about.html" style="color:#7bdcda">About</a><a href="faq.html" style="color:#7bdcda">FAQ</a><a href="terms.html" style="color:#7bdcda">Terms &amp; Conditions</a></nav><script data-cfasync="false" src="https://bauval.org/14/274696ce23ff0b21915e81e39578adff"></script></body></html>
+</script><nav aria-label="PHRYGIX information pages" style="display:flex;justify-content:center;flex-wrap:wrap;gap:20px;padding:22px;font:12px sans-serif;border-top:1px solid #253245;background:#090e16"><a href="about.html" style="color:#7bdcda">About</a><a href="faq.html" style="color:#7bdcda">FAQ</a><a href="terms.html" style="color:#7bdcda">Terms &amp; Conditions</a></nav><script data-cfasync="false" src="https://bauval.org/14/274696ce23ff0b21915e81e39578adff"></script><script>
+/* Menu enhancement is independent from identity generation and advertising. */
+(function(){
+ const toggle=document.querySelector('.mobile-menu-toggle');
+ const nav=document.getElementById('identityNav');
+ if(!toggle||!nav)return;
+ toggle.addEventListener('click',function(){
+  const open=nav.classList.toggle('is-open');
+  toggle.setAttribute('aria-expanded',String(open));
+  toggle.setAttribute('aria-label',open?'Close navigation menu':'Open navigation menu');
+ });
+ nav.addEventListener('click',function(event){
+  if(event.target.closest('a')){nav.classList.remove('is-open');toggle.setAttribute('aria-expanded','false');}
+ });
+ window.addEventListener('resize',function(){
+  if(window.innerWidth>900){nav.classList.remove('is-open');toggle.setAttribute('aria-expanded','false');}
+ });
+})();
+</script></body></html>
