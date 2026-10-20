@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090e16">
+<meta name="theme-color" content="#03111b">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta name="description" content="Create a free temporary email address with PHRYGIX Temp Mail. Receive messages in a disposable inbox for short-term sign-ups and website testing. No account required.">
 <title>Temp Mail – Free Temporary Email &amp; Disposable Inbox | PHRYGIX</title>
 <link rel="canonical" href="https://phrygix.xyz/temp-email.html">
@@ -19,16 +22,61 @@
 .ad-placement iframe{max-width:100%}
 .ad-native{margin:24px auto;min-height:110px}.ad-banner-unit{width:320px;max-width:100%;min-height:50px}.ad-banner{width:100%}
 .ad-smartlink{display:inline-block;color:#7bdcda;text-decoration:underline;text-underline-offset:3px}
+
+/* Homepage identity and touch-friendly responsive refinements */
+:root{--bg:#03111b;--surface:#071b28;--surface2:#0b2633;--line:#1b3b4d;--muted:#94aeba;--text:#e9f7fb;--cyan:#2ce5d8;--mint:#66e4d8}
+.brand{display:inline-flex;align-items:center;gap:12px;color:var(--cyan);font-weight:700;letter-spacing:.19em;white-space:nowrap}
+.brand img{width:45px;height:45px;object-fit:contain;filter:drop-shadow(0 0 9px #2ce5d844)}
+.top{background:rgba(3,17,27,.93);border-bottom-color:#1c4c54}
+.panel{background:linear-gradient(155deg,#0b2633,#061722)}
+.ad-placement{background:var(--surface);border-color:var(--line)}
+.social-bar-slot{min-width:0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.social-bar-slot:empty{display:none}
+button,a,input{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.address input{font-size:16px;min-height:52px}
+.iconbtn{min-height:52px}
+.messages button{overflow-wrap:anywhere}
+@media(max-width:850px){.layout{gap:16px}.side{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){
+ .wrap{width:calc(100% - 28px)}
+ .nav{height:auto;min-height:68px;gap:8px}
+ .brand{font-size:16px;gap:7px;letter-spacing:.08em}
+ .brand img{width:36px;height:36px}
+ .navright{gap:8px}.navright .back{padding:10px;font-size:12px;white-space:nowrap}
+ .intro{padding:32px 0 23px}.intro h1{font-size:clamp(30px,9vw,43px);overflow-wrap:anywhere}.intro p{font-size:15px}
+ .layout,.maincol,.side{gap:14px}
+ .panel{padding:17px;border-radius:12px}
+ .panelhead{flex-wrap:wrap;align-items:flex-start;margin-bottom:15px}
+ .panelhead h2{font-size:16px}
+ .address{gap:7px}.address input{padding:12px 10px;letter-spacing:-.035em;min-width:0}
+ .iconbtn{width:50px;min-width:50px}
+ .buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .buttons .btn{width:100%;min-height:48px;padding:10px 8px;white-space:normal;overflow-wrap:anywhere}
+ #generateBtn{grid-column:1/-1}
+ .side{grid-template-columns:1fr}
+ .inboxhead{flex-wrap:wrap}.auto-refresh{margin-left:0;font-size:10px}
+ .messages{min-height:170px}.empty-state{padding:28px 8px}
+ .countdown{flex-wrap:wrap}.countdown-time{font-size:18px}
+ .ad-placement{padding:12px 6px}.ad-banner-unit{width:320px;max-width:100%}
+ .seo-content{padding:18px;margin-bottom:35px}
+ .modal{padding:10px}.modal-content{max-height:90dvh}.modal-header,.modal-body{padding:16px}
+ .footer{padding:22px 0 30px}
+ .toast{bottom:12px;right:12px;left:12px;max-width:none}
+}
+@media(max-width:360px){.brand{font-size:14px}.brand img{width:31px;height:31px}.navright .back{font-size:11px;padding:8px}.panel{padding:13px}.buttons{grid-template-columns:1fr}#generateBtn{grid-column:auto}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap nav"><a class="brand" href="index.html">PHRYGIX<i>_</i></a><nav class="navright" aria-label="Navigation"><a href="index.html#tools">All tools</a><a class="back" href="index.html">← Back to home</a></nav></div></header>
+<header class="top"><div class="wrap nav"><a class="brand" href="index.html" aria-label="PHRYGIX home"><img src="/favicon.svg" width="45" height="45" alt=""><span>PHRYGIX</span></a><nav class="navright" aria-label="Navigation"><a href="index.html#tools">All tools</a><a class="back" href="index.html">← Back to home</a></nav></div></header>
 <main class="wrap">
 <section class="intro"><div class="eyebrow">01 / PHRYGIX TOOLKIT / MAIL</div><h1>Free Temporary Email Generator – <span>Temp Mail Without Signup.</span></h1><p>A disposable address for the moments you don't want to share your primary inbox. Generate, copy, and check messages in one place.</p></section>
 <div class="layout"><div class="maincol">
-<section class="panel email-box" aria-labelledby="address-heading"><div class="panelhead"><h2 id="address-heading">Your disposable address</h2><span class="status"><span class="dot"></span> MAIL TOOL</span></div><label class="label" for="emailAddress">GENERATED ADDRESS</label><div class="address email-display"><input type="text" id="emailAddress" readonly placeholder="Awaiting generation…" autocomplete="off" spellcheck="false"><button id="copyBtn" class="iconbtn" aria-label="Copy email address" title="Copy email address" disabled>⧉</button></div><div class="buttons actions"><button id="generateBtn" class="btn primary"><span class="btn-glitch-text">Generate address ↗</span></button><button id="refreshBtn" class="btn secondary" disabled>↻ Refresh inbox</button><button id="deleteBtn" class="btn danger" disabled>× Terminate</button></div><p class="helper" id="serviceHint">Your temporary email address will remain active for 60 minutes. All messages will expire with your inbox.</p><div id="inboxCountdown" class="countdown" role="timer" aria-label="Time remaining for temporary inbox" hidden><span class="countdown-label">INBOX TIME REMAINING</span><strong id="inboxTime" class="countdown-time">60:00</strong></div><p id="cooldownNote" class="cooldown-note" hidden></p><div id="limitAlert" class="limit-alert" role="alert" hidden></div></section>
-<section class="panel inbox" aria-labelledby="inbox-heading"><div class="panelhead inbox-header"><div class="inboxhead"><h2 id="inbox-heading">Inbox</h2><span id="messageCount" class="badge">0</span></div><span id="autoRefresh" class="auto-refresh"><span class="pulse-dot"></span> LIVE FEED</span></div><div id="messages" class="messages" aria-live="polite"><div class="empty-state"><div class="empty-glyph">>_</div><p>No messages yet.</p><p class="empty-hint">Generate an address to begin checking your inbox.</p></div></div></section>
 <section class="ad-placement ad-banner" aria-label="Banner advertisement"><span class="ad-label">Advertisement</span><div class="ad-banner-unit"><script>atOptions = {'key':'2a7cb2a42446ecdfa3b5954762a37347','format':'iframe','height':50,'width':320,'params':{}};</script><script src="https://bauval.org/22/2a7cb2a42446ecdfa3b5954762a37347"></script></div></section>
+<section class="panel email-box" aria-labelledby="address-heading"><div class="panelhead"><h2 id="address-heading">Your disposable address</h2><span class="status"><span class="dot"></span> MAIL TOOL</span></div><label class="label" for="emailAddress">GENERATED ADDRESS</label><div class="address email-display"><input type="text" id="emailAddress" readonly placeholder="Awaiting generation…" autocomplete="off" spellcheck="false"><button id="copyBtn" class="iconbtn" aria-label="Copy email address" title="Copy email address" disabled>⧉</button></div><div class="buttons actions"><button id="generateBtn" class="btn primary"><span class="btn-glitch-text">Generate address ↗</span></button><button id="refreshBtn" class="btn secondary" disabled>↻ Refresh inbox</button><button id="deleteBtn" class="btn danger" disabled>× Terminate</button></div><p class="helper" id="serviceHint">Your temporary email address will remain active for 60 minutes. All messages will expire with your inbox.</p><div id="inboxCountdown" class="countdown" role="timer" aria-label="Time remaining for temporary inbox" hidden><span class="countdown-label">INBOX TIME REMAINING</span><strong id="inboxTime" class="countdown-time">60:00</strong></div><p id="cooldownNote" class="cooldown-note" hidden></p><div id="limitAlert" class="limit-alert" role="alert" hidden></div></section>
+<div class="social-bar-slot" aria-label="Sponsored content"><span class="ad-label">Sponsored</span><script data-cfasync="false" src="https://bauval.org/14/274696ce23ff0b21915e81e39578adff"></script></div>
+<section class="panel inbox" aria-labelledby="inbox-heading"><div class="panelhead inbox-header"><div class="inboxhead"><h2 id="inbox-heading">Inbox</h2><span id="messageCount" class="badge">0</span></div><span id="autoRefresh" class="auto-refresh"><span class="pulse-dot"></span> LIVE FEED</span></div><div id="messages" class="messages" aria-live="polite"><div class="empty-state"><div class="empty-glyph">>_</div><p>No messages yet.</p><p class="empty-hint">Generate an address to begin checking your inbox.</p></div></div></section>
+
 <section class="ad-placement" aria-label="Sponsored link below inbox"><span class="ad-label">Advertisement</span><p style="margin:8px 0"><a class="ad-smartlink" href="https://www.profitableratecpmnetwork.com/m434ze9n5m?key=1495257027728b7c30030933c3e85ec7" target="_blank" rel="noopener noreferrer sponsored nofollow">Visit sponsored offers ↗</a></p></section>
 </div><aside class="side"><section class="panel"><div class="mono">HOW IT WORKS</div><h3>Disposable by design.</h3><ol><li>Generate a temporary address.</li><li>Copy it into a site or form where temporary email is accepted.</li><li>Return here to check incoming messages.</li><li>Terminate the inbox when you're finished.</li></ol></section><section class="panel limits-panel" aria-labelledby="limits-heading"><div class="mono">USAGE POLICY</div><div class="limits-title"><span class="limits-icon" aria-hidden="true">⚠</span><h3 id="limits-heading">Limits &amp; safety</h3></div><ul class="limits-list"><li><span>Inbox lifetime</span><strong>60 minutes</strong></li><li><span>New addresses</span><strong>5 per minute*</strong></li><li><span>Received messages</span><strong>100 per inbox</strong></li><li><span>Email size</span><strong>512 KB maximum</strong></li><li><span>Expired mail</span><strong>Deleted automatically</strong></li></ul><p class="limits-note">*Generation limits are approximate and may be shared by visitors using the same network. Excessive requests may be temporarily blocked.</p><div class="small-note">Do not use temporary addresses for banking, password recovery, sensitive information, or accounts you need long-term. Messages and addresses expire; delivery is not guaranteed. Do not use this service for spam, harassment, fraud, or other unlawful activity.</div></section><section class="panel"><div class="infobox"><div class="shield">◇</div><div><strong>Keep your primary inbox private</strong><p>Temporary email is for low-risk uses, not financial accounts, password recovery, or sensitive communications.</p></div></div><div class="small-note">PHRYGIX receives messages through its active mail service. Temporary inboxes are not permanent storage; save anything important before expiration.</div></section></aside></div>
 
@@ -230,6 +278,6 @@
   setInterval(() => { if (!document.hidden) refresh(true); }, 15000);
 })();
 </script>
-<nav aria-label="PHRYGIX information pages" style="display:flex;justify-content:center;flex-wrap:wrap;gap:20px;padding:22px;font:12px sans-serif;border-top:1px solid #253245;background:#090e16"><a href="about.html" style="color:#7bdcda">About</a><a href="faq.html" style="color:#7bdcda">FAQ</a><a href="terms.html" style="color:#7bdcda">Terms &amp; Conditions</a></nav><script data-cfasync="false" src="https://bauval.org/14/274696ce23ff0b21915e81e39578adff"></script>
+<nav aria-label="PHRYGIX information pages" style="display:flex;justify-content:center;flex-wrap:wrap;gap:20px;padding:22px;font:12px sans-serif;border-top:1px solid #253245;background:#090e16"><a href="about.html" style="color:#7bdcda">About</a><a href="faq.html" style="color:#7bdcda">FAQ</a><a href="terms.html" style="color:#7bdcda">Terms &amp; Conditions</a></nav>
 </body>
 </html>
