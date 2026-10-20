@@ -41,6 +41,41 @@
 .ad-native{min-height:100px;overflow:hidden;max-width:100%}
 .ad-sponsored{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:9px;padding:11px 18px;color:var(--cyan);font-size:13px;background:var(--surface)}
 .ad-sponsored:hover{border-color:var(--cyan)}
+
+[hidden]{display:none!important}
+/* Mobile-first navigation and fast tool discovery */
+.tool-finder{margin:0 0 18px;display:flex;align-items:center;gap:10px;border:1px solid #2b5260;background:#092431;border-radius:12px;padding:0 14px;min-height:48px}
+.tool-finder svg{width:20px;height:20px;color:var(--cyan);flex:none}
+.tool-finder input{background:transparent;border:0;outline:0;color:var(--text);width:100%;font:inherit;font-size:15px;min-width:0}
+.tool-finder input::placeholder{color:#a2b8c5}.tool-finder:focus-within{border-color:var(--cyan)}
+.tool-finder-empty{color:var(--muted);font-size:14px;margin:12px 0}
+.quick-jumps{display:flex;gap:8px;overflow-x:auto;padding:2px 0 13px;scrollbar-width:thin}
+.quick-jumps a{flex:none;border:1px solid #27505b;border-radius:100px;padding:7px 12px;background:#0a2734;color:#cce5e9;font-size:12px;white-space:nowrap}
+.quick-jumps a:hover{border-color:var(--cyan);color:var(--cyan)}
+.mobile-guide-summary{display:none}
+@media(max-width:600px){
+ html{scroll-padding-top:75px}.wrap{width:calc(100% - 28px)}
+ .nav{height:62px;gap:8px}.brand{font-size:16px;letter-spacing:.06em;gap:7px}.brand img{width:33px;height:33px}
+ .navcta{padding:9px 11px;font-size:12px!important;white-space:nowrap}
+ .hero{padding:26px 0 20px;gap:0}.hero h1{font-size:clamp(30px,8.5vw,40px);line-height:1.1;margin:12px 0}.hero p{font-size:14px;line-height:1.55;margin:10px 0;max-width:44ch}
+ .hero .eyebrow{font-size:10px;letter-spacing:.08em}.hero .buttons{margin-top:15px;gap:8px}.hero .btn{padding:11px 14px;font-size:12px}.hero .terminal{display:none}
+ .statline{display:none}.section{padding:26px 0 34px}.sectionhead{margin-bottom:14px}.section h2{font-size:24px;margin:6px 0}.sectionhead p{font-size:13px;line-height:1.45;margin-top:6px}
+ .grid{grid-template-columns:1fr;gap:9px}
+ .tool{min-height:0;padding:13px 14px;border-radius:12px;display:grid;grid-template-columns:42px minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;column-gap:12px;row-gap:3px;position:relative}
+ .tool .topline{grid-column:1;grid-row:1 / 3;align-self:center}.tool .symbol{width:40px;height:40px;border-radius:10px;font-size:17px}
+ .tool .tag{display:none}.tool h3{grid-column:2;grid-row:1;margin:0;font-size:15px;line-height:1.3}
+ .tool p{grid-column:2;grid-row:2;margin:0;font-size:12px;line-height:1.35;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+ .tool .action{grid-column:3;grid-row:1 / 3;align-self:center;font-size:0;line-height:1}.tool .action:after{content:'›';font-size:27px;color:var(--cyan)}
+ .tool:active{border-color:var(--cyan);background:#0c303b}
+ .ad-placement{margin:17px auto}.ad-label{margin-bottom:5px}.note{font-size:11px;margin-top:12px}
+ .callout{padding:18px}.callout h2{font-size:23px}.callout p{font-size:13px}.callout .btn{margin-top:12px}
+ .mobile-guide-summary{display:block;cursor:pointer;padding:14px;border:1px solid var(--line);border-radius:10px;color:var(--cyan);font-weight:600;font-size:14px}
+ .mobile-guide-details:not([open]) .mobile-guide-content{display:none}
+ .guide-section{padding:20px 0}.guide-section .sectionhead{margin-bottom:12px}.guide-section .grid{gap:9px}
+ .guide-section .tool{display:block;padding:13px}.guide-section .tool h3{font-size:14px;margin:0 0 4px}.guide-section .tool p{font-size:12px;margin:0 0 6px;-webkit-line-clamp:3}.guide-section .tool .action{font-size:12px}.guide-section .tool .action:after{content:none}
+ .footer{margin-top:30px;padding:22px 0;gap:10px}.footer div{display:flex;flex-wrap:wrap;gap:12px}.footer a{margin:0}
+}
+@media(min-width:601px){.mobile-guide-details .mobile-guide-summary{display:none}.mobile-guide-details .mobile-guide-content{display:block!important}}
 </style>
 </head>
 <body>
@@ -56,7 +91,7 @@
 <div class="wrap ad-placement" aria-label="Advertisement"><div class="ad-label">Advertisement</div><div class="ad-banner"><script>atOptions = {'key':'2a7cb2a42446ecdfa3b5954762a37347','format':'iframe','height':50,'width':320,'params':{}};</script><script src="https://bauval.org/22/2a7cb2a42446ecdfa3b5954762a37347"></script></div></div>
 <div class="wrap statline"><span><b>●</b> NO PAID API REQUIRED FOR LOCAL TOOLS</span><span><b>◇</b> BUILT FOR THE BROWSER</span><span><b>↗</b> SIX TOOL PAGES LINKED</span></div>
 <section id="tools" class="section wrap" aria-labelledby="tools-title"><div class="sectionhead"><div><div class="kicker">01 / The toolkit</div><h2 id="tools-title">One place. Six privacy tools.</h2></div><p>Explore free online privacy tools for temporary email, fictional test identities, URL inspection, private notes image metadata removal, and temporary private messaging.</p></div>
-<div class="grid">
+<div class="tool-finder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="toolSearch" type="search" aria-label="Find a privacy tool" placeholder="Find a tool — email, chat, photo…" autocomplete="off"></div><div class="quick-jumps" aria-label="Popular tools"><a href="temp-email.html">Temporary email ↗</a><a href="chatbox.html">Private chat ↗</a><a href="metadata-cleaner.html">Clean photos ↗</a><a href="link-inspector.html">Check links ↗</a></div><p id="noToolResults" class="tool-finder-empty" hidden>No matching tools. Try a different keyword.</p><div class="grid" id="toolGrid">
 <a class="tool" href="fake-identity.html"><div class="topline"><span class="symbol" aria-hidden="true">ID</span><span class="tag">PAGE READY</span></div><h3>Identity Lab</h3><p>Generate fictional test profiles, usernames, and sample identity data for design, development, and creative projects.</p><span class="action">Open generator ↗</span></a>
 <a class="tool" href="temp-email.html"><div class="topline"><span class="symbol" aria-hidden="true">@</span><span class="tag">PAGE READY</span></div><h3>Temporary Email</h3><p>Disposable email inboxes for short-term sign-ups and low-stakes online interactions.</p><span class="action">Open email ↗</span></a>
 <a class="tool" href="link-inspector.html"><div class="topline"><span class="symbol" aria-hidden="true">↗</span><span class="tag">PAGE READY</span></div><h3>Link Inspector</h3><p>Decode supported redirect links and remove common tracking parameters before sharing URLs.</p><span class="action">Open tool ↗</span></a>
@@ -67,7 +102,7 @@
 <div class="wrap ad-placement" aria-label="Advertisement"><div class="ad-label">Advertisement</div><div class="ad-native"><script async="async" data-cfasync="false" src="https://pl31922816.profitableratecpmnetwork.com/3e68b0dd9968ac7126c5c2d4fbc556af/invoke.js"></script><div id="container-3e68b0dd9968ac7126c5c2d4fbc556af"></div></div></div>
 <section id="about" class="wrap"><div class="callout"><div><div class="kicker">02 / Our approach</div><h2>Less noise. More control.</h2><p>Phrygix focuses on practical, accessible utilities. Wherever possible, tools will process data locally in your browser. Server-backed features will clearly explain what they store.</p></div><a class="btn primary" href="#tools">Browse tools ↗</a></div></section>
 
-<section class="section wrap" aria-labelledby="privacy-tools-guide"><div class="sectionhead"><div><div class="kicker">03 / Free online utilities</div><h2 id="privacy-tools-guide">Privacy tools for everyday tasks</h2></div><p>Find the right tool for protecting your inbox, inspecting links, managing image information and sharing private text.</p></div>
+<section class="section wrap guide-section" aria-labelledby="privacy-tools-guide"><details class="mobile-guide-details" id="guideDetails"><summary class="mobile-guide-summary">More information about each tool ▾</summary><div class="mobile-guide-content"><div class="sectionhead"><div><div class="kicker">03 / Free online utilities</div><h2 id="privacy-tools-guide">Privacy tools for everyday tasks</h2></div><p>Find the right tool for protecting your inbox, inspecting links, managing image information and sharing private text.</p></div>
 <div class="grid">
 <article class="tool"><h3>Free Temporary Email &amp; Disposable Inbox</h3><p>Use a temporary email address for short-term sign-ups and testing without sharing your primary inbox. Avoid using disposable addresses for important accounts you may need to recover.</p><a class="action" href="temp-email.html">Try temporary email →</a></article>
 <article class="tool"><h3>Fake Name Generator &amp; Fictional Profiles</h3><p>Create random names and synthetic identities for software testing, design mockups and storytelling. Generated information is fictional and is not proof of identity.</p><a class="action" href="fake-identity.html">Generate test identities →</a></article>
@@ -75,7 +110,7 @@
 <article class="tool"><h3>EXIF Remover &amp; Photo Metadata Cleaner</h3><p>Review and remove supported image metadata, including location-related details where available, before sharing photos. Check exported images for remaining information.</p><a class="action" href="metadata-cleaner.html">Clean photo metadata →</a></article>
 <article class="tool"><h3>Private Notes &amp; Expiring Secret Links</h3><p>Share sensitive text using encrypted notes and expiring links. Always review the tool's limits before sharing important secrets.</p><a class="action" href="secret-vault.html">Open Secret Vault →</a></article>
 <article class="tool"><h3>Temporary Private Chat &amp; Group Rooms</h3><p>Create free temporary private rooms for two people or group conversations with up to 10 participants. Messages are stored server-side and are not end-to-end encrypted.</p><a class="action" href="chatbox.html">Open temporary messaging →</a></article>
-</div></section>
+</div></div></details></section>
 <section class="section wrap" aria-labelledby="home-faq-title"><div class="kicker">04 / Quick answers</div><h2 id="home-faq-title">Frequently asked questions</h2><div class="home-faq">
 <details><summary>What is PHRYGIX?</summary><p>PHRYGIX is a collection of browser-based and server-backed utilities for common privacy tasks, including temporary email, fictional test data, link inspection, metadata management, private notes and temporary conversations.</p></details>
 <details><summary>Can I use a temporary email address for verification?</summary><p>A temporary inbox can receive messages sent to its supported domain while the service is available. Some websites block disposable email addresses; do not use them for accounts you need to recover later.</p></details>
@@ -88,4 +123,12 @@
 <footer class="wrap footer"><span>© <span id="year"></span> PHRYGIX · PRIVACY-FIRST UTILITIES</span><div><a href="#tools">Tools</a><a href="about.html">About</a><a href="faq.html">FAQ</a><a href="terms.html">Terms &amp; Conditions</a></div></footer>
 <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
 <script data-cfasync="false" src="https://bauval.org/14/274696ce23ff0b21915e81e39578adff"></script>
+<script>
+(function(){
+ const input=document.getElementById('toolSearch'),cards=[...document.querySelectorAll('#toolGrid > .tool')],empty=document.getElementById('noToolResults');
+ if(input){input.addEventListener('input',()=>{const q=input.value.trim().toLowerCase();let visible=0;cards.forEach(card=>{const matches=card.textContent.toLowerCase().includes(q)||card.getAttribute('href').toLowerCase().includes(q);card.hidden=!matches;if(matches)visible++});empty.hidden=visible!==0})}
+ const details=document.getElementById('guideDetails'),mq=window.matchMedia('(min-width:601px)');
+ if(details){const sync=()=>{details.open=mq.matches};sync();mq.addEventListener?.('change',sync)}
+})();
+</script>
 </body></html>
