@@ -3,7 +3,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
-<meta content="#090e16" name="theme-color"/>
+<meta content="#03111b" name="theme-color"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta content="Free link checker to inspect suspicious URLs, decode embedded destinations and remove tracking parameters locally. Learn what PHRYGIX can and cannot verify." name="description"/>
 <title>Free Link Checker &amp; URL Inspector Online | PHRYGIX</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -14,10 +17,53 @@
 <link href="https://phrygix.xyz/link-inspector.html" rel="canonical"/><style>#link-seo h2{font-size:21px;margin:28px 0 8px;color:#e9f0f8}#link-seo h2:first-child{margin-top:0}#link-seo p{color:#a8b7c7;line-height:1.7}#link-seo details{border-top:1px solid #253245;padding:14px 0}#link-seo summary{cursor:pointer;color:#7bdcda;font-weight:600}#link-seo details p{margin-bottom:0}</style>
 <style>
 .phrygix-ad{margin:22px auto;text-align:center;max-width:100%;overflow:hidden}.phrygix-ad-label{display:block;color:#96a8ba;font:11px 'DM Sans',sans-serif;letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}.phrygix-ad-banner{min-height:50px;display:flex;justify-content:center;align-items:center}.phrygix-ad-native{min-height:70px}.phrygix-sponsored{text-align:center;margin:22px auto;color:#96a8ba;font-size:12px}.phrygix-sponsored a{color:#7bdcda;text-decoration:underline;text-underline-offset:3px}
+
+/* PHRYGIX homepage identity + responsive mobile enhancements */
+:root{--bg:#03111b;--surface:#071b28;--surface2:#0b2633;--line:#1b3b4d;--muted:#94aeba;--text:#e9f7fb;--cyan:#2ce5d8;--mint:#66e4d8}
+body{background:var(--bg);overflow-x:hidden}
+.top{background:rgba(3,17,27,.94);border-bottom-color:#1c4c54}
+.brand{display:inline-flex;align-items:center;gap:12px;color:var(--cyan);font-weight:700;letter-spacing:.19em;white-space:nowrap}
+.brand img{display:block;width:45px;height:45px;object-fit:contain;filter:drop-shadow(0 0 9px #2ce5d844)}
+.panel{background:linear-gradient(155deg,#0b2633,#061722);min-width:0}
+.field,.urlbox,.step,.meta dd{max-width:100%;overflow-wrap:anywhere;word-break:break-word}
+.field{font-size:16px}
+.btn{min-height:46px;touch-action:manipulation}
+.toggle input{width:20px;height:20px;flex-shrink:0}
+.phrygix-ad-banner{max-width:100%;overflow:hidden}
+.phrygix-ad-banner>div{max-width:100%}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media(max-width:800px){.layout{grid-template-columns:minmax(0,1fr)}.layout>div,.layout>aside{min-width:0}}
+@media(max-width:600px){
+ .wrap{width:calc(100% - 30px)}
+ .nav{height:auto;min-height:68px;gap:8px}
+ .brand{font-size:17px;letter-spacing:.08em;gap:7px}
+ .brand img{width:37px;height:37px}
+ .navlinks{gap:8px}
+ .navlinks .pill{font-size:12px;padding:10px 12px;white-space:nowrap}
+ .hero{padding:43px 0 26px}
+ .hero h1{font-size:clamp(32px,9vw,46px);line-height:1.12;overflow-wrap:break-word}
+ .hero p{font-size:15px}
+ .panel{padding:18px;border-radius:12px}
+ .field{padding:14px;min-height:130px}
+ .buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .buttons .btn{width:100%;padding:12px 9px;white-space:normal}
+ #inspect,#copy{grid-column:1/-1}
+ .toggle{align-items:flex-start;line-height:1.5}
+ .resulthead{align-items:flex-start;flex-wrap:wrap}
+ .urlbox{font-size:12px;padding:12px}
+ .meta{grid-template-columns:1fr;gap:3px}
+ .meta dd{margin-bottom:9px}
+ .step{font-size:11px}
+ .footer{margin-top:40px}
+ .phrygix-ad{margin:16px auto}
+ #link-seo{margin-top:16px!important}
+}
+@media(max-width:360px){.brand{font-size:15px}.navlinks .pill{padding:9px}.buttons{grid-template-columns:1fr}.buttons .btn{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap nav"><a aria-label="Phrygix home" class="brand" href="index.html">PHRYGIX<i>_</i></a><nav class="navlinks"><a href="index.html#tools">All tools</a><a href="index.html#about">About</a><a class="pill" href="index.html">← Home</a></nav></div></header>
+<header class="top"><div class="wrap nav"><a aria-label="PHRYGIX home" class="brand" href="/" ><img src="/favicon.svg" width="45" height="45" alt=""><span>PHRYGIX</span></a><nav class="navlinks" aria-label="Main navigation"><a href="index.html#tools">All tools</a><a href="index.html#about">About</a><a class="pill" href="index.html">← Home</a></nav></div></header>
 <main class="wrap">
 <section class="hero"><div class="eyebrow">03 / Privacy toolkit / Local processing</div><h1>Free Link Checker Online — Inspect URLs Before Clicking</h1><p>Unwrap common tracking links, decode embedded destinations and strip unnecessary tracking parameters — without sending your URL to our server.</p></section>
 
