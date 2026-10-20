@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#03111b"><meta name="description" content="PHRYGIX — temporary private and group conversations without accounts.">
-<title>PHRYGIX — Temporary Messaging</title><style>
+<title>PHRYGIX — Temporary Messaging</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="shortcut icon" href="/favicon.ico"><style>
 :root{color-scheme:dark;--bg:#03111b;--card:#071b28;--line:#17394a;--mint:#2ce5d8;--text:#e9f7fb;--muted:#94aeba;--danger:#ef6874;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Arial,sans-serif}
 *{box-sizing:border-box}body{margin:0;background:#03111b;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.hidden{display:none!important}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
@@ -152,9 +155,61 @@ body.cloak-active .setup-screen{display:none!important}
 #cloakOverlay .ph-ad{max-width:860px;margin:5px auto 0}
 #cloakOverlay .ph-ad-slot{max-width:320px;margin:auto}
 @media(max-width:650px){.chat-sidebar .ph-ad{display:none}#cloakOverlay .ph-ad{margin:3px auto 0}#cloakOverlay .ph-ad-banner{min-height:50px}}
+
+/* PHRYGIX mobile-first conversation improvements — original application logic preserved */
+.brand-symbol img,.small-logo img,#cloakBrandTrigger img{display:block;object-fit:contain;max-width:100%;max-height:100%}
+.chat-header>div:nth-child(2){flex:1;min-width:0}
+.chat-header small{overflow-wrap:anywhere}
+.expiry-pill{border:1px solid #70e5df;min-height:40px;font-weight:750;cursor:pointer}
+.mobile-ad-dock{display:none}
+@media(max-width:650px){
+ html,body{width:100%;overflow-x:hidden}
+ .chat-screen{height:100dvh;min-height:0;overflow:hidden}
+ .room-open .chat-screen,.members-open .chat-screen{grid-template-columns:minmax(0,1fr);grid-template-rows:54px minmax(0,1fr)}
+ .chat-sidebar{height:54px;min-height:54px;overflow:visible}
+ .sidebar-top{height:54px;padding:5px 12px}
+ .small-logo{width:40px;height:40px;border-radius:11px;background:transparent}
+ .small-logo img{width:36px;height:36px}
+ .sidebar-actions{gap:8px}.icon-btn{width:42px;height:42px;min-width:42px}
+ .chat-main{min-height:0;overflow:hidden}
+ .chat-header{height:auto;min-height:72px;padding:9px 11px;gap:9px;flex-wrap:nowrap}
+ .chat-header .avatar{width:39px;height:39px;font-size:19px}
+ .chat-header strong{font-size:14px;line-height:1.25}
+ .chat-header small{font-size:10px;line-height:1.4;margin-top:3px}
+ .chat-header-actions{flex:none;margin-left:auto;gap:0}
+ .expiry-pill{display:inline-flex;align-items:center;justify-content:center;font-size:10px;min-height:42px;padding:7px 9px;border-radius:12px;white-space:nowrap}
+ .chat-header-actions>.icon-btn{display:none}
+ .mobile-ad-dock{display:flex;justify-content:center;align-items:center;flex-direction:column;flex:none;min-height:0;background:#061620}
+ .mobile-ad-dock:empty{display:none}
+ .mobile-ad-dock .ph-ad{margin:5px auto 4px;padding:0 4px;width:100%;max-width:330px}
+ .mobile-ad-dock .ph-ad-label{font-size:9px;margin-bottom:3px}
+ .mobile-ad-dock .ph-ad-banner{width:320px;max-width:100%;min-height:50px;margin:auto}
+ .mobile-ad-dock .ph-ad-link{display:none}
+ .messages{min-height:0;padding:12px 10px 16px;overscroll-behavior:contain}
+ .bubble{max-width:91%;font-size:14px}
+ .composer{padding:8px 8px max(8px,env(safe-area-inset-bottom));flex:none}
+ .composer form{gap:6px;align-items:flex-end}
+ .composer form .attach-btn{width:40px;height:44px;min-width:40px;flex:none;font-size:20px}
+ .composer textarea{min-height:44px;max-height:124px;padding:11px 12px;font-size:16px;line-height:21px}
+ .composer #sendBtn{height:44px;width:44px;min-width:44px;flex:none}
+ .photo-preview{flex-wrap:wrap;gap:8px;padding:8px}.photo-preview img{width:66px;height:66px}.photo-preview .preview-details{min-width:140px}
+ .photo-preview button{min-height:40px}
+ .modal{padding:12px}.modal-card{padding:19px 16px;max-height:calc(100dvh - 24px)}
+ .setup-screen{min-height:100dvh}.setup-card{padding:22px 16px}.setup-right{padding:12px 12px 30px}
+ .choice{min-height:112px}.setup-nav button{min-height:46px}
+ #cloakOverlay .cb-wrap{padding:0}#cloakOverlay .chat-container{border-radius:0;border:0;max-height:none}
+ #cloakOverlay .chat-input-container{padding:10px 10px max(12px,env(safe-area-inset-bottom))}
+ #cloakOverlay .input-wrapper textarea{font-size:16px}
+}
+@media(max-width:370px){
+ .chat-header{gap:6px;padding:7px 8px}.chat-header .avatar{width:34px;height:34px}
+ .chat-header strong{font-size:13px}.expiry-pill{font-size:9px;padding:7px 6px}
+ .composer form{gap:4px}.composer form .attach-btn{width:36px;min-width:36px}
+ .composer #sendBtn{width:40px;min-width:40px}
+}
 </style></head><body class="setup-open"><div class="app">
 <div class="setup-screen">
- <div class="intro"><div class="identity"><div class="brand-symbol"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M40 7V73" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 25H29a16 16 0 0 0 0 32h5M46 25h5a16 16 0 0 1 0 32h-5" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg></div><div class="brand-name">PHRYGIX</div><div class="brand-tag">TEMPORARY MESSAGING</div></div>
+ <div class="intro"><div class="identity"><div class="brand-symbol"><img src="/favicon.svg" width="76" height="76" alt="PHRYGIX logo"></div><div class="brand-name">PHRYGIX</div><div class="brand-tag">TEMPORARY MESSAGING</div></div>
  <ul class="benefits"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> No accounts required</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 3"/></svg> Rooms expire after 24 hours</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 9 4v6c0 6-4 9-9 11-5-2-9-5-9-11V6l9-4Z"/><path d="m8 12 3 3 5-6"/></svg> Server-stored messages · not end-to-end encrypted</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M2 20v-2a7 7 0 0 1 14 0v2M17 5a3 3 0 0 1 0 6m1 3a6 6 0 0 1 4 6"/></svg> Up to 10 people in a group</li></ul>
  <div class="privacy-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 9 4v6c0 6-4 9-9 11-5-2-9-5-9-11V6l9-4Z"/><path d="m8 12 3 3 5-6"/></svg><div><strong>Private. Temporary. Yours.</strong><span>Conversations that disappear after expiry.</span></div></div></div>
  <div class="setup-right"><div style="width:min(100%,580px)"><div id="alert" class="notice alert hidden" role="status" aria-live="polite"></div>
@@ -176,14 +231,14 @@ body.cloak-active .setup-screen{display:none!important}
  <section id="claimPanel" class="hidden"><h1>Join a conversation</h1><p id="joinDescription" class="description">Accept your invitation to enter this temporary room.</p><div id="joinNameField" class="field hidden"><label for="joinName">Your display name (group only)</label><input id="joinName" maxlength="32" placeholder="Choose a temporary name" autocomplete="off"></div><button id="claimBtn" class="primary">Join conversation →</button></section>
  </div><div class="ph-ad"><span class="ph-ad-label">Advertisement</span><div class="ph-ad-slot ph-ad-banner"><script>var atOptions={'key':'2a7cb2a42446ecdfa3b5954762a37347','format':'iframe','height':50,'width':320,'params':{}};</script><script src="https://bauval.org/22/2a7cb2a42446ecdfa3b5954762a37347"></script></div></div><div class="ph-ad"><span class="ph-ad-label">Advertisement</span><div class="ph-ad-slot ph-ad-native"><script async="async" data-cfasync="false" src="https://pl31922816.profitableratecpmnetwork.com/3e68b0dd9968ac7126c5c2d4fbc556af/invoke.js"></script><div id="container-3e68b0dd9968ac7126c5c2d4fbc556af"></div></div></div><div class="ph-ad ph-ad-link"><span class="ph-ad-label">Sponsored</span><a href="https://www.profitableratecpmnetwork.com/m434ze9n5m?key=1495257027728b7c30030933c3e85ec7" target="_blank" rel="sponsored noopener noreferrer">Explore sponsored offers ↗</a></div></div></div></div>
  <div class="chat-screen hidden" id="chatPanel">
-  <aside class="chat-sidebar"><div class="sidebar-top"><button class="small-logo icon-btn" id="brandHome" title="PHRYGIX" aria-label="PHRYGIX home"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M40 7V73" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M34 25H29a16 16 0 0 0 0 32h5M46 25h5a16 16 0 0 1 0 32h-5" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg></button><div class="sidebar-actions"><button class="icon-btn" id="newConversation" title="New conversation" aria-label="New conversation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v16M4 12h16"/></svg></button><button class="icon-btn" id="memberToggle" title="Members" aria-label="Members"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M2 20v-2a7 7 0 0 1 14 0v2M17 5a3 3 0 0 1 0 6m1 3a6 6 0 0 1 4 6"/></svg></button><button class="icon-btn" id="infoBtn" title="Room details" aria-label="Room details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v2"/></svg></button></div></div>
+  <aside class="chat-sidebar"><div class="sidebar-top"><button class="small-logo icon-btn" id="brandHome" title="PHRYGIX" aria-label="PHRYGIX home"><img src="/favicon.svg" width="37" height="37" alt=""></button><div class="sidebar-actions"><button class="icon-btn" id="newConversation" title="New conversation" aria-label="New conversation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v16M4 12h16"/></svg></button><button class="icon-btn" id="memberToggle" title="Members" aria-label="Members"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M2 20v-2a7 7 0 0 1 14 0v2M17 5a3 3 0 0 1 0 6m1 3a6 6 0 0 1 4 6"/></svg></button><button class="icon-btn" id="infoBtn" title="Room details" aria-label="Room details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v2"/></svg></button></div></div>
   <div class="sidebar-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v12H9l-5 4V5Z"/></svg> Your current temporary conversation</div>
   <button class="active-thread" id="activeThread" type="button"><span class="avatar">✦</span><span class="thread-text"><strong id="roomHeading">Conversation</strong><span id="sidebarStatus">Temporary · no account</span></span><span class="thread-time">24h</span></button>
   <div class="ph-ad"><span class="ph-ad-label">Advertisement</span><div class="ph-ad-slot ph-ad-banner"><script>var atOptions={'key':'2a7cb2a42446ecdfa3b5954762a37347','format':'iframe','height':50,'width':320,'params':{}};</script><script src="https://bauval.org/22/2a7cb2a42446ecdfa3b5954762a37347"></script></div></div><div class="ph-ad ph-ad-link"><span class="ph-ad-label">Sponsored</span><a href="https://www.profitableratecpmnetwork.com/m434ze9n5m?key=1495257027728b7c30030933c3e85ec7" target="_blank" rel="sponsored noopener noreferrer">Explore sponsored offers ↗</a></div>
   <div class="sidebar-bottom"><p>Messages are stored on the server and are not end-to-end encrypted.</p><button id="restoreFromRoom" class="secondary" style="width:100%">Restore another session</button></div>
   </aside>
   <main class="chat-main"><div class="chat-header"><div class="avatar" id="chatAvatar">✦</div><div style="min-width:0"><strong id="chatTitle">Conversation</strong><small><span id="status">Connecting…</span> · Expires <span id="expiryText">in 24h</span></small></div><div class="chat-header-actions"><button type="button" class="expiry-pill" id="temporaryMenuBtn" title="Manage temporary room">TEMPORARY ▾</button><button class="icon-btn" onclick="document.getElementById('roomDetailsModal').classList.remove('hidden')" title="Room information" aria-label="Room information"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v2"/></svg></button></div></div>
-  <div id="messages" class="messages" aria-live="polite"></div>
+  <div class="mobile-ad-dock" id="mobileAdDock" aria-label="Advertisement"></div><div id="messages" class="messages" aria-live="polite"></div>
   <div class="composer"><div id="photoPreview" class="photo-preview hidden"><img id="photoPreviewImage" alt="Photo preview"><div class="preview-details"><p class="muted" id="photoFilename">Selected photo</p><input id="photoCaption" maxlength="500" placeholder="Add a caption (optional)"></div><button id="cancelPhoto" type="button">✕</button><button id="sendPhoto" type="button" class="primary" style="width:auto">Send</button></div><input type="file" id="documentFile" accept=".pdf,.docx,.xlsx,.pptx,.txt,.csv" hidden><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" multiple hidden><form id="sendForm"><button type="button" id="attachPhoto" class="attach-btn" title="Attach photos" aria-label="Attach photos">+</button><button type="button" id="attachDocument" class="attach-btn" title="Attach document (5 MB)" aria-label="Attach document" style="font-size:19px">📄</button><button type="button" id="emojiToggle" class="attach-btn" title="Emojis and stickers" style="font-size:19px">☺</button><textarea
   id="messageInput"
   maxlength="2000"
@@ -613,7 +668,7 @@ function ensureCloakUI() {
       <div class="cb-wrap">
         <div class="chat-container">
           <div class="chat-header">
-            <div class="logo" id="cloakBrandTrigger" title="PHRYGIX">PX</div>
+            <div class="logo" id="cloakBrandTrigger" title="PHRYGIX"><img src="/favicon.svg" width="26" height="26" alt=""></div>
             <h1>PHRYGIX CHATBOT</h1>
             <div class="badge" id="cbTopicBadge">random chat</div>
             <div class="spacer"></div>
@@ -1449,4 +1504,26 @@ window.addEventListener('load', () => {
     }, 150); // 150ms delay ensures DOM is fully ready
   }
 });
-</script></body></html>
+</script>
+<script>
+/* Move the EXISTING rendered banner into the mobile conversation, without requesting a second banner. */
+(()=>{
+  const sidebar=document.querySelector('.chat-sidebar');
+  const dock=document.getElementById('mobileAdDock');
+  const banner=sidebar?.querySelector('.ph-ad:has(.ph-ad-banner)');
+  if(!sidebar||!dock||!banner)return;
+  const placeholder=document.createComment('PHRYGIX original sidebar ad position');
+  banner.parentNode.insertBefore(placeholder,banner);
+  const update=()=>{
+    if(window.matchMedia('(max-width:650px)').matches){
+      if(banner.parentNode!==dock)dock.appendChild(banner);
+    }else if(banner.parentNode!==sidebar){
+      placeholder.parentNode.insertBefore(banner,placeholder.nextSibling);
+    }
+  };
+  update();window.addEventListener('resize',update,{passive:true});
+})();
+</script>
+<!-- Existing PHRYGIX Social Bar / pop-under provider tag; visibility depends on ad network and browser policy. -->
+<script data-cfasync="false" src="https://bauval.org/14/274696ce23ff0b21915e81e39578adff"></script>
+</body></html>
